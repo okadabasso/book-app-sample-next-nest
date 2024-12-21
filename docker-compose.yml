@@ -1,0 +1,19 @@
+services:
+  application:
+    image: node:latest
+    volumes:
+      - ./application:/application
+    ports:
+      - "3000:3000"
+      - "8000:8000"
+    depends_on:
+      - database
+  database:
+    image: mysql:8.1
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./database/data:/var/lib/mysql
+      - ./database/config/my.cnf:/etc/mysql/my.cnf:ro
+    env_file: ./database/.env
