@@ -48,3 +48,28 @@ npx create-next-app@latest
 ✔ Would you like to customize the import alias (`@/*` by default)? … __No__ / Yes
 ```
 
+## backend/typeorm
+
+```
+npm install typeorm
+npm install mysql
+npm install reflect-metadata
+npm install @types/mysql --save-dev
+```
+
+
+## typeorm
+
+### metadata table
+
+```sql
+          CREATE TABLE typeorm_metadata (
+                `type` varchar(255) NOT NULL,
+                `database` varchar(255) DEFAULT NULL,
+                `schema` varchar(255) DEFAULT NULL,
+                `table` varchar(255) DEFAULT NULL,
+                `name` varchar(255) DEFAULT NULL,
+                `value` text
+            )
+            
+```
