@@ -2,9 +2,9 @@ import { DataSource } from 'typeorm';
 import { Book } from './entities/Book';
 
 export const AppDataSource = new DataSource({
-    type: 'mysql', // or your preferred database type
-    host: 'database',
-    port: 3306,
+    type: 'postgres', // or your preferred database type
+    host: 'pg',
+    port: 5432,
     username: 'testuser',
     password: 'password',
     database: 'testdb',
@@ -12,7 +12,6 @@ export const AppDataSource = new DataSource({
     logging: true,
     logger: 'advanced-console',
     entities: [
-       //  'entities/*.ts',
        Book
     ], // Add your entities here
     migrations: [
