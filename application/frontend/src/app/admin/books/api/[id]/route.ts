@@ -12,8 +12,36 @@ export async function GET(
         return NextResponse.json({ error: "Book ID is required" }, { status: 400 });
     }
 
-    console.info(`GET /admin/books/api/${id} ` + new Date().toString());
     const response = await apiClient(`/admin/books/find?id=${id}`);
-    console.log(response);
+    return response;
+}
+export async function POST(request: NextRequest) {
+    const book: Book = await request.json();
+    if (!book) {
+        return NextResponse.json({ error: "Book data is required" }, { status: 400 });
+    }
+
+    const response = await apiClient('/admin/books/create',{ method: "POST" , body:book});
+    return response;
+}
+
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    const book: Book = await request.json();
+    if (!id || !book) {
+        return NextResponse.json({ error: "Book ID and data are required" }, { status: 400 });
+    }
+
+    const response = await apiClient(`/admin/books/${id}`,{ method: "PUT" , body:book});
+    return response;
+}
+
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    if (!id) {
+        return NextResponse.json({ error: "Book ID is required" }, { status: 400 });
+    }
+
+    const response = await apiClient(`/admin/books/delete?id=${id}`, { method: "DELETE" });
     return response;
 }

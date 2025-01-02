@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import fetchBook from '../functions/fetchBook';
 
 interface BookDetailProps {
     id: number;
@@ -22,25 +23,21 @@ const  DetailPage = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchBook = async (id: number) => {
-            try {
-                const response = await fetch(`/admin/books/api/${id}`);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+        const loadBook = async () => {
+            if (id) {
+                try {
+                    const book = await fetchBook(Number(id));
+                    setBook(book);
                 }
-                const data: Book = await response.json();
-                console.log(data);
-                setBook(data);
-            } catch (exception) {
-                setError((exception as Error).message);
+                catch (e: any) {
+                    setError(e.message);    
+                }
+            } else {
+                setError('Invalid book ID');
             }
         };
+        loadBook();
 
-        if (id) {
-            fetchBook(id);
-        } else {
-            setError('Invalid book ID');
-        }
     }, []);
 
     if (!book) {
@@ -70,6 +67,7 @@ const  DetailPage = () => {
                     </dl>
                 </div>
                 <div className='pt-4 pb-8 sticky bottom-4 bg-white'>
+                    <Link href={`/admin/books/${book.id}/edit`} className='underline text-blue-700 hover:text-blue-500 mr-4'>編集する</Link>
                     <Link href='/admin/books' className='underline text-blue-700 hover:text-blue-500'>戻る</Link>
                 </div>
             </form>
