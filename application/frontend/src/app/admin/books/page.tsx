@@ -59,7 +59,6 @@ const BooksPage = () => {
             </table>  
             <div className='mt-4'>
                 <Link href='/admin/books/create' className='underline text-blue-700 hover:text-blue-500 mr-4'>Add New Book</Link>
-                <Link href='/admin/books/edit' className='underline text-blue-700 hover:text-blue-500'>Edit Book</Link>
     
             </div>
         </div>

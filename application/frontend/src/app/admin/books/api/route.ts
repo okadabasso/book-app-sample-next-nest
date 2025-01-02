@@ -9,3 +9,20 @@ export async function GET(request: NextRequest) {
     return response;
 
 }
+export async function POST(request: NextRequest) {
+    const book: Book = await request.json();
+    if (!book) {
+        return NextResponse.json({ error: "Book data is required" }, { status: 400 });
+    }
+
+    try {
+        const response = await apiClient('/admin/books',{ method: "POST" , body:book});
+        return response;
+    }   
+    catch (e: any) {
+        console.error("error at post");
+        console.error(e);
+        return NextResponse.json({ error: e.message }, { status: 500 });
+    }
+}
+ 
