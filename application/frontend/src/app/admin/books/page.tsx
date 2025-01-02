@@ -44,7 +44,7 @@ const BooksPage = () => {
                     {data.map((book) => (
                         <tr key={book.id}> 
                         <td className=' text-left border border-gray-400 px-2 py-1'> 
-                            <Link href={`/admin/books/detail?id=${book.id}`} className='underline text-blue-700 hover:text-blue-500'>{book.title}</Link>
+                            <Link href={`/admin/books/${book.id}`} className='underline text-blue-700 hover:text-blue-500'>{book.title}</Link>
                           
                         </td>
 
