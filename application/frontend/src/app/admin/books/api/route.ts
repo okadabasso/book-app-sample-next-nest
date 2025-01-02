@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(request: NextRequest) {
     console.info("GET /admin/books/api " + new Date().toString())
-    const response = await apiClient("/admin/books/findAll")
+    const response = await apiClient("/admin/books/")
     return response;
 
 }

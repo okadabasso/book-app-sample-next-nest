@@ -1,9 +1,9 @@
+
 export interface Book {
-    id: string;
+    id: number;
     title: string;
-    publisherId: number | null;
-    publishedDate: Date;
-    isbn13: string;
+    author: string;
+    description: string;
+    publishedYear: number;
     genre: string;
-    summary: string;
 }

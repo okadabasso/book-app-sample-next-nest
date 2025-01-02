@@ -5,11 +5,12 @@ import React, { useEffect, useState } from 'react';
 
 const EditBookPage = () => {
     const [book, setBook] = useState<Book>({ 
-        id: '', 
+        id: 0, 
         title: '', 
-        publishedDate: new Date(), 
+        author: '',
+        publishedYear: 0, 
         genre: '', 
-        summary: '' });
+        description: '' });
 
     useEffect(() => {
         console.log("use effect");        // Fetch book data when the component mounts
