@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Book } from '@/types/Book';
+import { Input } from '@headlessui/react';
 
 interface EditFormProps {
     book: Book;
@@ -47,7 +48,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         name="title"
                         value={formData.title}
                         onChange={handleChange}
-                        className='border border-gray-300 rounded-md p-1 w-full'
+                        className='border border-gray-300 rounded-sm p-1 w-full'
                     />
                 </div>
 
@@ -63,7 +64,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         name="author"
                         value={formData.author}
                         onChange={handleChange}
-                        className='border border-gray-300 rounded-md p-1 w-full'
+                        className='border border-gray-300 rounded-sm p-1 w-full'
                     />
 
                 </div>
@@ -79,7 +80,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         name="publishedYear"
                         value={formData.publishedYear}
                         onChange={handleChange}
-                        className='border border-gray-300 rounded-md p-1 w-full'
+                        className='border border-gray-300 rounded-sm p-1 w-full'
                     />
 
                 </div>
@@ -95,7 +96,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         name="genre"
                         value={formData.genre}
                         onChange={handleChange}
-                        className='border border-gray-300 rounded-md p-1 w-full'
+                        className='border border-gray-300 rounded-sm p-1 w-full'
                     />
 
                 </div>
@@ -110,14 +111,14 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
-                        className='border border-gray-300 rounded-md p-1 w-full'
+                        className='border border-gray-300 rounded-sm p-1 w-full'
                     />
                 </div>
 
             </div>
             <div className='sticky bottom-0 bg-white pt-4 pb-12'>
-                <button type="submit" className='rounded bg-blue-500 text-white hover:bg-blue-600 w-24 mr-4'>Save</button>
-                <button type="button" className='rounded bg-gray-500 text-white hover:bg-gray-600 w-24 mr-4' onClick={handleCancel}>Cancel</button>
+                <button type="submit" className='rounded-sm bg-blue-600 text-white hover:bg-blue-700 w-24 p-1 mr-4'>Save</button>
+                <button type="button" className='rounded-sm bg-gray-600 text-white hover:bg-gray-700 w-24 p-1 mr-4' onClick={handleCancel}>Cancel</button>
             </div>
         </form>
     );

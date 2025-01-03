@@ -1,8 +1,9 @@
 "use client";
 import { useState } from 'react';
-import EditForm from '../components/EditForm';
+import EditForm from '@/app/admin/books/components/EditForm';
 import { Book } from '@/types/Book';
 import { apiClient } from '@/shared/apiClient';
+import ContentHeader from '@/app/admin/books/components/ContentHeader';
 
 const CreateBookPage = () => {
     const year = (new Date()).getFullYear();
@@ -47,7 +48,7 @@ const CreateBookPage = () => {
 
     return (
         <div>
-            <h2 className='text-lg font-bold'>Create Book</h2>
+            <ContentHeader title='Create Book' />
             <EditForm book={book} onSave={(book) => handleSave(book)} onCancel={() => handleCancel()} />
 
         </div>

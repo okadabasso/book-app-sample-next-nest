@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import fetchBook from '../functions/fetchBook';
+import fetchBook from '@/app/admin/books/functions/fetchBook';
+import ContentHeader from '@/app/admin/books/components/ContentHeader';
 
 interface BookDetailProps {
     id: number;
@@ -39,25 +40,34 @@ const  DetailPage = () => {
 
     return (
         <div>
-            <h2 className='text-lg font-bold'>Book Detail [{book.title}]</h2>
+            <ContentHeader title='Book Detail' />
             {error && <p className='text-red-500'>{error}</p>}
             <form>
                 <div className='mt-4'>
-                    <dl className="flex flex-wrap gap-y-2">
-                        <dt className='font-bold w-1/6'>ID</dt>
-                        <dd className='w-5/6'>{book.id}</dd>
-                        <dt className='font-bold w-1/6'>Title</dt>
-                        <dd className='w-5/6'>{book.title}</dd>
-                        <dt className='font-bold w-1/6'>Author</dt>
-                        <dd className='w-5/6'>{book.author}</dd>
-                        <dt className='font-bold w-1/6'>Published Year</dt>
-                        <dd className='w-5/6'>{book.publishedYear}</dd>
-                        <dt className='font-bold w-1/6'>Genre</dt>
-                        <dd className='w-5/6'>{book.genre}</dd>
-                        <dt className='font-bold w-1/6'>Description</dt>
-                        <dd className='w-5/6'>{book.description}</dd>
-
-                    </dl>
+                    <div className='mb-4'>
+                        <div className='font-bold'>Id</div>
+                        <div>{book.id}</div>
+                    </div>
+                    <div className='mb-4'>
+                        <div className='font-bold'>Title</div>
+                        <div>{book.title}</div>
+                    </div>
+                    <div className='mb-4'>
+                        <div className='font-bold'>Author</div>
+                        <div>{book.author}</div>
+                    </div>
+                    <div className='mb-4'>
+                        <div className='font-bold'>Published Year</div>
+                        <div>{book.publishedYear}</div>
+                    </div>
+                    <div className='mb-4'>
+                        <div className='font-bold'>Genre</div>
+                        <div>{book.genre}</div>
+                    </div>
+                    <div className='mb-4'>
+                        <div className='font-bold'>Description</div>
+                        <div>{book.description}</div>
+                    </div>
                 </div>
                 <div className='pt-4 pb-8 sticky bottom-4 bg-white'>
                     <Link href={`/admin/books/${book.id}/edit`} className='underline text-blue-700 hover:text-blue-500 mr-4'>編集する</Link>

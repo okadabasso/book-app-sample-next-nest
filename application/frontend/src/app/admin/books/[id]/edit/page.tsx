@@ -3,8 +3,9 @@ import { Book } from '@/types/Book';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import fetchBook from '../../functions/fetchBook';
-import EditForm from '../../components/EditForm';
+import fetchBook from '@/app/admin/books/functions/fetchBook';
+import EditForm from '@/app/admin/books/components/EditForm';
+import ContentHeader from '@/app/admin/books/components/ContentHeader';
 
 const EditBookPage = () => {
     const { id } = useParams();
@@ -60,8 +61,8 @@ const EditBookPage = () => {
     }
 
     return (
-        <div>
-            <h2 className='text-lg font-bold'>Edit Book</h2>
+        <div title='Edit Book'>
+            <ContentHeader title='Edit Book' />
             <EditForm book={book} onSave={(book) => handleSave(book)} onCancel={() => handleCancel()} />
 
         </div>
