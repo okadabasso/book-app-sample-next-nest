@@ -12,14 +12,7 @@ interface BookDetailProps {
 const  DetailPage = () => {
     const { id } = useParams();
     console.log("id=" + id);
-    const [book, setBook] = useState<Book>({
-        id: 0,
-        title: '',
-        author: '',
-        publishedYear: 0,
-        genre: '',
-        description: ''
-    });
+    const [book, setBook] = useState<Book>();
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {

@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import EditForm from '../components/EditForm';
 import { Book } from '@/types/Book';
+import { apiClient } from '@/shared/apiClient';
 
 const CreateBookPage = () => {
     const year = (new Date()).getFullYear();
@@ -19,16 +20,13 @@ const CreateBookPage = () => {
     });
 
     const handleSave = (book: Book) => {    
+        console.log('Save', book);
         const saveBook = async (book: Book) => {
             try {
-                const response = await fetch(`/admin/books/api`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(book),
-                });
-
+                const response = await fetch(
+                    '/admin/books/api', 
+                    {method: 'POST', body: JSON.stringify(book)}
+                );
                 if (!response.ok) {
                     throw new Error('Failed to save book');
                 }

@@ -34,21 +34,15 @@ const EditBookPage = () => {
         console.log('Save', book);
         const saveBook = async (book: Book) => {
             try {
-                const response = await fetch(`/admin/books/api/${book.id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(book),
-                });
-
+                const response = await fetch(
+                    `/admin/books/api/${book.id}`, 
+                    {method: 'PUT', body: JSON.stringify(book)}
+                );
                 if (!response.ok) {
                     throw new Error('Failed to save book');
                 }
 
-                const updatedBook = await response.json();
-                setBook(updatedBook);
-                // window.location.href = `/admin/books/${book.id}`;
+                window.location.href = `/admin/books/${book.id}`;
             } catch (e: any) {
                 setError(e.message);
             }
