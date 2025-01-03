@@ -1,5 +1,3 @@
-import { NextResponse } from "next/server";
-
 const BASE_URL = process.env.BACKEND_URL;
 
 /**
@@ -12,7 +10,7 @@ export async function apiClient(
     options?: {
         method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
         params?: Record<string, string>;
-        body?: any;
+        body?: unknown;
         headers?: Record<string, string>;
     }
 ): Promise<Response> {

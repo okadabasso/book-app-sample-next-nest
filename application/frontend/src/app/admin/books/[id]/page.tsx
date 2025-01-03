@@ -2,14 +2,10 @@
 import { Book } from '@/types/Book';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import fetchBook from '@/app/admin/books/functions/fetchBook';
 import ContentHeader from '@/app/admin/books/components/ContentHeader';
 
-interface BookDetailProps {
-    id: number;
-  }
 const  DetailPage = () => {
     const { id } = useParams();
     console.log("id=" + id);
@@ -23,8 +19,12 @@ const  DetailPage = () => {
                     const book = await fetchBook(Number(id));
                     setBook(book);
                 }
-                catch (e: any) {
-                    setError(e.message);    
+                catch (e: unknown) {
+                    if (e instanceof Error) {
+                        setError(e.message);
+                    } else {
+                        setError(String(e));
+                    }
                 }
             } else {
                 setError('Invalid book ID');

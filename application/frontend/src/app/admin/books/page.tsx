@@ -18,15 +18,19 @@ const BooksPage = () => {
                 const data: Book[] = await response.json();
                 setBooks(data);
                 console.log(data);
-            } catch (err: any) {
-                setError(err.message);
+            } catch (e: unknown) {
+                if (e instanceof Error) {
+                    setError(e.message);
+                } else {
+                    setError(String(e));
+                }
             }
         };
 
         fetchBooks();
     }
-    , []);
-    
+        , []);
+
     return (
         <div>
             <ContentHeader title='Book List' />
@@ -43,13 +47,13 @@ const BooksPage = () => {
                 </thead>
                 <tbody>
                     {data.map((book) => (
-                        <tr key={book.id}> 
-                        <td className=' text-left border border-gray-300 px-2 py-1'> 
-                            <Link href={`/admin/books/${book.id}`} className='underline text-blue-700 hover:text-blue-500'>{book.title}</Link>
-                          
-                        </td>
+                        <tr key={book.id}>
+                            <td className=' text-left border border-gray-300 px-2 py-1'>
+                                <Link href={`/admin/books/${book.id}`} className='underline text-blue-700 hover:text-blue-500'>{book.title}</Link>
 
-                            
+                            </td>
+
+
                             <td className=' text-left border border-gray-300 px-2 py-1'>{book.author}</td>
                             <td className=' text-left border border-gray-300 px-2 py-1'>{book.description}</td>
                             <td className=' text-left border border-gray-300 px-2 py-1'>{book.publishedYear}</td>
@@ -57,10 +61,10 @@ const BooksPage = () => {
                         </tr>
                     ))}
                 </tbody>
-            </table>  
+            </table>
             <div className='mt-4'>
                 <Link href='/admin/books/create' className='underline text-blue-700 hover:text-blue-500 mr-4'>Add New Book</Link>
-    
+
             </div>
         </div>
     );

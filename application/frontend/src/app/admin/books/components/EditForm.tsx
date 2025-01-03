@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Book } from '@/types/Book';
-import { Input } from '@headlessui/react';
 
 interface EditFormProps {
     book: Book;
@@ -20,7 +19,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         console.log('handleChange', name, value);
-        setFormData((prevData: any) => ({
+        setFormData((prevData: Book) => ({
             ...prevData,
             [name]: value,
         }));
