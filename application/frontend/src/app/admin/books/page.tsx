@@ -3,6 +3,7 @@ import { Book } from '@/types/Book';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import ContentHeader from '@/app/admin/books/components/ContentHeader';
+import { plainToInstance } from 'class-transformer';
 
 const BooksPage = () => {
     const [data, setBooks] = useState<Book[]>([]);
@@ -16,8 +17,9 @@ const BooksPage = () => {
                     throw new Error(`Error: ${response.statusText}`);
                 }
                 const data: Book[] = await response.json();
-                setBooks(data);
-                console.log(data);
+                const books =  plainToInstance(Book, data);
+                setBooks(books);
+                console.log(books);
             } catch (e: unknown) {
                 if (e instanceof Error) {
                     setError(e.message);

@@ -22,13 +22,13 @@ export class BookDto {
     @Transform(({ obj }) => 
         obj.bookAuthors.map((bookAuthor: BookAuthor) => plainToInstance(AuthorDto, bookAuthor.author))
       )
-    authors: AuthorDto[];
+    authors?: AuthorDto[] = [];
 
     @Expose({ name: 'bookGenres' })
     @Type(() => GenreDto)
     @Transform(({ obj }) => 
         obj.bookGenres.map((bookGenre: BookGenre) => plainToInstance(GenreDto, bookGenre.genre))
       )
-    genres: GenreDto[];
+    genres?: GenreDto[] = [];
 
 }

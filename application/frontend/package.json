@@ -11,9 +11,13 @@
   "dependencies": {
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
+    "@nestjs/mapped-types": "^2.0.6",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
     "next": "15.1.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

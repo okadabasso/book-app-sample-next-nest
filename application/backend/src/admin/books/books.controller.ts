@@ -21,13 +21,20 @@ export class BooksController {
         return dto;
     }
     @Get("find")
-    async find(@Query('id') id: number): Promise<Book> {
+    async find(@Query('id') id: number): Promise<BookDto> {
         console.info(`GET /admin/books/find?id=${id} ` + new Date().toString());
-        const book = await this.repos.findOneBy({ id });
+        const book = await this.repos.findOne({ 
+            where: {id},
+            relations: ['bookAuthors', 'bookAuthors.author', 'bookGenres', 'bookGenres.genre'],
+        });
         if (!book) {
             throw new NotFoundException(`Book with id ${id} not found`);
         }
-        return book;
+        const dto = plainToInstance(BookDto, book,{
+            exposeDefaultValues: true, // デフォルト値を有効化
+            enableImplicitConversion: true,
+        });
+        return dto;
     }
     @Post()
     async create(@Body() bookData: Partial<Book>): Promise<Book> {
