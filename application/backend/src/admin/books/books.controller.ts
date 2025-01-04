@@ -1,9 +1,7 @@
-import { AppDataSource } from '@/data-source';
-import { Book } from '@/entities/Book';
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
-import { generate } from 'rxjs';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Book } from '@/entities/Book';
 
 @Controller('admin/books')
 export class BooksController {
@@ -14,7 +12,9 @@ export class BooksController {
     ) {}
     @Get()
     async findAll(): Promise<Book[]> {
-        return await this.repos.find({});
+        return await this.repos.find({
+            relations: ['bookAuthors', 'bookAuthors.author', 'bookGenres', 'bookGenres.genre'],
+        });
     }
     @Get("find")
     async find(@Query('id') id: number): Promise<Book> {
