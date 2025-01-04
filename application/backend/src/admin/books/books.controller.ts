@@ -10,7 +10,7 @@ export class BooksController {
         @InjectRepository(Book)
         private readonly repos: Repository<Book>,
     ) {}
-    
+
     @Get()
     async findAll(): Promise<BookDto[]> {
         const books = await this.repos.find({
