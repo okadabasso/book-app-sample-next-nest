@@ -1,20 +1,24 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query, UseInterceptors } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Book } from '@/entities/Book';
-
+import { BookDto } from './dto/BookDto';
+import { plainToInstance } from 'class-transformer';
 @Controller('admin/books')
 export class BooksController {
     constructor(
         @InjectRepository(Book)
         private readonly repos: Repository<Book>,
-
     ) {}
+    
     @Get()
-    async findAll(): Promise<Book[]> {
-        return await this.repos.find({
+    async findAll(): Promise<BookDto[]> {
+        const books = await this.repos.find({
             relations: ['bookAuthors', 'bookAuthors.author', 'bookGenres', 'bookGenres.genre'],
+            order: { id: 'ASC' },
         });
+        const dto = plainToInstance(BookDto, books);
+        return dto;
     }
     @Get("find")
     async find(@Query('id') id: number): Promise<Book> {
