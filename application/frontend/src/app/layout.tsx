@@ -20,7 +20,7 @@ export default function RootLayout({
         className={"overflow-y-scroll"}
       >
         <Header />
-        <main className="container mx-auto py-3 px-4">
+        <main className="container mx-auto px-4">
           {children}
         </main>
         <Footer />

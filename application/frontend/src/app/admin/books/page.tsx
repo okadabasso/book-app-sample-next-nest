@@ -33,7 +33,7 @@ const BooksPage = () => {
         , []);
 
     return (
-        <div className='mb-6'>
+        <div>
             <ContentHeader title='Book List' />
             {error && <p className='text-red-500'>{error}</p>}
             <table className='table-auto w-full'>
@@ -63,10 +63,10 @@ const BooksPage = () => {
                     ))}
                 </tbody>
             </table>
-            <div className='mt-4'>
-                <Link href='/admin/books/create' className='underline text-blue-700 hover:text-blue-500 mr-4'>Add New Book</Link>
-
+            <div className='sticky bottom-0 bg-white pt-4 pb-12'>
+            <Link href='/admin/books/create' className='underline text-blue-700 hover:text-blue-500 mr-4'>Add New Book</Link>
             </div>
+
         </div>
     );
 };
