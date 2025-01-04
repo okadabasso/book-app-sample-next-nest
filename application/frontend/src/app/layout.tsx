@@ -19,8 +19,9 @@ export default function RootLayout({
       <body
         className={"overflow-y-scroll"}
       >
+
         <Header />
-        <main className="container mx-auto px-4">
+        <main className="container mx-auto px-4 pt-14">
           {children}
         </main>
         <Footer />
