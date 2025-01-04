@@ -43,8 +43,16 @@ export class BooksController {
     }
 
     @Put(':id')
-    async update(@Param('id') id: number, @Body() bookData: Partial<Book>): Promise<Book> {
-        await this.repos.update(id, bookData);
+    async update(@Param('id') id: number, @Body() bookDto: Partial<BookDto>): Promise<Book> {
+        const book = new Book(
+            bookDto.title,
+            bookDto.author,
+            bookDto.description,
+            bookDto.publishedYear,
+            bookDto.genre,
+        );
+        console.log(book);
+        await this.repos.update(id, book);
         const updatedBook = await this.repos.findOneBy({ id });
         if (!updatedBook) {
             throw new NotFoundException(`Book with id ${id} not found`);

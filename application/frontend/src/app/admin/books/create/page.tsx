@@ -13,7 +13,9 @@ const CreateBookPage = () => {
         author: '',
         publishedYear: year,
         genre: '',
-        description: ''
+        description: '',
+        authors: [],
+        genres: [],
     });
 
     const handleSave = (book: Book) => {

@@ -16,6 +16,8 @@ export class BookDto {
     publishedYear: number;
     @Expose()
     description: string;
+    @Expose()
+    genre: string;
 
     @Expose({ name: 'bookAuthors' })
     @Type(() => AuthorDto)

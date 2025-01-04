@@ -33,7 +33,7 @@ const BooksPage = () => {
         , []);
 
     return (
-        <div>
+        <div className='mb-6'>
             <ContentHeader title='Book List' />
             {error && <p className='text-red-500'>{error}</p>}
             <table className='table-auto w-full'>
