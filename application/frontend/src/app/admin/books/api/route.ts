@@ -3,7 +3,6 @@ import { Book } from "@/types/Book"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function GET() {
-    console.info("GET /admin/books/api " + new Date().toString())
     const response = await apiClient("/admin/books/")
     return response;
 

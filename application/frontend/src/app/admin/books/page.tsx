@@ -19,7 +19,6 @@ const BooksPage = () => {
                 const data: Book[] = await response.json();
                 const books =  plainToInstance(Book, data);
                 setBooks(books);
-                console.log(books);
             } catch (e: unknown) {
                 if (e instanceof Error) {
                     setError(e.message);

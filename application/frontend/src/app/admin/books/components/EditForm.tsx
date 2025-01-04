@@ -4,21 +4,23 @@ import React, { useState, useEffect } from 'react';
 import { Book } from '@/types/Book';
 
 interface EditFormProps {
-    book: Book;
+    book?: Book | null;
     onSave: (book: Book) => void;
     onCancel: () => void;
 }
 
 const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
-    const [formData, setFormData] = useState<Book>({ ...book });
+    const [formData, setFormData] = useState<Book>({ ...book  ?? {} as Book});
 
     useEffect(() => {
+        if (!book) {
+            return;
+        }
         setFormData({ ...book });
     }, [book]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        console.log('handleChange', name, value);
         setFormData((prevData: Book) => ({
             ...prevData,
             [name]: value,
@@ -26,13 +28,11 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
     };
 
     const handleSubmit = (e: React.FormEvent) => {
-        console.log('handle Save', e);
         e.preventDefault();
         onSave(formData);
     };
 
     const handleCancel = (e: React.FormEvent) => {
-        console.log('handle Cancel');
         e.preventDefault();
         onCancel();
     }

@@ -8,7 +8,6 @@ import ContentHeader from '@/app/admin/books/components/ContentHeader';
 
 const  DetailPage = () => {
     const { id } = useParams();
-    console.log("id=" + id);
     const [book, setBook] = useState<Book>();
     const [error, setError] = useState<string | null>(null);
 

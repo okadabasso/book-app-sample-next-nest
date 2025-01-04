@@ -17,7 +17,6 @@ const CreateBookPage = () => {
     });
 
     const handleSave = (book: Book) => {
-        console.log('Save', book);
         const saveBook = async (book: Book) => {
             try {
                 const response = await fetch(

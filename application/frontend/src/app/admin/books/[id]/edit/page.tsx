@@ -35,7 +35,6 @@ const EditBookPage = () => {
     }, []);
 
     const handleSave = (book: Book) => {
-        console.log('Save', book);
         const saveBook = async (book: Book) => {
             try {
                 const response = await fetch(
@@ -59,7 +58,6 @@ const EditBookPage = () => {
         saveBook(book);
     }
     const handleCancel = () => {
-        console.log('Cancel');
         window.location.href = `/admin/books/${id}`;
     }
 
