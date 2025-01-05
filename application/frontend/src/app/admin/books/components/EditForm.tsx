@@ -1,22 +1,28 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Book } from '@/types/Book';
+import MultiSelectCombobox from '@/components/MultiSelectCombobox ';
 
 interface EditFormProps {
     book?: Book | null;
     onSave: (book: Book) => void;
     onCancel: () => void;
 }
+interface Option {
+    id: number;
+    name: string;
+}
 
 const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
-    const [formData, setFormData] = useState<Book>({ ...book  ?? {} as Book});
+    const [formData, setFormData] = useState<Book>({ ...book ?? {} as Book });
 
     useEffect(() => {
         if (!book) {
             return;
         }
         setFormData({ ...book });
+
     }, [book]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -28,7 +34,10 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
     };
 
     const handleSubmit = (e: React.FormEvent) => {
+        const selectedItems = multiSelectRef.current?.getSelectedItems();
+        console.log('選択されたアイテム:', selectedItems);
         e.preventDefault();
+        return;
         onSave(formData);
     };
 
@@ -36,6 +45,16 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
         e.preventDefault();
         onCancel();
     }
+    // multi select
+    const multiSelectRef = useRef<any>(null); // MultiSelectCombobox の ref
+    const fetchOptions = async (query: string): Promise<Option[]> => {
+        // 仮データの取得（実際にはサーバー呼び出しなど）
+        return [
+            { id: 1, name: 'Apple' },
+            { id: 2, name: 'Orange' },
+            { id: 3, name: 'Banana' },
+        ].filter((item) => item.name.toLowerCase().includes(query.toLowerCase()));
+    };
     return (
         <form onSubmit={handleSubmit}>
             <div className='mb-4'>
@@ -113,7 +132,10 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         className='border border-gray-300 rounded-sm p-1 w-full'
                     />
                 </div>
-
+                <div className="p-6">
+                    <h1 className="text-lg font-bold mb-4">Multi-Select Combobox (TypeScript)</h1>
+                    <MultiSelectCombobox fetchOptions={fetchOptions} initialSelectedItems={[]} ref={multiSelectRef} />
+                </div>
             </div>
             <div className='sticky bottom-0 bg-white pt-4 pb-12'>
                 <button type="submit" className='rounded-sm bg-blue-600 text-white hover:bg-blue-700 w-24 p-1 mr-4'>Save</button>
