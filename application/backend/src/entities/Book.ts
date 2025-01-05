@@ -34,5 +34,6 @@ export class Book {
         this.description = description;
         this.publishedYear = publishedYear;
         this.genre = genre;
+
     }
 }

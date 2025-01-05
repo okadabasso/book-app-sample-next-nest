@@ -12,4 +12,10 @@ export class BookGenre {
 
     @ManyToOne(() => Genre, genre => genre.bookGenres)
     genre: Genre;
+
+    constructor (id: number, book: Book, genre: Genre) {
+        this.id = id;
+        this.book = book;
+        this.genre = genre;
+    }
 }

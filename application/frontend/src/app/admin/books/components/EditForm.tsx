@@ -36,8 +36,8 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
     const handleSubmit = (e: React.FormEvent) => {
         const selectedItems = multiSelectRef.current?.getSelectedItems();
         console.log('選択されたアイテム:', selectedItems);
+        formData.genres = selectedItems;
         e.preventDefault();
-        return;
         onSave(formData);
     };
 
@@ -48,12 +48,12 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
     // multi select
     const multiSelectRef = useRef<any>(null); // MultiSelectCombobox の ref
     const fetchOptions = async (query: string): Promise<Option[]> => {
-        // 仮データの取得（実際にはサーバー呼び出しなど）
-        return [
-            { id: 1, name: 'Apple' },
-            { id: 2, name: 'Orange' },
-            { id: 3, name: 'Banana' },
-        ].filter((item) => item.name.toLowerCase().includes(query.toLowerCase()));
+        const loadGenres = async (query: string) => {
+            const genres = await fetch(`/admin/api/genres?query=${query}`);
+            return genres.json();
+        };
+        return loadGenres(query);
+     
     };
     return (
         <form onSubmit={handleSubmit}>

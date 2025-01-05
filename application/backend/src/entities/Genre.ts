@@ -11,4 +11,9 @@ export class Genre {
 
     @OneToMany(() => BookGenre, bookGenre => bookGenre.genre)
     bookGenres: BookGenre[];
+
+    constructor (id: number, name: string) {
+        this.id = id;
+        this.name = name;
+    }
 }
