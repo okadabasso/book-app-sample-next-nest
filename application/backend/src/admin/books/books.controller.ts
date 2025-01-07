@@ -7,6 +7,8 @@ import { plainToInstance } from 'class-transformer';
 import { Genre } from '@/entities/Genre';
 import { GenreDto } from './dto/GenreDto';
 import { BookGenre } from '@/entities/BookGenre';
+import { from } from 'rxjs';
+import { BookEditService } from './services/BookEditService';
 @Controller('admin/books')
 export class BooksController {
     constructor(
@@ -40,30 +42,13 @@ export class BooksController {
         return dto;
     }
     @Post()
-    async create(@Body() bookData: Partial<BookDto>): Promise<Book> {
+    async create(@Body() bookDto: Partial<BookDto>): Promise<Book> {
         return this.dataSource.transaction(async (manager) => {
-            console.log("bookData", bookData);
-            const bookRepository = manager.getRepository(Book);
-            const genreRepository = manager.getRepository(Genre);
-            const bookGenreRepository = manager.getRepository(BookGenre);
+            const service = new BookEditService(this.dataSource, manager);
 
-            const book = bookRepository.create(bookData);
-            await bookRepository.save(book);
-    
-            for(let i = 0; i < bookData.genres.length; i++) {
-                const item = bookData.genres[i];
-                let genre = plainToInstance(Genre, item);
-                if (item.isNew) {
-                    console.log("new genre");
-                    genre.id = 0;
-                    genre = genreRepository.create(genre);
-                    await genreRepository.save(genre);
-                }
-                const bookGenre = { book, genre };
-                bookGenreRepository.create(bookGenre);
-                await bookGenreRepository.save(bookGenre);
-            }
-            console.log("book saved", book);
+            const bookData = this.fromBookDto(bookDto);
+            console.log("create book", bookData);
+            const book = await service.create(bookData);
             return book;
     
         });
@@ -72,47 +57,10 @@ export class BooksController {
     @Put(':id')
     async update(@Param('id') id: number, @Body() bookDto: Partial<BookDto>): Promise<Book> {
         return this.dataSource.transaction(async (manager) => {
-            const bookRepository = manager.getRepository(Book);
-            const genreRepository = manager.getRepository(Genre);
-            const bookGenreRepository = manager.getRepository(BookGenre);
+            const service = new BookEditService(this.dataSource, manager);
+            const bookData = this.fromBookDto(bookDto);
+            const book = service.updateBook(id, bookData);
 
-            const book = await bookRepository.findOne({
-                where: {id},
-                relations: ['bookAuthors', 'bookAuthors.author', 'bookGenres', 'bookGenres.genre'],
-            });
-            book. title = bookDto.title;
-            book.author = bookDto.author;
-            book.publishedYear = bookDto.publishedYear;
-            book.description = bookDto.description;
-            await bookRepository.save(book);
-
-            for( let i = 0; i < book.bookGenres.length; i++) {
-                const bookGenre = book.bookGenres[i];
-                if(bookDto.genres.findIndex((genre) => genre.id === bookGenre.genre.id) === -1) {
-                    console.log("delete bookGenre", bookGenre);
-                    await bookGenreRepository.remove(bookGenre);
-                    continue;
-                }
-                console.log("update bookGenre", bookGenre);
-                bookGenreRepository.save(bookGenre);
-            }
-            for(let i = 0; i < bookDto.genres.length; i++) {
-                const item = bookDto.genres[i];
-                let genre = plainToInstance(Genre, item);
-                if (item.isNew) {
-                    console.log("new genre");
-                    genre.id = 0;
-                    genre = genreRepository.create(genre);
-                    await genreRepository.save(genre);
-
-                }
-                if (book.bookGenres.findIndex((bookGenre) => bookGenre.genre.id === genre.id) === -1) {
-                    console.log("new bookGenre", genre);
-                    const bookGenre = { book, genre };
-                    bookGenreRepository.create(bookGenre);
-                    await bookGenreRepository.save(bookGenre);
-                }
-            }
             return book;
         });
 
@@ -125,5 +73,41 @@ export class BooksController {
         if (result.affected === 0) {
             throw new NotFoundException(`Book with id ${id} not found`);
         }
+    }
+
+    fromBook(book: Book): BookDto {
+        return plainToInstance(BookDto, book, {
+            exposeDefaultValues: true,
+            enableImplicitConversion: true,
+        });
+    }
+    fromBookDto(bookDto: Partial<BookDto>): Book {
+        const book = plainToInstance(Book, bookDto, {
+            exposeDefaultValues: true,
+            enableImplicitConversion: true,
+        });
+        book.bookAuthors = [];
+        book.bookGenres = [];
+        for (let i = 0; i < bookDto.genres.length; i++) {
+            const genreDto = bookDto.genres[i];
+            const genre = plainToInstance(Genre, genreDto, {
+                exposeDefaultValues: true,
+                enableImplicitConversion: true,
+            });
+            if(genreDto.isNew) {
+                genre.id = 0;
+            }
+            const refBook = new Book(
+                book.id,
+                book.title,
+                book.author,
+                book.description,
+                book.publishedYear,
+            )
+            const bookGenre = new BookGenre(0, refBook, genre);
+            book.bookGenres[i] = bookGenre; 
+        }
+        console.log("book entity", book);
+        return book;
     }
 }
