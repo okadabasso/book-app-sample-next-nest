@@ -10,11 +10,11 @@ interface Option {
 
 interface MultiSelectComboboxProps<T> {
   fetchOptions: (q: string) => Promise<T[]>;
-  initialSelectedItems?: T[]; // 初期選択項目
+  initialSelectedItems?: T[];  // 初期選択項目
 }
 
 const MultiSelectCombobox = forwardRef<any, MultiSelectComboboxProps<Option>>(
-  ({ fetchOptions, initialSelectedItems = [] }, ref) => {
+  ({ fetchOptions, initialSelectedItems = [] }, ref,) => {
     const [selectedItems, setSelectedItems] = useState<Option[]>(initialSelectedItems);
     const [query, setQuery] = useState('');
     const [options, setOptions] = useState<Option[]>([]);
@@ -90,7 +90,7 @@ const MultiSelectCombobox = forwardRef<any, MultiSelectComboboxProps<Option>>(
     }
 
     return (
-      <div className="relative w-96">
+      <div className="relative">
         <Combobox as="div" value={selectedItems} onChange={setSelectedItems} multiple>
           <div className="flex flex-wrap items-center border border-gray-300 rounded-sm p-2 gap-2">
             {selectedItems.map((item) => (

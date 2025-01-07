@@ -60,12 +60,16 @@ const  DetailPage = () => {
                         <div>{book.publishedYear}</div>
                     </div>
                     <div className='mb-4'>
-                        <div className='font-bold'>Genre</div>
-                        <div>{book.genre}</div>
-                    </div>
-                    <div className='mb-4'>
                         <div className='font-bold'>Description</div>
                         <div>{book.description}</div>
+                    </div>
+                    <div className='mb-4'>
+                        <div className='font-bold'>Genres</div>
+                        <ul className='flex flex-wrap gap-2'>
+                            {book.genres.map((genre) => (
+                                <li key={genre.id} className=''>{genre.name}</li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
                 <div className='pt-4 pb-8 sticky bottom-4 bg-white'>

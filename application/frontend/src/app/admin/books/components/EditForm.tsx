@@ -53,7 +53,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
             return genres.json();
         };
         return loadGenres(query);
-     
+
     };
     return (
         <form onSubmit={handleSubmit}>
@@ -105,22 +105,6 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
             </div>
             <div className='mb-4'>
                 <div>
-                    <label htmlFor="genre">Genre</label>
-                </div>
-                <div>
-                    <input
-                        type="text"
-                        id="genre"
-                        name="genre"
-                        value={formData.genre}
-                        onChange={handleChange}
-                        className='border border-gray-300 rounded-sm p-1 w-full'
-                    />
-
-                </div>
-            </div>
-            <div>
-                <div>
                     <label htmlFor="description">Description</label>
                 </div>
                 <div>
@@ -132,9 +116,20 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         className='border border-gray-300 rounded-sm p-1 w-full'
                     />
                 </div>
-                <div className="p-6">
-                    <h1 className="text-lg font-bold mb-4">Multi-Select Combobox (TypeScript)</h1>
-                    <MultiSelectCombobox fetchOptions={fetchOptions} initialSelectedItems={[]} ref={multiSelectRef} />
+            </div>
+            <div className='mb-4'>
+                <div >
+                    <div>
+                        <label htmlFor='genre'>Genre</label>
+                    </div>
+                    <div id="genre">
+                        <MultiSelectCombobox
+                            fetchOptions={fetchOptions}
+                            initialSelectedItems={formData.genres}
+                            ref={multiSelectRef}
+                        />
+
+                    </div>
                 </div>
             </div>
             <div className='sticky bottom-0 bg-white pt-4 pb-12'>

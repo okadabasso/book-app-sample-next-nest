@@ -58,7 +58,9 @@ const BooksPage = () => {
                             <td className=' text-left border border-gray-300 px-2 py-1'>{book.author}</td>
                             <td className=' text-left border border-gray-300 px-2 py-1'>{book.description}</td>
                             <td className=' text-left border border-gray-300 px-2 py-1'>{book.publishedYear}</td>
-                            <td className=' text-left border border-gray-300 px-2 py-1'>{book.genre}</td>
+                            <td className=' text-left border border-gray-300 px-2 py-1'>
+                                { book.genres.map(genre => <span key={genre.id} className='inline-block mr-2'>{genre.name}</span>) } 
+                            </td>
                         </tr>
                     ))}
                 </tbody>
