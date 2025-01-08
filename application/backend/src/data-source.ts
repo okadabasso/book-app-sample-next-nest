@@ -1,9 +1,9 @@
 import { DataSource } from 'typeorm';
 import { Book } from './entities/Book';
-import { BookAuthor } from '@/entities/BookAuthor';
-import { Author } from '@/entities/Author';
-import { BookGenre } from '@/entities/BookGenre';
-import { Genre } from '@/entities/Genre';
+import { BookAuthor } from './entities/BookAuthor';
+import { Author } from './entities/Author';
+import { BookGenre } from './entities/BookGenre';
+import { Genre } from './entities/Genre';
 export const AppDataSource = new DataSource({
     type: 'postgres', // or your preferred database type
     host: 'pg',

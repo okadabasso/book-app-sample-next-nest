@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { Book } from '@/entities/Book';
-import { Author } from '@/entities/Author';
+import { Book } from './/Book';
+import { Author } from './Author';
 
 @Entity()
 export class BookAuthor {
