@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useForm } from 'react-hook-form';
 import { Book } from '@/types/Book';
 import MultiSelectCombobox from '@/components/MultiSelectCombobox ';
 
@@ -14,7 +15,21 @@ interface Option {
     name: string;
 }
 
+interface FormData {
+    title: string;
+    author: string;
+    publishedYear: string;
+    description: string;
+    genres: Option[];
+}
+
 const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+      } = useForm<FormData>();
+    
     const [formData, setFormData] = useState<Book>({ ...book ?? {} as Book });
 
     useEffect(() => {
@@ -33,11 +48,10 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const onSubmit = (data: FormData) => {
         const selectedItems = multiSelectRef.current?.getSelectedItems();
         console.log('選択されたアイテム:', selectedItems);
         formData.genres = selectedItems;
-        e.preventDefault();
         onSave(formData);
     };
 
@@ -56,35 +70,48 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
 
     };
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <div className='mb-4'>
-                <div className=''><label htmlFor="title">Title</label></div>
+                <div className='mb-1'><label htmlFor="title">Title<span className="relative -top-px  bg-red-600 text-white ml-2 -mt-6  p-0.5 text-xs">必須</span></label></div>
                 <div>
                     <input
                         type="text"
                         id="title"
-                        name="title"
                         value={formData.title}
-                        onChange={handleChange}
+                        maxLength={100}
                         className='border border-gray-300 rounded-sm p-1 w-full'
+                        {...register("title", { 
+                            required: "Title is required",
+                            maxLength: { value: 100, message: "Title is too long" },
+                            onChange: (e) => {
+                                handleChange(e);
+                            }
+                        })}
                     />
+                    {errors.title && <p className='text-red-600'>{errors.title.message}</p>}
                 </div>
 
             </div>
             <div className='mb-4'>
                 <div>
-                    <label htmlFor="author">Author</label>
+                    <label htmlFor="author">Author<span className="relative -top-px  bg-red-600 text-white ml-2 -mt-6  p-0.5 text-xs">必須</span></label>
                 </div>
                 <div>
                     <input
                         type="text"
                         id="author"
-                        name="author"
                         value={formData.author}
-                        onChange={handleChange}
+                        maxLength={64}
                         className='border border-gray-300 rounded-sm p-1 w-full'
+                        {...register("author", { 
+                            required: "Author is required",
+                            maxLength: { value: 64, message: "Author is too long" },
+                            onChange: (e) => {
+                                handleChange(e);
+                            }
+                        })}
                     />
-
+                    {errors.author && <p className='text-red-600'>{errors.author.message}</p>}
                 </div>
             </div>
             <div className='mb-4'>
@@ -95,11 +122,18 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                     <input
                         type="text"
                         id="publishedYear"
-                        name="publishedYear"
                         value={formData.publishedYear}
-                        onChange={handleChange}
+                        maxLength={4}
                         className='border border-gray-300 rounded-sm p-1 w-full'
+                        {...register("publishedYear", { 
+                            maxLength: { value: 4, message: "publishedYear is too long" },
+                            pattern: { value: /^[0-9]*$/, message: "publishedYear is invalid" },
+                            onChange: (e) => {
+                                handleChange(e);
+                            }
+                        })}
                     />
+                    {errors.publishedYear && <p className='text-red-600'>{errors.publishedYear.message}</p>}
 
                 </div>
             </div>
@@ -110,12 +144,18 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                 <div>
                     <textarea
                         id="description"
-                        name="description"
                         value={formData.description}
-                        onChange={handleChange}
-                        className='border border-gray-300 rounded-sm p-1 w-full'
+                        maxLength={1024}
+                        className='border border-gray-300 rounded-sm p-1 w-full h-32'
+                        {...register("description", { 
+                            maxLength: { value: 1024, message: "description is too long" },
+                            onChange: (e) => {
+                                handleChange(e);
+                            }
+                        })}
                     />
-                </div>
+                    {errors.description && <p className='text-red-600'>{errors.description.message}</p>}
+                    </div>
             </div>
             <div className='mb-4'>
                 <div >
