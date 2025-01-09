@@ -48,7 +48,7 @@ export class BooksController {
 
             const bookData = this.fromBookDto(bookDto);
             console.log("create book", bookData);
-            const book = await service.create(bookData);
+            const book = await service.createBook(bookData);
             return book;
     
         });

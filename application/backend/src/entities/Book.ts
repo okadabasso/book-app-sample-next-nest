@@ -7,17 +7,17 @@ export class Book {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({length: 100, nullable: false})
     title: string;
 
-    @Column()
+    @Column({length: 64, nullable: false})
     author: string;
 
     @Column('text')
     description: string;
 
     @Column()
-    publishedYear: number;
+    publishedYear?: number;
 
     @Column()
     genre: string;

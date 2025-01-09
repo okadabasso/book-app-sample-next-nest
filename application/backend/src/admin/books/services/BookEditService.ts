@@ -27,27 +27,18 @@ export class BookEditService {
         this.genreRepository = this.manager.getRepository(Genre);
         this.authorRepository = this.manager.getRepository(Author);
     }
-    async create(bookData: Partial<Book>): Promise<Book> {
-        const book = this.bookRepository.create(bookData);
-        await this.bookRepository.save(book);
-        console.log("book data", bookData);
-        await this.createBookGenres(book, bookData.bookGenres);
+    async createBook(bookData: Partial<Book>): Promise<Book> {
+        const book = await this.createBookEntry(bookData);
+        await this.updateBookGenreEntries(book, bookData.bookGenres);
         return book;
     }
 
 
     async updateBook(id: number, updateData: Partial<Book>): Promise<Book> {
+        const book = await this.updateBookEntry(id, updateData);
+        await this.updateBookGenreEntries(book, updateData.bookGenres);
 
-            const originalBook = await this.bookRepository.findOne({
-                where: {id},
-                relations: ['bookAuthors', 'bookAuthors.author', 'bookGenres', 'bookGenres.genre'],
-            });
-            this.updateBookEntity(originalBook, updateData);
-            await this.bookRepository.save(originalBook);
-
-            await this.updateBookGenres(originalBook, updateData.bookGenres);
-
-            return originalBook;
+        return book;
     }
 
     async deleteBook(id: number): Promise<void> {
@@ -58,36 +49,43 @@ export class BookEditService {
 
         await this.manager.remove(book);
     }
-    updateBookEntity(book: Book, updateData: Partial<Book>): Book {
+    private  async createBookEntry(bookData: Partial<Book>): Promise<Book> {
+        const book = this.bookRepository.create(bookData);
+        await this.bookRepository.save(book);
+
+        return book;
+    }
+    private async updateBookEntry(id:number, updateData: Partial<Book>): Promise<Book> {
+        const book = await this.bookRepository.findOne({
+            where: { id },
+            relations: ['bookAuthors', 'bookAuthors.author', 'bookGenres', 'bookGenres.genre'],
+        });
+
         book.title = updateData.title;
         book.author = updateData.author;
         book.publishedYear = updateData.publishedYear;
         book.description = updateData.description;
+
+        await this.bookRepository.save(book);
+
         return book;
     }
-    async createBookGenres(book: Book, bookGenres: BookGenre[]): Promise<void> {
-        for(let i = 0; i < bookGenres.length; i++) {
-            const bookGenre = bookGenres[i];
-            if (bookGenre.genre.id === 0) {
-                this.genreRepository.create(bookGenre.genre);
-                await this.genreRepository.save(bookGenre.genre);
-            }
-            
-            bookGenre.book = book;
-            this.bookGenreRepository.create(bookGenre);
-            await this.bookGenreRepository.save(bookGenre);
-        }
-    }
-    async updateBookGenres(book: Book, bookGenres: BookGenre[]): Promise<void> {
-        for( let i = 0; i < book.bookGenres.length; i++) {
+    private async updateBookGenreEntries(book: Book, bookGenres: BookGenre[]): Promise<void> {
+        // 登録済みの bookGenre が bookGenres に含まれていない場合は削除
+        // 登録済みの bookGenre が bookGenres に含まれている場合は更新
+        // bookGenres に含まれているが登録済みでない場合は新規登録
+        for (let i = 0; i < book.bookGenres.length; i++) {
             const originalBookGenre = book.bookGenres[i];
-            if(bookGenres.findIndex((bookGenre) => bookGenre.genre.id === originalBookGenre.genre.id) === -1) {
+            if (bookGenres.findIndex((bookGenre) => bookGenre.genre.id === originalBookGenre.genre.id) === -1) {
                 await this.bookGenreRepository.remove(originalBookGenre);
                 continue;
             }
-            this.bookGenreRepository.save(originalBookGenre);
+            // ここで originalBookGenreの id が0なら book が新規登録のはずなので、originalBookGenre を保存できない
+            if(originalBookGenre.id !== 0){
+                this.bookGenreRepository.save(originalBookGenre);
+            }
         }
-        for(let i = 0; i < bookGenres.length; i++) {
+        for (let i = 0; i < bookGenres.length; i++) {
             const bookGenre = bookGenres[i];
             if (bookGenre.genre.id === 0) {
                 this.genreRepository.create(bookGenre.genre);
