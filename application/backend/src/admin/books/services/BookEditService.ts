@@ -93,7 +93,7 @@ export class BookEditService {
                 await this.genreRepository.save(bookGenre.genre);
 
             }
-            if (book.bookGenres.findIndex((originalBookGenre) => originalBookGenre.genre.id === bookGenre.genre.id) === -1) {
+            if (bookGenre.id === 0) {
                 bookGenre.book = book;
                 this.bookGenreRepository.create(bookGenre);
                 await this.bookGenreRepository.save(bookGenre);

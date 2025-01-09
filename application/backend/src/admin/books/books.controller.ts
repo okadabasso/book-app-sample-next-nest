@@ -19,17 +19,17 @@ export class BooksController {
     async findAll(): Promise<BookDto[]> {
         const findService = new BookFindService(this.dataSource);
         const books = await findService.findAllBooks()
-        const dto = plainToInstance(BookDto, books);
+        const dto = this.toBookDtoArray(books);
         return dto;
     }
     @Get("find")
     async find(@Query('id') id: number): Promise<BookDto> {
         const findService = new BookFindService(this.dataSource);
-        const book = findService.findBookById(id);
+        const book = await findService.findBookById(id);
         if (!book) {
             throw new NotFoundException(`Book with id ${id} not found`);
         }
-        const dto = plainToInstance(BookDto, book);
+        const dto = this.toBookDto(book);
         return dto;
     }
     @Post()
@@ -37,8 +37,7 @@ export class BooksController {
         return this.dataSource.transaction(async (manager) => {
             const service = new BookEditService(this.dataSource, manager);
 
-            const bookData = this.fromBookDto(bookDto);
-            console.log("create book", bookData);
+            const bookData = this.toBookEntity(bookDto);
             const book = await service.createBook(bookData);
             return book;
     
@@ -49,7 +48,7 @@ export class BooksController {
     async update(@Param('id') id: number, @Body() bookDto: Partial<BookDto>): Promise<Book> {
         return this.dataSource.transaction(async (manager) => {
             const service = new BookEditService(this.dataSource, manager);
-            const bookData = this.fromBookDto(bookDto);
+            const bookData = this.toBookEntity(bookDto);
             const book = service.updateBook(id, bookData);
 
             return book;
@@ -66,17 +65,14 @@ export class BooksController {
         }
     }
 
-    fromBook(book: Book): BookDto {
-        return plainToInstance(BookDto, book, {
-            exposeDefaultValues: true,
-            enableImplicitConversion: true,
-        });
+    private toBookDto(book: Book): BookDto {
+        return plainToInstance(BookDto, book);
     }
-    fromBookDto(bookDto: Partial<BookDto>): Book {
-        const book = plainToInstance(Book, bookDto, {
-            exposeDefaultValues: true,
-            enableImplicitConversion: true,
-        });
+    private toBookDtoArray(books: Book[]): BookDto[] {
+        return plainToInstance(BookDto, books);
+    }
+    private toBookEntity(bookDto: Partial<BookDto>): Book {
+        const book = plainToInstance(Book, bookDto);
         book.bookAuthors = [];
         book.bookGenres = [];
         for (let i = 0; i < bookDto.genres.length; i++) {
@@ -96,7 +92,7 @@ export class BooksController {
                 book.publishedYear,
             )
             const bookGenre = new BookGenre(0, refBook, genre);
-            book.bookGenres[i] = bookGenre; 
+            book.bookGenres.push(bookGenre); 
         }
         console.log("book entity", book);
         return book;
