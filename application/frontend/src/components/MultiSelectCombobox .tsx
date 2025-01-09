@@ -52,10 +52,6 @@ const MultiSelectCombobox = forwardRef<any, MultiSelectComboboxProps<Option>>(
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === 'Enter') {
-        if (query === '') {
-          event.preventDefault();
-          return;
-        }
         console.log('activeIndex:', activeIndex);
         if (!options.some((option) => option.name.toLowerCase() === query.toLowerCase())) {
           if(selectedItems.some((item) => item.name.toLowerCase() === query.toLowerCase())) {
