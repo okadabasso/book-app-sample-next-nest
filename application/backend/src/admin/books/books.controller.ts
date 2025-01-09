@@ -1,14 +1,13 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query, UseInterceptors } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { plainToInstance } from 'class-transformer';
 import { Book } from '@/entities/Book';
 import { BookDto } from './dto/BookDto';
-import { plainToInstance } from 'class-transformer';
 import { Genre } from '@/entities/Genre';
-import { GenreDto } from './dto/GenreDto';
 import { BookGenre } from '@/entities/BookGenre';
-import { from } from 'rxjs';
 import { BookEditService } from './services/BookEditService';
+import { BookFindService } from './services/BookFindService';
 @Controller('admin/books')
 export class BooksController {
     constructor(
@@ -18,27 +17,19 @@ export class BooksController {
 
     @Get()
     async findAll(): Promise<BookDto[]> {
-        const books = await this.dataSource.getRepository(Book).find({
-            relations: ['bookAuthors', 'bookAuthors.author', 'bookGenres', 'bookGenres.genre'],
-            order: { id: 'ASC' },
-        });
+        const findService = new BookFindService(this.dataSource);
+        const books = await findService.findAllBooks()
         const dto = plainToInstance(BookDto, books);
         return dto;
     }
     @Get("find")
     async find(@Query('id') id: number): Promise<BookDto> {
-        console.info(`GET /admin/books/find?id=${id} ` + new Date().toString());
-        const book = await this.dataSource.getRepository(Book).findOne({
-            where: { id },
-            relations: ['bookAuthors', 'bookAuthors.author', 'bookGenres', 'bookGenres.genre'],
-        });
+        const findService = new BookFindService(this.dataSource);
+        const book = findService.findBookById(id);
         if (!book) {
             throw new NotFoundException(`Book with id ${id} not found`);
         }
-        const dto = plainToInstance(BookDto, book, {
-            exposeDefaultValues: true, // デフォルト値を有効化
-            enableImplicitConversion: true,
-        });
+        const dto = plainToInstance(BookDto, book);
         return dto;
     }
     @Post()

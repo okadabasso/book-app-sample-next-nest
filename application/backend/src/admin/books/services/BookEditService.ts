@@ -5,6 +5,7 @@ import { BookAuthor } from '@/entities/BookAuthor';
 import { Genre } from '@/entities/Genre';
 import { Author } from '@/entities/Author';
 import { BookDto } from '../dto/BookDto';
+import { BookFindService } from './BookFindService';
 
 export class BookEditService {
     private dataSource: DataSource;
@@ -42,7 +43,9 @@ export class BookEditService {
     }
 
     async deleteBook(id: number): Promise<void> {
-        const book = await this.manager.findOne(Book, { where: { id } });
+        const bookFindService = new BookFindService(this.dataSource, this.manager);
+        const book = await bookFindService.findBookById(id);
+
         if (!book) {
             throw new Error('Book not found');
         }
@@ -56,10 +59,8 @@ export class BookEditService {
         return book;
     }
     private async updateBookEntry(id:number, updateData: Partial<Book>): Promise<Book> {
-        const book = await this.bookRepository.findOne({
-            where: { id },
-            relations: ['bookAuthors', 'bookAuthors.author', 'bookGenres', 'bookGenres.genre'],
-        });
+        const bookFindService = new BookFindService(this.dataSource, this.manager);
+        const book = await bookFindService.findBookById(id);
 
         book.title = updateData.title;
         book.author = updateData.author;
