@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body
-        className={"overflow-y-scroll"}
+        className={"overflow-y-scroll text-gray-800"}
       >
 
         <Header />

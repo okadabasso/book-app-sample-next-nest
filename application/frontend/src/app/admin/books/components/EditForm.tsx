@@ -174,7 +174,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
             </div>
             <div className='sticky bottom-0 bg-white pt-4 pb-12'>
                 <button type="submit" className='rounded-sm bg-blue-600 text-white hover:bg-blue-700 w-24 p-1 mr-4'>Save</button>
-                <button type="button" className='rounded-sm bg-gray-600 text-white hover:bg-gray-700 w-24 p-1 mr-4' onClick={handleCancel}>Cancel</button>
+                <button type="button" className='rounded-sm bg-gray-200 text-gray-800 hover:bg-gray-300 w-24 p-1 mr-4' onClick={handleCancel}>Cancel</button>
             </div>
         </form>
     );
