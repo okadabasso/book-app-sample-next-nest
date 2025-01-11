@@ -8,7 +8,7 @@ export default function Home() {
       <div className="mt-4">
         <h3>admin</h3>
         <ul>
-          <li><Link href="/admin/books" className="underline text-blue-700 hover:text-blue-500">admin/books</Link></li>
+          <li><Link href="/admin/books" className="underline text-blue-600 hover:text-blue-700">admin/books</Link></li>
 
         </ul>
 
@@ -16,7 +16,8 @@ export default function Home() {
       <div className="mt-4">
         <h3>experimental</h3>
         <ul>
-          <li><Link href="/experimental/multiselect" className="underline text-blue-700 hover:text-blue-500">experimental/multiselect</Link></li>
+          <li><Link href="/experimental/multiselect" className="underline text-blue-600 hover:text-blue-700">experimental/multiselect</Link></li>
+          <li><Link href="/experimental/statesample" className="underline text-blue-600 hover:text-blue-700">experimental/statesample</Link></li>
 
         </ul>
 
