@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import NextAuthProvider from "@/providers/NextAuthProvider";
 
 
 export const metadata: Metadata = {
@@ -19,12 +20,15 @@ export default function RootLayout({
       <body
         className={"overflow-y-scroll text-gray-800"}
       >
-
-        <Header />
-        <main className="container mx-auto px-4 pt-14">
-          {children}
-        </main>
-        <Footer />
+        <div className="min-h-screen">
+          <NextAuthProvider>
+            <Header />
+            <main className="container mx-auto px-4 pt-14">
+              {children}
+            </main>
+            <Footer />
+          </NextAuthProvider>
+        </div>
       </body>
     </html>
   );
