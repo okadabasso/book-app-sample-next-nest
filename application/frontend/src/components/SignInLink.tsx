@@ -1,16 +1,12 @@
 'use client';
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { ArrowLeftEndOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowRightEndOnRectangleIcon, ArrowRightStartOnRectangleIcon, ChevronDownIcon } from "@heroicons/react/16/solid";
+import { ArrowLeftEndOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowRightEndOnRectangleIcon, ArrowRightStartOnRectangleIcon, ChevronDownIcon, UserIcon } from "@heroicons/react/16/solid";
 import { Session } from "inspector/promises";
+import { User } from "next-auth";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-interface User {
-    email: string | null | undefined;
-    image: string | null | undefined;
-    name: string | null | undefined;
-}
 export default function SignInLink() {
     const { data: session } = useSession();
     const [user, setUser] = useState<User | null>(null);
@@ -21,12 +17,7 @@ export default function SignInLink() {
 
     useEffect(() => {
         if (session) {
-            setUser({
-                email: session.user?.email,
-                image: session.user?.image,
-                name: session.user?.name,
-            });
-            console.log("user ", user);
+            setUser(session.user as User);
         }
         if (buttonRef.current) {
             setButtonWidth(buttonRef.current.offsetWidth); // ボタンの幅を取得して状態に設定
@@ -42,7 +33,7 @@ export default function SignInLink() {
                 <div className="inline-block relative">
                     <Menu>
                         <MenuButton ref={buttonRef} className=" inline-block  hover:underline">
-                            welcome {user?.name}
+                            <UserIcon className="inline h-4 w-4 mr-1" /> {user?.name}
                             <ChevronDownIcon className="inline ml-1 h-5 w-5 text-white"/></MenuButton>
                         <MenuItems anchor="bottom" 
                             style={{ width: `${buttonWidth}px` }}  
@@ -55,7 +46,7 @@ export default function SignInLink() {
 
                 </div>
             ) : (
-                <Link href="/auth/signin"><ArrowRightEndOnRectangleIcon className="inline h-5 w-5 text-white mr-1" />Sign In</Link>
+                <Link href="/auth/signin"><ArrowRightEndOnRectangleIcon className="inline h-4 w-4 text-white mr-1" />Sign In</Link>
             )}
         </span>
     );

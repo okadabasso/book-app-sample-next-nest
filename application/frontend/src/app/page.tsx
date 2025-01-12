@@ -1,7 +1,11 @@
 'use client';
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 export default function Home() {
+  const { data: session } = useSession();
+  console.log("session ", session);
+
   return (
     <div className="">
       <h2 className="text-lg font-bold">Books Application Home</h2>

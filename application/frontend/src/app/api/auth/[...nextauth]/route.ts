@@ -1,7 +1,19 @@
-import NextAuth, { AuthOptions } from 'next-auth'
+import NextAuth, { AuthOptions, DefaultUser, Session } from 'next-auth'
 import Google from 'next-auth/providers/google'
 import Github from 'next-auth/providers/github'
 import Credential from 'next-auth/providers/credentials'
+import { AdapterUser } from 'next-auth/adapters'
+
+type User = AdapterUser & {
+    role: string
+}
+declare module 'next-auth' {
+    interface Session {
+        user: DefaultUser & {
+            role: string
+        }
+    }
+}
 
 export const authOptions: AuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
@@ -10,6 +22,17 @@ export const authOptions: AuthOptions = {
             id: 'google',
             clientId: process.env.GOOGLE_CLIENT_ID ?? '',
             clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+            profile(profile) {
+                return {
+                    id: profile.sub,
+                    name: profile.name,
+                    firstname: profile.given_name,
+                    lastname: profile.family_name,
+                    email: profile.email,
+                    image: profile.picture,
+                    role: profile.role
+                }
+            }
         }),
         Credential({
             id: 'credentials',
@@ -36,7 +59,7 @@ export const authOptions: AuthOptions = {
                 console.debug(credentials);
                 const email = 'user@example.com'
                 return credentials?.username === email && credentials?.password === '123456'
-                    ? { id: "user10001", "name": email, "email": email }
+                    ? { id: "user10001", "name": email, "email": email, role: 'administrator' }
                     : null
 
             }
@@ -51,15 +74,29 @@ export const authOptions: AuthOptions = {
     },
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
-            console.debug("callback sign in ");
+            console.log("signIn", user, account, profile, email, credentials);
             return true
         },
         async redirect({ url, baseUrl }) {
+            console.log("redirect", url, baseUrl);
             // Allows relative callback URLs
             if (url.startsWith("/")) return `${baseUrl}${url}`
             // Allows callback URLs on the same origin
             else if (new URL(url).origin === baseUrl) return url
             return baseUrl
+        },
+        jwt({ token, user }) {
+            console.log("jwt", token, user);
+            if (user) token.role = (user as User).role
+            return token
+        },
+        session({ session, token }) {
+            console.log("session", session, token);
+            session.user.role = token.role as string
+            if(session.user.role === undefined) {
+                session.user.role = 'user'
+            }
+            return session
         }
     }
 }
