@@ -54,6 +54,8 @@ export class BookEditService {
     }
     private  async createBookEntry(bookData: Partial<Book>): Promise<Book> {
         const book = this.bookRepository.create(bookData);
+        book.bookGenres = [];
+        book.bookAuthors = [];
         await this.bookRepository.save(book);
 
         return book;
@@ -93,7 +95,7 @@ export class BookEditService {
                 await this.genreRepository.save(bookGenre.genre);
 
             }
-            if (bookGenre.id === 0) {
+            if (book.bookGenres.length === 0 || book.bookGenres.findIndex((originalBookGenre) => originalBookGenre.genre.id === bookGenre.genre.id) === -1) {
                 bookGenre.book = book;
                 this.bookGenreRepository.create(bookGenre);
                 await this.bookGenreRepository.save(bookGenre);
