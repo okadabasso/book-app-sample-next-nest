@@ -5,8 +5,9 @@ import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import fetchBook from '@/app/admin/books/functions/fetchBook';
 import ContentHeader from '@/app/admin/books/components/ContentHeader';
+import ContentFooter from '@/components/ContentFooter';
 
-const  DetailPage = () => {
+const DetailPage = () => {
     const { id } = useParams();
     const [book, setBook] = useState<Book>();
     const [error, setError] = useState<string | null>(null);
@@ -72,10 +73,10 @@ const  DetailPage = () => {
                         </ul>
                     </div>
                 </div>
-                <div className='pt-4 pb-8 sticky bottom-4 bg-white'>
+                <ContentFooter>
                     <Link href={`/admin/books/${book.id}/edit`} className='underline text-blue-700 hover:text-blue-500 mr-4'>編集する</Link>
                     <Link href='/admin/books' className='underline text-blue-700 hover:text-blue-500'>戻る</Link>
-                </div>
+                </ContentFooter>
             </form>
         </div>
     );

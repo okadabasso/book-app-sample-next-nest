@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Book } from '@/types/Book';
 import MultiSelectCombobox from '@/components/MultiSelectCombobox ';
+import ContentFooter from '@/components/ContentFooter';
 
 interface EditFormProps {
     book?: Book | null;
@@ -172,10 +173,11 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                     </div>
                 </div>
             </div>
-            <div className='sticky bottom-0 bg-white pt-4 pb-12'>
+            <ContentFooter>
                 <button type="submit" className='rounded-sm bg-blue-600 text-white hover:bg-blue-700 w-24 p-1 mr-4'>Save</button>
                 <button type="button" className='rounded-sm bg-gray-200 text-gray-800 hover:bg-gray-300 w-24 p-1 mr-4' onClick={handleCancel}>Cancel</button>
-            </div>
+
+            </ContentFooter>
         </form>
     );
 };

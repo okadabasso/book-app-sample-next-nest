@@ -4,6 +4,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import ContentHeader from '@/app/admin/books/components/ContentHeader';
 import { plainToInstance } from 'class-transformer';
+import ContentFooter from '@/components/ContentFooter';
 
 const BooksPage = () => {
     const [data, setBooks] = useState<Book[]>([]);
@@ -65,9 +66,9 @@ const BooksPage = () => {
                     ))}
                 </tbody>
             </table>
-            <div className='sticky bottom-0 bg-white pt-4 pb-12'>
-            <Link href='/admin/books/create' className='underline text-blue-700 hover:text-blue-500 mr-4'>Add New Book</Link>
-            </div>
+            <ContentFooter>
+                <Link href='/admin/books/create' className='underline text-blue-700 hover:text-blue-500 mr-4'>Add New Book</Link>
+            </ContentFooter>
 
         </div>
     );
