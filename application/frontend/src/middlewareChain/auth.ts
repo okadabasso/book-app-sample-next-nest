@@ -6,16 +6,9 @@ export const authMiddleware: Middleware = async (request, _event, next) => {
     const url = new URL(request.url);
     const { pathname } = url;
 
-    if (pathname.startsWith("/auth")) {
-        return next();
-    }
-    if (pathname.startsWith("/api/auth")) {
-        return next();
-    }
     if (!pathname.startsWith("/admin")) {
         return next();
     }
-
 
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
     if (!token) {
