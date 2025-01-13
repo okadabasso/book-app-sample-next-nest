@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, OneToMany, JoinTabl
 import { BookAuthor } from './BookAuthor';
 import { BookGenre } from './BookGenre';
 
-@Entity("books")
+@Entity("book")
 export class Book {
     @PrimaryGeneratedColumn()
     id: number;
