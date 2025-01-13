@@ -29,12 +29,8 @@ export class AuthController {
         
         
         if (user && await compare(dto.password, user.passwordHash)) {
-            const userDto = new UserDto();
-            userDto.id = user.userId.toString();
-            userDto.email = user.email;
-            userDto.name = user.userName;
-            userDto.roles = [user.role];
-
+            const userDto = UserDto.from(user);
+            
             return userDto;
         }
         console.log("not found", dto)
