@@ -1,5 +1,5 @@
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
-import { middlewareChain } from "./middlewareChains/index";
+import { middlewareChain } from "./middlewareChain/index";
 
 export function middleware(request: NextRequest, event: NextFetchEvent) {
 

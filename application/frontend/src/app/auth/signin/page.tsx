@@ -29,8 +29,8 @@ export default function SignIn({ }) {
             setProviders(res);
         })();
     }, []);
-    const handleSignIn = async () => {
-        await signIn('google', { callbackUrl, redirect:true }); // Googleでログイン
+    const handleSignIn = async (providerId: string) => {
+        await signIn(providerId, { callbackUrl, redirect:true }); // Googleでログイン
     };
     return (
         <div>
@@ -50,7 +50,7 @@ export default function SignIn({ }) {
                                     className={`my-3 w-72 rounded px-4 py-2 font-semibold flex items-center justify-center  ${String(
                                         item?.className
                                     )}`}
-                                    onClick={handleSignIn}
+                                    onClick={ (event)=>handleSignIn(provider.id) }
                                 >
                                     {item.icon}
                                     <span className='ml-4'>{provider.name} でログイン</span>
