@@ -2,23 +2,65 @@ import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import { Middleware } from "./createMiddlewareChain";
 
-export const authMiddleware: Middleware = async (request, _event, next) => {
+/**
+ * ルートとロールのマッピング
+ * @type {Object.<string, string[]>}
+ */
+const routeRoleMap: { [key: string]: string[] } = {
+    "/admin": ["administrator"],
+    "/editor": ["administrator", "editor"],
+    "/user/profile": ["user", "administrator", "editor"],
+    // 必要に応じてルートを追加
+};
+
+/**
+ * 認証チェック
+ * 
+ * 許可されたルートにアクセスするための認証を行います。
+ * @param request: NextRequest
+ * @returns {Promise<{ authorized: boolean, redirectUrl?: string }>}
+ */
+async function checkAuthorization(request: NextRequest) {
     const url = new URL(request.url);
     const { pathname } = url;
 
-    if (!pathname.startsWith("/admin")) {
-        return next();
+    // マッチするルートを検索
+    const matchedRoute = Object.keys(routeRoleMap).find((route) =>
+        pathname.startsWith(route)
+    );
+
+    if (!matchedRoute) {
+        return { authorized: true }; // 認証不要ルート
     }
 
+    // トークンの取得
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
     if (!token) {
-        const callbackUrl = request.nextUrl.pathname;
-        return NextResponse.redirect(new URL(`/auth/signin?callbackUrl=${callbackUrl}`, request.url));
+        const callbackUrl = request.url;
+        return {
+            authorized: false,
+            redirectUrl: `/auth/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`,
+        };
     }
-    // 管理者専用ルート
-    if (token?.role !== "administrator") {
-        return NextResponse.redirect(new URL("/unauthorized", request.url));
+
+    // ロールの検証
+    const requiredRoles = routeRoleMap[matchedRoute];
+    if (!requiredRoles.includes(token.role as string)) {
+        return {
+            authorized: false,
+            redirectUrl: "/unauthorized",
+        };
     }
-  
+
+    return { authorized: true };
+}
+
+export const authMiddleware: Middleware = async (request, _event, next) => {
+    const { authorized, redirectUrl } = await checkAuthorization(request);
+
+    if (!authorized) {
+        return NextResponse.redirect(new URL(redirectUrl || '', request.url));
+    }
+
     return next();
-  };
+};
