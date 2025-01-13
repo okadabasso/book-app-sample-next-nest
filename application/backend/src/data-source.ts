@@ -5,6 +5,8 @@ import { Author } from './entities/Author';
 import { BookGenre } from './entities/BookGenre';
 import { Genre } from './entities/Genre';
 import { AuthUser } from './entities/AuthUser';
+import { AuthUserRole } from './entities/AuthUserRole';
+import { AuthRole } from './entities/AuthRole';
 export const AppDataSource = new DataSource({
     type: 'postgres', // or your preferred database type
     host: 'pg',
@@ -22,6 +24,8 @@ export const AppDataSource = new DataSource({
        BookGenre,
        Genre,
        AuthUser,
+       AuthUserRole,
+        AuthRole,
        __dirname + '/entities/*.ts',
 
     ], // Add your entities here

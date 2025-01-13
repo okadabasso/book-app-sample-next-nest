@@ -25,7 +25,9 @@ export class AuthController {
             where: { 
                 userName: dto.username,
                 isActive: true 
-            } });
+            }, 
+            relations: ["userRoles", "userRoles.role"]
+        });
         
         
         if (user && await compare(dto.password, user.passwordHash)) {

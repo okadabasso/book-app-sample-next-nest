@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { AuthUserRole } from './AuthUserRole';
 
 @Entity()
 export class AuthUser {
@@ -31,5 +32,8 @@ export class AuthUser {
 
     @Column({ type: 'varchar', length: 255 })
     role: string;
+
+    @OneToMany(() => AuthUserRole, userRole => userRole.user)
+    userRoles: AuthUserRole[];
 
 }
