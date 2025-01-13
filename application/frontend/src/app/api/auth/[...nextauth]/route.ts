@@ -87,7 +87,8 @@ export const authOptions: AuthOptions = {
             else if (new URL(url).origin === baseUrl) return url
             return baseUrl
         },
-        jwt({ token, user }) {
+        jwt({ token, account, user }) {
+            console.log('jwt', token,  account, user);
             if (user) token.role = (user as User).role
             return token
         },

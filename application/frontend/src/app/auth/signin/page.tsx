@@ -32,7 +32,7 @@ export default function SignIn({ }) {
         })();
     }, []);
     const handleSignIn = async (providerId: string) => {
-        const result = await signIn(providerId, {redirect: true});
+        const result = await signIn(providerId, {callbackUrl: callbackUrl, redirect: true});
     };
     return (
         <div>
