@@ -27,8 +27,6 @@ const MultiSelectCombobox = forwardRef<any, MultiSelectComboboxProps<Option>>(
 
     const addItemToSelection = (item: Option) => {
       setSelectedItems((prev) => {
-        console.log('selectedItems:', prev);
-        console.log('item:', item);
         // 重複チェック: id を基準に確認
         const exists = prev.some((selectedItem) => selectedItem.id === item.id);
     
@@ -52,12 +50,10 @@ const MultiSelectCombobox = forwardRef<any, MultiSelectComboboxProps<Option>>(
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === 'Enter') {
-        console.log('activeIndex:', activeIndex);
         if (!options.some((option) => option.name.toLowerCase() === query.toLowerCase())) {
           if(selectedItems.some((item) => item.name.toLowerCase() === query.toLowerCase())) {
             return;
           }
-          console.log('find option: ', query);
           // オプションに一致するものがない場合、入力値を追加
           const newOption = { id: Date.now(), name: query, isNew: true };
           addItemToSelection(newOption);
@@ -70,7 +66,6 @@ const MultiSelectCombobox = forwardRef<any, MultiSelectComboboxProps<Option>>(
         setIsOpen(false);
       }
       else if (event.key == 'Backspace' && query === '') {
-        console.log('backspace: ', query);
         // 最後の選択項目を削除
         setSelectedItems((prev) => prev.slice(0, prev.length - 1));
       }

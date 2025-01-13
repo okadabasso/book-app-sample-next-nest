@@ -1,12 +1,12 @@
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { middlewareChain } from "./middlewareChains/index";
 
-export function middleware(req: NextRequest, event: NextFetchEvent) {
+export function middleware(request: NextRequest, event: NextFetchEvent) {
 
   const next = async () => {
     return NextResponse.next();
   };
-  return middlewareChain(req, event, next);
+  return middlewareChain(request, event, next);
 }
 
 

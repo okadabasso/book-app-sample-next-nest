@@ -6,13 +6,13 @@ export const csrMiddleware: Middleware = async (request, _event, next) => {
     const url = new URL(request.url);
     const { pathname } = url;
 
-    if(pathname.startsWith("/api/auth")) {
+    if (pathname.startsWith("/api/auth")) {
         return next();
     }
-    if(pathname.startsWith("/api/csrf")) {
+    if (pathname.startsWith("/api/csrf")) {
         return next();
     }
-    if(pathname.startsWith("/auth")) {
+    if (pathname.startsWith("/auth")) {
         return next();
     }
     if (request.method === "POST" || request.method === "PUT" || request.method === "DELETE") {

@@ -29,7 +29,6 @@ export async function verifyCsrfToken(request: Request): Promise<boolean> {
         const token = request.headers.get('x-csrf-token') as string;
 
         if (!token || !formId) {
-            console.log('Token or formId is missing');
             return false;
         }
         const secretKey = new TextEncoder().encode(secret); // 秘密鍵をエンコード
@@ -40,7 +39,6 @@ export async function verifyCsrfToken(request: Request): Promise<boolean> {
 
         return result;
     } catch (error) {
-        console.log(`Error: ${error}`);
         return false;
     }
 }

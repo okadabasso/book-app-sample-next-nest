@@ -51,7 +51,6 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
 
     const onSubmit = (data: FormData) => {
         const selectedItems = multiSelectRef.current?.getSelectedItems();
-        console.log('選択されたアイテム:', selectedItems);
         formData.genres = selectedItems;
         onSave(formData);
     };

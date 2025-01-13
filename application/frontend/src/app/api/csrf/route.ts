@@ -9,6 +9,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Form ID is required' }, { status: 400 });
   }
   const token = await generateSignedCsrfToken(formId);
-  console.log(`Token: `, token);
   return NextResponse.json(token);
 }

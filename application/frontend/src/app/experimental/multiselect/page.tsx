@@ -21,7 +21,6 @@ export default function MultiSelectCombobox() {
             return person.name.toLowerCase().includes(query.toLowerCase())
           })
     const handleOnChange = (selectedItems: any) => {
-        console.log('selectedItems:', selectedItems);
         setSelectedPeople(selectedItems);
     }
   

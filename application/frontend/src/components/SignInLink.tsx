@@ -12,7 +12,6 @@ export default function SignInLink() {
     const buttonRef = useRef<HTMLButtonElement>(null); // ボタンの参照
     const [buttonWidth, setButtonWidth] = useState(0); // ボタンの幅
   
-    console.log("session ", session);
 
     useEffect(() => {
         if (session) {

@@ -56,7 +56,6 @@ export const authOptions: AuthOptions = {
                 // return null
 
                 // dummy login
-                console.debug(credentials);
                 const email = 'user@example.com'
                 return credentials?.username === email && credentials?.password === '123456'
                     ? { id: "user10001", "name": email, "email": email, role: 'administrator' }
@@ -74,11 +73,9 @@ export const authOptions: AuthOptions = {
     },
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
-            console.log("signIn", user, account, profile, email, credentials);
             return true
         },
         async redirect({ url, baseUrl }) {
-            console.log("redirect", url, baseUrl);
             // Allows relative callback URLs
             if (url.startsWith("/")) return `${baseUrl}${url}`
             // Allows callback URLs on the same origin
@@ -86,12 +83,10 @@ export const authOptions: AuthOptions = {
             return baseUrl
         },
         jwt({ token, user }) {
-            console.log("jwt", token, user);
             if (user) token.role = (user as User).role
             return token
         },
         session({ session, token }) {
-            console.log("session", session, token);
             session.user.role = token.role as string
             if(session.user.role === undefined) {
                 session.user.role = 'user'
