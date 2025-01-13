@@ -21,7 +21,11 @@ export class AuthController {
     @Post("signin")
     async singIn(@Body() dto: Partial<SignInDto>): Promise<UserDto> {
         const repository = this.dataSource.getRepository(AuthUser);
-        const user = await repository.findOne({ where: { userName: dto.username } });
+        const user = await repository.findOne({ 
+            where: { 
+                userName: dto.username,
+                isActive: true 
+            } });
         
         
         if (user && await compare(dto.password, user.passwordHash)) {
