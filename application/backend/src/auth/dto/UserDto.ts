@@ -3,7 +3,7 @@ export class UserDto {
     name: string;
     email: string;
     image?: string;
-    role?: string;
+    roles: string[];
 
     static from(user: any): UserDto {
         const userDto = new UserDto();
@@ -11,7 +11,7 @@ export class UserDto {
         userDto.name = user.name;
         userDto.email = user.email;
         userDto.image = user.image;
-        userDto.role = user.role;
+        userDto.roles = [user.role];
         return userDto;
     }
 }

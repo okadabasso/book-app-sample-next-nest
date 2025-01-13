@@ -29,7 +29,7 @@ export class AuthController {
             userDto.id = user.userId.toString();
             userDto.email = user.email;
             userDto.name = user.userName;
-            userDto.role = user.role;
+            userDto.roles = [user.role];
 
             return userDto;
         }

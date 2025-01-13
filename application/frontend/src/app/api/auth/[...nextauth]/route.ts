@@ -7,12 +7,12 @@ import { apiClient } from '@/shared/apiClient'
 import { redirect } from 'next/dist/server/api-utils'
 
 type User = AdapterUser & {
-    role: string
+    roles: string[]
 }
 declare module 'next-auth' {
     interface Session {
         user: DefaultUser & {
-            role: string
+            roles: string[]
         }
     }
 }
@@ -88,14 +88,30 @@ export const authOptions: AuthOptions = {
             return baseUrl
         },
         jwt({ token, account, user }) {
-            console.log('jwt', token,  account, user);
-            if (user) token.role = (user as User).role
+            if(user){
+
+                const roles= (user as User).roles;
+                if(roles){
+                    console.log('roles ', roles);
+                    token.roles = roles;    
+                }
+                else{
+                    console.log('roles user', roles);
+                    token.roles = ['user'];
+                }
+            }
             return token
         },
         session({ session, token }) {
-            session.user.role = token.role as string
-            if (session.user.role === undefined) {
-                session.user.role = 'user'
+            if(token.role){
+                session.user.roles = [token.role as string];
+            }
+            else if(token.roles){
+                console.log('session role2', token.roles);
+                session.user.roles = token.roles as string[];
+            }
+            else{
+                session.user.roles = ['user'];
             }
             return session
         }

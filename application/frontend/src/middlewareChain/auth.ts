@@ -45,7 +45,8 @@ async function checkAuthorization(request: NextRequest) {
 
     // ロールの検証
     const requiredRoles = routeRoleMap[matchedRoute];
-    if (!requiredRoles.includes(token.role as string)) {
+    const roles = token.roles as string [];
+    if (!requiredRoles.some(role => roles.includes(role))) {
         return {
             authorized: false,
             redirectUrl: "/unauthorized",
