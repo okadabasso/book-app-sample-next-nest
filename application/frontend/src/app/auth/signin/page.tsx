@@ -30,6 +30,7 @@ export default function SignIn({ }) {
         })();
     }, []);
     const handleSignIn = async () => {
+        console.log('handleSignIn ', callbackUrl);
         await signIn('google', { callbackUrl, redirect:true }); // Googleでログイン
     };
     return (

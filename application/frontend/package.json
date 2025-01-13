@@ -15,6 +15,7 @@
     "@svgr/webpack": "^8.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "jose": "^5.9.6",
     "jotai": "^2.11.0",
     "next": "15.1.2",
     "next-auth": "^4.24.11",
@@ -22,6 +23,7 @@
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
     "reflect-metadata": "^0.2.2",
+    "uuid": "^11.0.5",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

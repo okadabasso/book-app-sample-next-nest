@@ -1,7 +1,6 @@
 'use client';
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { ArrowLeftEndOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowRightEndOnRectangleIcon, ArrowRightStartOnRectangleIcon, ChevronDownIcon, UserIcon } from "@heroicons/react/16/solid";
-import { Session } from "inspector/promises";
+import { ArrowRightEndOnRectangleIcon, ArrowRightStartOnRectangleIcon, ChevronDownIcon, UserIcon } from "@heroicons/react/16/solid";
 import { User } from "next-auth";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";

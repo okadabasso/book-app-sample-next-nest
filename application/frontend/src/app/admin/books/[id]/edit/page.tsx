@@ -5,14 +5,23 @@ import React, { useEffect, useState } from 'react';
 import fetchBook from '@/app/admin/books/functions/fetchBook';
 import EditForm from '@/app/admin/books/components/EditForm';
 import ContentHeader from '@/app/admin/books/components/ContentHeader';
+import { getCsrfHeader as createCsrfHeader, createCsrfToken } from '@/shared/csrfToken';
 
 const EditBookPage = () => {
     const { id } = useParams();
 
     const [book, setBook] = useState<Book>();
     const [error, setError] = useState<string | null>(null);
+    const [formToken, setFormToken] = useState<FormToken>({formId:'', token:''});
 
     useEffect(() => {
+        const csrf = async () => {
+            const token = await createCsrfToken();
+            setFormToken(token);
+        }
+        csrf();
+
+
         const loadBook = async () => {
             if (id) {
                 try {
@@ -39,10 +48,15 @@ const EditBookPage = () => {
             try {
                 const response = await fetch(
                     `/admin/books/api/${book.id}`,
-                    { method: 'PUT', body: JSON.stringify(book) }
+                    { 
+                        method: 'PUT', 
+                        body: JSON.stringify(book),
+                        headers: createCsrfHeader(formToken)  
+                    }
                 );
                 if (!response.ok) {
-                    throw new Error('Failed to save book');
+                    const data = await response.json();
+                    throw new Error('Failed to save book [' + response.status + ':' + data.message + ']');
                 }
 
                 window.location.href = `/admin/books/${book.id}`;
