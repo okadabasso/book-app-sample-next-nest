@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppDataSource } from './data-source';
 import { BooksModule} from './admin/books/books.module';
 import { GenresModule } from './admin/genres/genres.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   controllers: [AppController],
@@ -12,7 +13,8 @@ import { GenresModule } from './admin/genres/genres.module';
   imports: [
     TypeOrmModule.forRoot(AppDataSource.options),
     BooksModule,
-    GenresModule
+    GenresModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

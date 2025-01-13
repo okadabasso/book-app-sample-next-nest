@@ -22,7 +22,9 @@ export default function SignIn({ }) {
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get('callbackUrl') || '/';
     const [providers, setProviders] = useState<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null>(null);
-    const { error } = useParams()
+    const [message, setMessage] = useState("");
+    
+    const error = searchParams.get("error");
     useEffect(() => {
         (async () => {
             const res = await getProviders();
@@ -30,14 +32,14 @@ export default function SignIn({ }) {
         })();
     }, []);
     const handleSignIn = async (providerId: string) => {
-        await signIn(providerId, { callbackUrl, redirect:true }); // Googleでログイン
+        const result = await signIn(providerId, {redirect: true});
     };
     return (
         <div>
             <div>
                 {error && (
-                    <div className="pb-6">
-                        <SignInError></SignInError>
+                    <div className="w-96 pb-6 mx-auto">
+                        <SignInError error={error}></SignInError>
                     </div>
                 )}
                 <div className="flex flex-col items-center pb-10">
@@ -45,9 +47,9 @@ export default function SignIn({ }) {
                         const item = authStyle[String(provider?.name)];
 
                         return (
-                            <div key={provider.name}>
+                            <div key={provider.name} className="w-96">
                                 <button
-                                    className={`my-3 w-72 rounded px-4 py-2 font-semibold flex items-center justify-center  ${String(
+                                    className={`my-3 block w-full rounded px-4 py-2 font-semibold flex items-center justify-center  ${String(
                                         item?.className
                                     )}`}
                                     onClick={ (event)=>handleSignIn(provider.id) }
@@ -58,7 +60,10 @@ export default function SignIn({ }) {
                             </div>
                         );
                     })}
-                    <CredentialSignIn></CredentialSignIn>
+                    <div className='w-96 mx-auto mt-8'>
+                        <CredentialSignIn></CredentialSignIn>
+
+                    </div>
 
                 </div>
             </div>

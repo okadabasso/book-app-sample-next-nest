@@ -3,6 +3,8 @@ import Google from 'next-auth/providers/google'
 import Github from 'next-auth/providers/github'
 import Credential from 'next-auth/providers/credentials'
 import { AdapterUser } from 'next-auth/adapters'
+import { apiClient } from '@/shared/apiClient'
+import { redirect } from 'next/dist/server/api-utils'
 
 type User = AdapterUser & {
     role: string
@@ -41,25 +43,28 @@ export const authOptions: AuthOptions = {
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials, req) {
-                // const res = await fetch("/your/endpoint", {
-                //   method: 'POST',
-                //   body: JSON.stringify(credentials),
-                //   headers: { "Content-Type": "application/json" }
-                // })
-                // const user = await res.json()
-                // 
-                // // If no error and we have user data, return it
-                // if (res.ok && user) {
-                //   return user
-                // }
-                // // Return null if user data could not be retrieved
-                // return null
-
-                // dummy login
-                const email = 'user@example.com'
-                return credentials?.username === email && credentials?.password === '123456'
-                    ? { id: "user10001", "name": email, "email": email, role: 'administrator' }
-                    : null
+                try {
+                    console.log("credentials", credentials);
+                    const response = await apiClient("/auth/signIn", {
+                        method: 'POST',
+                        body: {
+                            username: credentials?.username,
+                            password: credentials?.password,
+                        },
+                    })
+                    const user = await response.json()
+                    console.log(user);
+                    // If no error and we have user data, return it
+                    if (response.ok && user) {
+                        return user
+                    }
+                    // Throw a 401 error if user data could not be retrieved
+                    console.log('user not found');
+                    return null;
+                } catch (error) {
+                    console.log(error);
+                    return null;
+                }
 
             }
         })
@@ -88,11 +93,12 @@ export const authOptions: AuthOptions = {
         },
         session({ session, token }) {
             session.user.role = token.role as string
-            if(session.user.role === undefined) {
+            if (session.user.role === undefined) {
                 session.user.role = 'user'
             }
             return session
         }
+        
     }
 }
 

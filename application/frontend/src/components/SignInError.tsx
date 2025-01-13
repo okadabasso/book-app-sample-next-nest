@@ -2,10 +2,11 @@
   
   
   export default function SignInError({
-}) {
+    error
+}: {error:string}) {
 
   return (
-    <div>sign in error
+    <div className="text-red-700">sign in error {error}
     </div>
   );
 }
