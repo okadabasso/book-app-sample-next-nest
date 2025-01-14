@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Book } from '@/types/Book';
 import MultiSelectCombobox from '@/components/MultiSelectCombobox ';
 import ContentFooter from '@/components/ContentFooter';
+import { useSubmitHandler } from '@/shared/hooks/useSubmitHandler';
 
 interface EditFormProps {
     book?: Book | null;
@@ -27,11 +28,11 @@ interface FormData {
 const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
     const {
         register,
-        handleSubmit,
+        handleSubmit: hookHandleSubmit,
         formState: { errors },
-      } = useForm<FormData>();
-    
+    } = useForm<FormData>();
     const [formData, setFormData] = useState<Book>({ ...book ?? {} as Book });
+    const [message, setMessage] = useState<string[]>([]);
 
     useEffect(() => {
         if (!book) {
@@ -49,11 +50,22 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
         }));
     };
 
-    const onSubmit = (data: FormData) => {
-        const selectedItems = multiSelectRef.current?.getSelectedItems();
-        formData.genres = selectedItems;
-        onSave(formData);
-    };
+
+    const { handleSubmit, isSubmitting } = useSubmitHandler<FormData>(async (data) => {
+        console.log("送信データ:", data);
+
+        try {
+            const selectedItems = multiSelectRef.current?.getSelectedItems();
+            formData.genres = selectedItems;
+            onSave(formData);
+    
+            console.log("送信が成功しました");
+        } catch (error) {
+            console.error("送信中にエラーが発生しました:", error);
+            setMessage(["送信中にエラーが発生しました: " + (error as any).message]);
+            return;
+        }
+    });
 
     const handleCancel = (e: React.FormEvent) => {
         e.preventDefault();
@@ -70,7 +82,14 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
 
     };
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={hookHandleSubmit(handleSubmit)}>
+            {message.length > 0 && (
+                <div className='text-red-700 py-2 mb-4'>
+                    {message.map((message, index) => (
+                        <div key={index}>{message}</div>
+                    ))}
+                </div>
+            )}
             <div className='mb-4'>
                 <div className='mb-1'><label htmlFor="title">Title<span className="relative -top-px  bg-red-600 text-white ml-2 -mt-6  p-0.5 text-xs">必須</span></label></div>
                 <div>
@@ -80,7 +99,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         value={formData.title}
                         maxLength={100}
                         className='border border-gray-300 rounded-sm p-1 w-full'
-                        {...register("title", { 
+                        {...register("title", {
                             required: "Title is required",
                             maxLength: { value: 100, message: "Title is too long" },
                             onChange: (e) => {
@@ -103,7 +122,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         value={formData.author}
                         maxLength={64}
                         className='border border-gray-300 rounded-sm p-1 w-full'
-                        {...register("author", { 
+                        {...register("author", {
                             required: "Author is required",
                             maxLength: { value: 64, message: "Author is too long" },
                             onChange: (e) => {
@@ -125,7 +144,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         value={formData.publishedYear}
                         maxLength={4}
                         className='border border-gray-300 rounded-sm p-1 w-full'
-                        {...register("publishedYear", { 
+                        {...register("publishedYear", {
                             maxLength: { value: 4, message: "publishedYear is too long" },
                             pattern: { value: /^[0-9]*$/, message: "publishedYear is invalid" },
                             onChange: (e) => {
@@ -147,7 +166,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         value={formData.description}
                         maxLength={1024}
                         className='border border-gray-300 rounded-sm p-1 w-full h-32'
-                        {...register("description", { 
+                        {...register("description", {
                             maxLength: { value: 1024, message: "description is too long" },
                             onChange: (e) => {
                                 handleChange(e);
@@ -155,7 +174,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         })}
                     />
                     {errors.description && <p className='text-red-600'>{errors.description.message}</p>}
-                    </div>
+                </div>
             </div>
             <div className='mb-4'>
                 <div >
@@ -173,10 +192,21 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                 </div>
             </div>
             <ContentFooter>
-                <button type="submit" className='rounded-sm bg-blue-600 text-white hover:bg-blue-700 w-24 p-1 mr-4'>Save</button>
-                <button type="button" className='rounded-sm bg-gray-200 text-gray-800 hover:bg-gray-300 w-24 p-1 mr-4' onClick={handleCancel}>Cancel</button>
+                <button type="submit" className='rounded-sm bg-blue-600 text-white hover:bg-blue-700 w-32 p-1'>
+                    {isSubmitting ? 'Saving...' : 'Save'}
+                </button>
+                <button type="button" className='rounded-sm bg-gray-200 text-gray-800 hover:bg-gray-300 w-32 p-1' onClick={handleCancel}>Cancel</button>
 
             </ContentFooter>
+            {/* ポップオーバーの表示 */}
+            {isSubmitting && (
+                <div className="absolute top-0 right-0 fixed bg-black/1 z-50 flex items-center justify-center w-full h-full">
+                    <div className="bg-white p-4 rounded shadow">
+                        <p>処理中です...</p>
+                        <div className="spinner-border animate-spin"></div>
+                    </div>
+                </div>
+            )}
         </form>
     );
 };
