@@ -6,6 +6,7 @@ import { Book } from '@/types/Book';
 import MultiSelectCombobox from '@/components/MultiSelectCombobox ';
 import ContentFooter from '@/components/ContentFooter';
 import { useSubmitHandler } from '@/shared/hooks/useSubmitHandler';
+import { CheckIcon, DocumentCheckIcon } from '@heroicons/react/16/solid';
 
 interface EditFormProps {
     book?: Book | null;
@@ -55,6 +56,8 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
         console.log("送信データ:", data);
 
         try {
+            // 処理が遅延している場合の確認用 (30秒待ってから処理を開始する)
+            // await new Promise((resolve) => setTimeout(resolve, 30000));
             const selectedItems = multiSelectRef.current?.getSelectedItems();
             formData.genres = selectedItems;
             onSave(formData);
@@ -91,7 +94,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                 </div>
             )}
             <div className='mb-4'>
-                <div className='mb-1'><label htmlFor="title">Title<span className="relative -top-px  bg-red-600 text-white ml-2 -mt-6  p-0.5 text-xs">必須</span></label></div>
+                <div className='mb-1'><label htmlFor="title">Title<span className="relative -top-0.5  bg-red-600 text-white ml-2 -mt-6  p-0.5 text-xs">必須</span></label></div>
                 <div>
                     <input
                         type="text"
@@ -113,7 +116,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
             </div>
             <div className='mb-4'>
                 <div>
-                    <label htmlFor="author">Author<span className="relative -top-px  bg-red-600 text-white ml-2 -mt-6  p-0.5 text-xs">必須</span></label>
+                    <label htmlFor="author">Author<span className="relative -top-0.5  bg-red-600 text-white ml-2 -mt-6  p-0.5 text-xs">必須</span></label>
                 </div>
                 <div>
                     <input
@@ -193,6 +196,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
             </div>
             <ContentFooter>
                 <button type="submit" className='rounded-sm bg-blue-600 text-white hover:bg-blue-700 w-32 p-1'>
+                    <CheckIcon className='h-4 w-4 inline-block relative -top-0.5 mr-1' />
                     {isSubmitting ? 'Saving...' : 'Save'}
                 </button>
                 <button type="button" className='rounded-sm bg-gray-200 text-gray-800 hover:bg-gray-300 w-32 p-1' onClick={handleCancel}>Cancel</button>
@@ -201,8 +205,8 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
             {/* ポップオーバーの表示 */}
             {isSubmitting && (
                 <div className="absolute top-0 right-0 fixed bg-black/1 z-50 flex items-center justify-center w-full h-full">
-                    <div className="bg-white p-4 rounded shadow">
-                        <p>処理中です...</p>
+                    <div className="bg-white px-8 py-4 rounded shadow">
+                        <p className='pb-0'>処理中です...</p>
                         <div className="spinner-border animate-spin"></div>
                     </div>
                 </div>

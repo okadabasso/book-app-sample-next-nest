@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import ContentHeader from '@/app/admin/books/components/ContentHeader';
 import { plainToInstance } from 'class-transformer';
 import ContentFooter from '@/components/ContentFooter';
+import { DocumentPlusIcon, PlusIcon } from '@heroicons/react/16/solid';
 
 const BooksPage = () => {
     const [data, setBooks] = useState<Book[]>([]);
@@ -67,7 +68,10 @@ const BooksPage = () => {
                 </tbody>
             </table>
             <ContentFooter>
-                <Link href='/admin/books/create' className='underline text-blue-700 hover:text-blue-500 mr-4'>Add New Book</Link>
+                <Link href='/admin/books/create' className='border border-blue-700 rounded-sm w-48 text-center p-1  text-blue-700 hover:text-blue-800 hover:bg-blue-100'>
+                <PlusIcon className='h-4 w-4 inline-block relative -top-0.5 mr-1' />
+                Add New Book
+                </Link>
             </ContentFooter>
 
         </div>

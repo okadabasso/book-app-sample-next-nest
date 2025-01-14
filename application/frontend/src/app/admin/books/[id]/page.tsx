@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import fetchBook from '@/app/admin/books/functions/fetchBook';
 import ContentHeader from '@/app/admin/books/components/ContentHeader';
 import ContentFooter from '@/components/ContentFooter';
+import { PencilIcon } from '@heroicons/react/16/solid';
 
 const DetailPage = () => {
     const { id } = useParams();
@@ -74,8 +75,11 @@ const DetailPage = () => {
                     </div>
                 </div>
                 <ContentFooter>
-                    <Link href={`/admin/books/${book.id}/edit`} className='underline text-blue-700 hover:text-blue-500 mr-4'>編集する</Link>
-                    <Link href='/admin/books' className='underline text-blue-700 hover:text-blue-500'>戻る</Link>
+                    <Link href={`/admin/books/${book.id}/edit`} className='border border-blue-700 rounded-sm w-32 text-center p-1  text-blue-700 hover:text-blue-800 hover:bg-blue-100'>
+                        <PencilIcon className='h-4 w-4 inline-block relative -top-0.5 mr-1' />
+                        編集する
+                    </Link>
+                    <Link href='/admin/books' className='border border-gray-800 rounded-sm w-32 text-center p-1  text-gray-800 hover:text-gray-800 hover:bg-gray-100'>一覧に戻る</Link>
                 </ContentFooter>
             </form>
         </div>
