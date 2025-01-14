@@ -15,6 +15,7 @@
     "@svgr/webpack": "^8.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "clsx": "^2.1.1",
     "jose": "^5.9.6",
     "jotai": "^2.11.0",
     "next": "15.1.2",

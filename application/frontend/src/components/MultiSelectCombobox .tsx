@@ -83,7 +83,7 @@ const MultiSelectCombobox = forwardRef<any, MultiSelectComboboxProps<Option>>(
     return (
       <div className="relative">
         <Combobox as="div" value={selectedItems} onChange={setSelectedItems} multiple>
-          <div className="flex flex-wrap items-center border border-gray-300 rounded-sm p-2 gap-2">
+          <div className="flex flex-wrap items-center border border-gray-300 rounded-sm p-2 gap-2 : focus-within:ring-2 focus-within:ring-blue-500">
             {selectedItems.map((item) => (
               <span
                 key={item.id}

@@ -1,4 +1,5 @@
 'use client';
+import TextLink from "@/components/forms/TextLink";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
@@ -11,7 +12,7 @@ export default function Home() {
       <div className="mt-4">
         <h3>admin</h3>
         <ul>
-          <li><Link href="/admin/books" className="underline text-blue-600 hover:text-blue-700">admin/books</Link></li>
+          <li><TextLink href="/admin/books" className="" variant="default">admin/books</TextLink></li>
 
         </ul>
 
@@ -19,8 +20,8 @@ export default function Home() {
       <div className="mt-4">
         <h3>experimental</h3>
         <ul>
-          <li><Link href="/experimental/multiselect" className="underline text-blue-600 hover:text-blue-700">experimental/multiselect</Link></li>
-          <li><Link href="/experimental/statesample" className="underline text-blue-600 hover:text-blue-700">experimental/statesample</Link></li>
+          <li><TextLink href="/experimental/multiselect" className="" variant="primary">experimental/multiselect</TextLink></li>
+          <li><TextLink href="/experimental/statesample" className="" variant="primary">experimental/statesample</TextLink></li>
 
         </ul>
 

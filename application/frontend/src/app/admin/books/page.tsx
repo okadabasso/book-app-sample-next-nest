@@ -6,6 +6,7 @@ import ContentHeader from '@/app/admin/books/components/ContentHeader';
 import { plainToInstance } from 'class-transformer';
 import ContentFooter from '@/components/ContentFooter';
 import { DocumentPlusIcon, PlusIcon } from '@heroicons/react/16/solid';
+import ButtonLink from '@/components/forms/ButtonLink';
 
 const BooksPage = () => {
     const [data, setBooks] = useState<Book[]>([]);
@@ -41,26 +42,26 @@ const BooksPage = () => {
             <table className='table-auto w-full'>
                 <thead>
                     <tr>
-                        <th className='w-64 text-left border border-gray-300 px-2 py-1'>Title</th>
-                        <th className='w-48 text-left border border-gray-300 px-2 py-1'>Author</th>
-                        <th className='text-left border border-gray-300 px-2 py-1'>Description</th>
-                        <th className='w-40 text-left border border-gray-300 px-2 py-1'>Published Year</th>
-                        <th className='w-64 text-left border border-gray-300 px-2 py-1'>Genre</th>
+                        <th className='w-64 text-left border border-gray-300 px-1 py-0.5'>Title</th>
+                        <th className='w-48 text-left border border-gray-300 px-1 py-0.5'>Author</th>
+                        <th className='text-left border border-gray-300 px-1 py-0.5'>Description</th>
+                        <th className='w-40 text-left border border-gray-300 px-1 py-0.5'>Published Year</th>
+                        <th className='w-64 text-left border border-gray-300 px-1 py-0.5'>Genre</th>
                     </tr>
                 </thead>
                 <tbody>
                     {data.map((book) => (
                         <tr key={book.id}>
-                            <td className=' text-left border border-gray-300 px-2 py-1'>
+                            <td className=' text-left border border-gray-300 px-1 py-0.5'>
                                 <Link href={`/admin/books/${book.id}`} className='underline text-blue-700 hover:text-blue-500'>{book.title}</Link>
 
                             </td>
 
 
-                            <td className=' text-left border border-gray-300 px-2 py-1'>{book.author}</td>
-                            <td className=' text-left border border-gray-300 px-2 py-1'>{book.description}</td>
-                            <td className=' text-left border border-gray-300 px-2 py-1'>{book.publishedYear}</td>
-                            <td className=' text-left border border-gray-300 px-2 py-1'>
+                            <td className=' text-left border border-gray-300 px-1 py-0.5'>{book.author}</td>
+                            <td className=' text-left border border-gray-300 px-1 py-0.5'>{book.description}</td>
+                            <td className=' text-left border border-gray-300 px-1 py-0.5'>{book.publishedYear}</td>
+                            <td className=' text-left border border-gray-300 px-1 py-0.5'>
                                 { book.genres.map(genre => <span key={genre.id} className='inline-block mr-2'>{genre.name}</span>) } 
                             </td>
                         </tr>
@@ -68,10 +69,10 @@ const BooksPage = () => {
                 </tbody>
             </table>
             <ContentFooter>
-                <Link href='/admin/books/create' className='border border-blue-700 rounded-sm w-48 text-center p-1  text-blue-700 hover:text-blue-800 hover:bg-blue-100'>
+                <ButtonLink href='/admin/books/create' className='w-40' variant='outline-primary'>
                 <PlusIcon className='h-4 w-4 inline-block relative -top-0.5 mr-1' />
                 Add New Book
-                </Link>
+                </ButtonLink>
             </ContentFooter>
 
         </div>

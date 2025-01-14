@@ -7,6 +7,9 @@ import MultiSelectCombobox from '@/components/MultiSelectCombobox ';
 import ContentFooter from '@/components/ContentFooter';
 import { useSubmitHandler } from '@/shared/hooks/useSubmitHandler';
 import { CheckIcon, DocumentCheckIcon } from '@heroicons/react/16/solid';
+import TextBox from '@/components/forms/TextBox';
+import Button from '@/components/forms/Button';
+import MultiLineText from '@/components/forms/MultiLineText';
 
 interface EditFormProps {
     book?: Book | null;
@@ -96,12 +99,12 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
             <div className='mb-4'>
                 <div className='mb-1'><label htmlFor="title">Title<span className="relative -top-0.5  bg-red-600 text-white ml-2 -mt-6  p-0.5 text-xs">必須</span></label></div>
                 <div>
-                    <input
+                    <TextBox
                         type="text"
                         id="title"
                         value={formData.title}
                         maxLength={100}
-                        className='border border-gray-300 rounded-sm p-1 w-full'
+                        className='w-full'
                         {...register("title", {
                             required: "Title is required",
                             maxLength: { value: 100, message: "Title is too long" },
@@ -119,7 +122,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                     <label htmlFor="author">Author<span className="relative -top-0.5  bg-red-600 text-white ml-2 -mt-6  p-0.5 text-xs">必須</span></label>
                 </div>
                 <div>
-                    <input
+                    <TextBox
                         type="text"
                         id="author"
                         value={formData.author}
@@ -141,7 +144,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                     <label htmlFor="publishedYear">Published Year</label>
                 </div>
                 <div>
-                    <input
+                    <TextBox
                         type="text"
                         id="publishedYear"
                         value={formData.publishedYear}
@@ -164,7 +167,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                     <label htmlFor="description">Description</label>
                 </div>
                 <div>
-                    <textarea
+                    <MultiLineText
                         id="description"
                         value={formData.description}
                         maxLength={1024}
@@ -175,6 +178,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                                 handleChange(e);
                             }
                         })}
+                        variant='default'
                     />
                     {errors.description && <p className='text-red-600'>{errors.description.message}</p>}
                 </div>
@@ -195,11 +199,11 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                 </div>
             </div>
             <ContentFooter>
-                <button type="submit" className='rounded-sm bg-blue-600 text-white hover:bg-blue-700 w-32 p-1'>
+                <Button type="submit" className='w-32' variant='primary'>
                     <CheckIcon className='h-4 w-4 inline-block relative -top-0.5 mr-1' />
                     {isSubmitting ? 'Saving...' : 'Save'}
-                </button>
-                <button type="button" className='rounded-sm bg-gray-200 text-gray-800 hover:bg-gray-300 w-32 p-1' onClick={handleCancel}>Cancel</button>
+                </Button>
+                <Button type="button" className='w-32' onClick={handleCancel} variant='default'>Cancel</Button>
 
             </ContentFooter>
             {/* ポップオーバーの表示 */}
