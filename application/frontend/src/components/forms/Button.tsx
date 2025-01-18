@@ -14,7 +14,7 @@ const Button = ({
   return (
     <button
       className={clsx(
-        'border rounded-sm p-1 focus:outline-none focus:ring-2',
+        'border rounded-sm px-2 py-1 focus:outline-none focus:ring-2',
         buttonVariants[variant],
         className // 渡されたクラスを追加
       )}

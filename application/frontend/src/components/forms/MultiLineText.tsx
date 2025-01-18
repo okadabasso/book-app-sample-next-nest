@@ -16,14 +16,14 @@ const MultiLineText = ({
 }: TextAreaProps) => {
   return (
     <textarea
-        value={value}
       className={clsx(
         'border rounded-sm p-1 focus:outline-none focus:ring-2',
         inputVariants[variant],
         className // 渡されたクラスを追加
       )}
       {...props}
-    />
+    >{value}
+      </textarea>
   );
 };
 
