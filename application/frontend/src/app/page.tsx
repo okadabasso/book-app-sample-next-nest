@@ -22,6 +22,8 @@ export default function Home() {
         <ul>
           <li><TextLink href="/experimental/multiselect" className="" variant="primary">experimental/multiselect</TextLink></li>
           <li><TextLink href="/experimental/statesample" className="" variant="primary">experimental/statesample</TextLink></li>
+          <li><TextLink href="/experimental/dialog" className="" variant="primary">experimental/dialog</TextLink></li>
+          <li><TextLink href="/experimental/scrollable" className="" variant="primary">experimental/scrollable</TextLink></li>
 
         </ul>
 

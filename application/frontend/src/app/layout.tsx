@@ -18,12 +18,12 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body
-        className={"text-gray-800 bg-gray-100 font-sans leading-normal tracking-normal"}
+        className={"overflow-y-scroll text-gray-800 bg-gray-100"}
       >
-        <div className="min-h-screen flex flex-col h-full">
+        <div className="min-h-screen">
           <NextAuthProvider>
             <Header />
-            <main className="container mx-auto overflow-hidden flex-1 px-4 pt-14">
+            <main className="container mx-auto px-4 pt-14">
               {children}
             </main>
             <Footer />

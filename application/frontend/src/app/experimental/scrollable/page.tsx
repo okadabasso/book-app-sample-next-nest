@@ -1,28 +1,36 @@
 'use client';
+import ContentFooter from '@/components/ContentFooter';
+import Button from '@/components/forms/Button';
 import React, { useState } from 'react';
 
 const ScrpllablePage = () => {
 
 
     return (
-        <div className='mb-12 flex flex-col gap-4 h-full max-h-full'>
-            <div>head</div>
-            <div  id="#foo"  className="flex-1 flex flex-col"
-                style={
-                    {"height": "calc(100vh - 12rem);"}
-                } >
-                <div className="overflow-y-auto flex-1" 
-                style={
-                    {"height": "calc(100vh - 12rem);"}
-                } >
-                    <div className="bg-gray-500" style={{ height: '800px' }}>
-                        v
+        <div className='overflow-hidden'>
+            <div className='bg-blue-100 h-6'>head</div>
+            <div  id="#foo"  className='' style={{ height: 'calc(100vh - 12.5rem)' }}>
+                <div className='h-full scrollable-container border border-gray-300' style={{ height: 'calc(100% - 2.5rem )'}}>
+                    <div className="flex flex-col" style={{ height: '800px' }}>
+                        <div>
+                            a
+                        </div>
+                        <div className='flex-1'>
+                            b
+                        </div>
+                        <div>
+                            c
+                        </div>
+                        
                     </div>
                 </div>
+                <div className='mt-4'><Button className='pt-0.5 px-1 w-24 text-sm'>find</Button></div>
 
             </div>
-            <div>footer</div>
-
+ 
+            <ContentFooter>
+                <div><Button className='w-32'>保存</Button></div>
+            </ContentFooter>
         </div>
     );
 };
