@@ -73,6 +73,8 @@ export const buttonVariants = {
   "outline-success": 'border-emerald-700 bg-white text-emerald-700 hover:bg-emerald-100 hover:text-emerald-800',
   "outline-danger": 'border-orange-700 bg-white text-orange-700 hover:bg-orange-100 hover:text-orange-900',
   "outline-disabled": 'border-gray-300 bg-white text-gray-300',
+
+  "text-button": 'border-0 outline-0 ring-0  text-blue-600 hover:text-blue-700 focus:outline-0 focus:ring-0',
 };
 export const linkButtonVariants = {
   default: 'bg-gray-600 text-white hover:bg-gray-700',

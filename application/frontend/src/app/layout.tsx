@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body
-        className={"overflow-y-scroll text-gray-800 bg-gray-100"}
+        className={"overflow-y-scroll text-gray-800"}
       >
         <div className="min-h-screen">
           <NextAuthProvider>

@@ -7,10 +7,10 @@ const ScrpllablePage = () => {
 
 
     return (
-        <div className='overflow-hidden'>
+        <div className='overflow-hidden bg-gray-100'>
             <div className='bg-blue-100 h-6'>head</div>
-            <div  id="#foo"  className='' style={{ height: 'calc(100vh - 12.5rem)' }}>
-                <div className='h-full scrollable-container border border-gray-300' style={{ height: 'calc(100% - 2.5rem )'}}>
+            <div  id="#foo"  className='' style={{ height: 'calc(100vh - 13rem)' }}>
+                <div className='h-full scrollable-container border border-gray-400' style={{ height: 'calc(100% - 2.5rem )'}}>
                     <div className="flex flex-col" style={{ height: '800px' }}>
                         <div>
                             a
