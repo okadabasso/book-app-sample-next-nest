@@ -5,7 +5,7 @@ import SignInLink from './SignInLink';
 
 export default function Header() {
   return (
-    <div className='fixed top-0 w-full z-50 bg-white pb-4'>
+    <div className='fixed top-0 w-full z-10 bg-white pb-4'>
       <header className="bg-gray-800 text-white shadow w-full">
         <div className="container mx-auto py-2 px-4 flex justify-between items-center">
           <h1 className="font-bold"><Link href="/">Books Application Sample</Link> </h1>
