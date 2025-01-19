@@ -17,17 +17,11 @@ html,
 body {
   height: 100%;
 }
-.dialog-content {
-  display: flex
-;
-  flex-direction: column;
-  height: 100%;
-}
-.scrollable-table-container table {
+.scrollable-container table {
   margin-top: -1px;
   border: 1px solid #d1d5db;
 }
-.scrollable-table-container {
+.scrollable-container {
   overflow-y: auto;
   position: relative;
   flex: 1 1 auto;
@@ -42,7 +36,7 @@ body {
   background-color: white;
   z-index: 10;
 }
-.scrollable-table-container thead {
+.scrollable-container thead {
   position: sticky;
   top: -1px;
   background-color: white;
@@ -58,25 +52,25 @@ body {
   /* display: block; */
 }
 
-.scrollable-table-container thead>tr {
+.scrollable-container thead>tr {
   /* display: flex; */
   border: 1px solid #d1d5db;
 }
-.scrollable-table-container thead>tr>th {
+.scrollable-container thead>tr>th {
   border: 1px solid #d1d5db;
 }
 
 
-.scrollable-table-container tbody {
+.scrollable-container tbody {
   width: 100%;
   /* display: block; */
 }
 
-.scrollable-table-container tbody>tr {
+.scrollable-container tbody>tr {
   /* display: flex; */
 }
 
-.scrollable-table-container tbody>tr>td {
+.scrollable-container tbody>tr>td {
   border: 1px solid #d1d5db;
 
 }

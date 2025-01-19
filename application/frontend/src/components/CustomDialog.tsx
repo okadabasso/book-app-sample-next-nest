@@ -25,8 +25,10 @@ export default function CustomDialog({ headerContent, footerContent, children, i
 
             <Dialog open={isOpen} as="div" className={clsx("relative w-screen h-screen top-0 left-0 p-0 z-20 focus:outline-none")} onClose={onClose}>
                 <DialogBackdrop className="fixed inset-0 bg-black/30" />
-                <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                    <div className={clsx("flex flex-col  w-full items-center justify-center p-4", className)} >
+                <div className="fixed inset-0 z-10 w-screen overflow-y-hidden h-full"
+                    >
+                    <div className={clsx("flex flex-col container  w-full mx-auto items-center justify-center p-4", className)}
+                    >
                         <DialogPanel
                             transition
                             className={clsx(panelClasses.base, !isOpen && panelClasses.closed, "h-full flex-1")}
@@ -35,11 +37,11 @@ export default function CustomDialog({ headerContent, footerContent, children, i
                                 <div>{headerContent}</div>
                                 <XMarkIcon className="w-4 h-4 text-gray-800 cursor-pointer" onClick={onClose} />
                             </DialogTitle>
-                            <div className="dialog-content">
-                                
+                            <div className="flex flex-col p-2 " style={{ height: 'calc(100% - 2rem)' }}>
+
                                 {children}
-                                <div className="p-2 flex justify-end">
-                                {footerContent}
+                                <div className="pt-4 flex justify-end">
+                                    {footerContent}
 
                                 </div>
                             </div>
