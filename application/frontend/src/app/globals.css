@@ -41,7 +41,7 @@ body {
   top: -1px;
   background-color: white;
   /* 必ず背景色を設定 */
-  z-index: 100;
+  z-index: 5;
   /* 優先順位を高くする */
   margin: 0;
   /* 不要なマージンを排除 */
