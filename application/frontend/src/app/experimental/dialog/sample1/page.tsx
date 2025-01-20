@@ -7,6 +7,7 @@ import ScrollView from '@/components/ScrollView';
 import ItemTable from '@/app/experimental/dialog/ItemTable';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
+import TextLink from '@/components/forms/TextLink';
 const ExperimentalDialogPage: React.FC = () => {
     const [open, setOpen] = useState(false);
 
@@ -25,28 +26,20 @@ const ExperimentalDialogPage: React.FC = () => {
 
 
     return (
-        <div className='overflow-hidden flex flex-col' style={{ height: 'calc(100vh - 5.5rem)' }}>
-        <div className='h-6'>head</div>
-        <div id="#foo" className='flex-1 h-full flex flex-col'  style={{ height: 'calc(100vh - 7.5rem)'     }}>
-            <div  onClick={handleExtent}>
-                <div className='flex justify-between items-center py-2'>
-                    <div>検索条件</div>
-                    <Button className='' variant='text-button'  onClick={()=> handleExtent()}>{isExpanded ?( <ChevronUpIcon className='w-4 h-4' />) : (<ChevronDownIcon className='w-4 h-4' />)}</Button>
-                </div>
-                <div className={clsx('transition-height duration-300 ease-in-out', isExpanded ? 'h-12' : 'h-0')}>
-
+        <div className='overflow-hidden flex flex-col' style={{ height: 'calc(100vh - 5rem)' }}>
+            <div>content header</div>
+            <div className='scrollable border border-gray-400'>
+                <div className="bg-gray-100" style={{ height: '800px' }}>
+                    <ItemTable />
                 </div>
             </div>
-            <div className='scrollable-container border border-gray-400'>
-                <ItemTable />
-            </div>
-            <div className='mt-4'><Button className='pt-0.5 px-1 w-24 text-sm' onClick={()=> handleClickOpen()}>find</Button></div>
-            <div className='my-4'>
-                <div className=''><Button className='w-32'>保存</Button></div>
+            <div className='my-2'><Button className='pt-0.5 px-1 w-24 text-sm' onClick={handleClickOpen}>find</Button></div>
+            <div className='my-4 flex gap-4 items-center'>
+                <Button className='w-32'>保存</Button>
+                <TextLink href='/experimental/dialog' className='text-blue-500' variant='primary'>戻る</TextLink>
 
             </div>
-        </div>
-        <CustomDialog
+            <CustomDialog
                 isOpen={open}
                 onClose={handleClose}
                 headerContent="Dialog Title"
@@ -56,17 +49,13 @@ const ExperimentalDialogPage: React.FC = () => {
                 className=' h-[95%]'
             >
                 <div>dialog head</div>
-                <div id="#foo2" className="flex-1 flex flex-col"
-                    style={
-                        { "height": "calc(100vh - 50rem)" }
-                    } >
-                    <div className="scrollable-container border border-gray-400">
-                        <ItemTable />
+                <div className="scrollable border border-gray-400">
+                        <div>
+                            <ItemTable />
+                        </div>
                     </div>
-
-                </div>
                 <div>dialog footer</div>
-            </CustomDialog>    
+            </CustomDialog>
         </div>
 
 

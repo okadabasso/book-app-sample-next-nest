@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import CustomDialog from '@/components/CustomDialog';
 import ScrollView from '@/components/ScrollView';
 import ItemTable from './ItemTable';
+import TextLink from '@/components/forms/TextLink';
 const ExperimentalDialogPage: React.FC = () => {
     const [open, setOpen] = useState(false);
 
@@ -17,25 +18,22 @@ const ExperimentalDialogPage: React.FC = () => {
     };
 
     return (
-        <div className='mb-12 flex flex-col gap-4 h-full max-h-full'>
-            <div>head</div>
-            <div id="#foo" className="flex-1 flex flex-col"
-                style={
-                    { "height": "calc(100vh - 12rem)" }
-                } >
-                <div className="overflow-y-auto flex-1"
-                    style={
-                        { "height": "calc(100vh - 12rem)" }
-                    } >
-                    <div className="bg-gray-500" style={{ height: '800px' }}>
-                        v
-                    </div>
+        <div  className='overflow-hidden flex flex-col' style={{ height: 'calc(100vh - 5rem)' }}>
+            <div>content header</div>
+            <div className='scrollable border border-gray-400'>
+                <div className="bg-gray-100" style={{ height: '800px' }}>
+                       b
                 </div>
+                <div>
+
+                </div>
+            </div>
+            <div className='my-2'><Button className='pt-0.5 px-1 w-24 text-sm' onClick={handleClickOpen}>find</Button></div>
+            <div className='my-4 flex gap-4 items-center'>
+                <Button className='w-32'>保存</Button>
 
             </div>
-            <div>
-                <Button onClick={handleClickOpen}>Open Dialog</Button>
-            </div>
+
             <CustomDialog
                 isOpen={open}
                 onClose={handleClose}
@@ -46,18 +44,11 @@ const ExperimentalDialogPage: React.FC = () => {
                 className=' h-[95%]'
             >
                 <div>dialog head</div>
-                <div id="#foo2" className="flex-1 flex flex-col"
-                    style={
-                        { "height": "calc(100vh - 50rem)" }
-                    } >
-                    <div className="scrollable-container border border-gray-400">
-                        <div className="bg-gray-200" style={{ height: '1000px' }}>
-                            v
+                <div className="scrollable border border-gray-400">
+                        <div>
+                            <ItemTable />
                         </div>
-                        <div>b</div>
                     </div>
-
-                </div>
                 <div>dialog footer</div>
             </CustomDialog>
         </div>
