@@ -1,38 +1,24 @@
 'use client';
 import ContentFooter from '@/components/ContentFooter';
 import Button from '@/components/forms/Button';
+import Link from 'next/link';
 import React, { useState } from 'react';
 
-const ScrpllablePage = () => {
+const ScrollablePage = () => {
 
 
     return (
-        <div className='overflow-hidden bg-gray-100'>
-            <div className='bg-blue-100 h-6'>head</div>
-            <div  id="#foo"  className='' style={{ height: 'calc(100vh - 13rem)' }}>
-                <div className='h-full scrollable-container border border-gray-400' style={{ height: 'calc(100% - 2.5rem )'}}>
-                    <div className="flex flex-col" style={{ height: '800px' }}>
-                        <div>
-                            a
-                        </div>
-                        <div className='flex-1'>
-                            b
-                        </div>
-                        <div>
-                            c
-                        </div>
-                        
-                    </div>
-                </div>
-                <div className='mt-4'><Button className='pt-0.5 px-1 w-24 text-sm'>find</Button></div>
-
+        <div className='overflow-hidden mt-2'>
+            <div className='h-6'>コンテンツのスクロール</div>
+            <div  id="#foo"  className=''>
+                <ul>
+                    <li><Link href="/experimental/scrollable/sample1" className='text-blue-500'>サンプル1</Link></li>
+                    <li><Link href="/experimental/scrollable/sample2" className='text-blue-500'>サンプル2</Link></li>
+                    <li><Link href="/experimental/scrollable/sample3" className='text-blue-500'>サンプル3</Link></li>
+                </ul>
             </div>
- 
-            <ContentFooter>
-                <div><Button className='w-32'>保存</Button></div>
-            </ContentFooter>
         </div>
     );
 };
 
-export default ScrpllablePage;
+export default ScrollablePage;
