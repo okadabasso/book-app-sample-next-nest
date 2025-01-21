@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Book } from '@/types/Book';
 import MultiSelectCombobox from '@/components/MultiSelectCombobox ';
 import ContentFooter from '@/components/ContentFooter';
-import { useSubmitHandler } from '@/shared/hooks/useSubmitHandler';
+import { useSubmitHandler } from '@/hooks/useSubmitHandler';
 import { CheckIcon, DocumentCheckIcon } from '@heroicons/react/16/solid';
 import TextBox from '@/components/forms/TextBox';
 import Button from '@/components/forms/Button';
