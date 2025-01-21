@@ -20,6 +20,7 @@ export default function Home() {
       <div className="mt-4">
         <h3>experimental</h3>
         <ul>
+          <li><TextLink href="/experimental/forms" className="" variant="primary">experimental/forms</TextLink></li>
           <li><TextLink href="/experimental/multiselect" className="" variant="primary">experimental/multiselect</TextLink></li>
           <li><TextLink href="/experimental/statesample" className="" variant="primary">experimental/statesample</TextLink></li>
           <li><TextLink href="/experimental/dialog" className="" variant="primary">experimental/dialog</TextLink></li>

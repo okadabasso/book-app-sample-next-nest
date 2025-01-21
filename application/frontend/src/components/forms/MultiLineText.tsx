@@ -22,7 +22,7 @@ const MultiLineText = ({
         className // 渡されたクラスを追加
       )}
       {...props}
-      value={value}
+      defaultValue={value}
     >
       </textarea>
   );
