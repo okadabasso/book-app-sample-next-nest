@@ -10,6 +10,8 @@ import { CheckIcon, DocumentCheckIcon } from '@heroicons/react/16/solid';
 import TextBox from '@/components/forms/TextBox';
 import Button from '@/components/forms/Button';
 import MultiLineText from '@/components/forms/MultiLineText';
+import clsx from 'clsx';
+import { inputVariants } from '@/components/forms/variants';
 
 interface EditFormProps {
     book?: Book | null;
@@ -98,13 +100,14 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
             )}
             <div className='mb-4'>
                 <div className='mb-1'><label htmlFor="title">Title<span className="relative -top-0.5  bg-red-600 text-white ml-2 -mt-6  p-0.5 text-xs">必須</span></label></div>
-                <div>
+                <div className='relative'>
                     <TextBox
                         type="text"
                         id="title"
                         value={formData.title}
                         maxLength={100}
-                        className='w-full'
+                        className={clsx('w-full', errors.title && inputVariants.danger)} 
+                        title={errors.title?.message as string}
                         {...register("title", {
                             required: "Title is required",
                             maxLength: { value: 100, message: "Title is too long" },

@@ -26,3 +26,5 @@ yarn-error.log*
 data
 !migration
 node_modules/
+
+logs/
