@@ -8,6 +8,7 @@ import { BookEditService } from './services/BookEditService';
 import { BookFindService } from './services/BookFindService';
 import { TransactionManagerProvider } from '@/shared/providers/transaction-manager.provider';
 import { TransactionMiddleware } from '@/shared/middlewares/transaction.middleware';
+import { LoggingService } from '@/shared/services/logging.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Book, Genre, BookGenre])],
@@ -16,6 +17,7 @@ import { TransactionMiddleware } from '@/shared/middlewares/transaction.middlewa
     BookEditService,
     BookFindService,
     TransactionManagerProvider,
+    LoggingService
   ],
 })
 export class BooksModule {
