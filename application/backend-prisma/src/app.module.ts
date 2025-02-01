@@ -6,9 +6,11 @@ import { PrismaModule } from './prisma/prisma.module';
 import { TaskModule } from './task/task.module';
 import { LoggingService } from './logging/logging.service';
 import { LoggingModule } from './logging/logging.module';
+import { BooksModule } from './admin/books/books.module';
+import { GenresModule } from './admin/genres/genres.module';
 
 @Module({
-  imports: [UserModule, PrismaModule, TaskModule, LoggingModule],
+  imports: [UserModule, PrismaModule, TaskModule, LoggingModule, BooksModule, GenresModule],
   controllers: [AppController],
   providers: [AppService, LoggingService],
 })

@@ -19,7 +19,6 @@ model User {
   name  String?
 
   TaskItem TaskItem[]
-  Book Book[]
 }
 
 model TaskItem {
@@ -34,11 +33,28 @@ model TaskItem {
 }
 
 model Book {
-  id        Int      @id @default(autoincrement())
-  title     String   @default("") @db.VarChar(255)
-  author    String?  @default("") @db.VarChar(255)
-  status    String   @default("open") @db.VarChar(255)
-  user      User?    @relation(fields: [userId], references: [id])
-  userId    Int?
+  id            Int     @id @default(autoincrement())
+  title         String  @default("") @db.VarChar(255)
+  author        String? @default("") @db.VarChar(255)
+  description   String? @default("") @db.Text
+  publishedYear Int?
+
   createdAt DateTime @default(now())
+
+  bookGenres BookGenre[]
+}
+
+model Genre {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(255)
+
+  bookGenres BookGenre[]
+}
+
+model BookGenre {
+  id      Int   @id @default(autoincrement())
+  book    Book  @relation(fields: [bookId], references: [id])
+  bookId  Int
+  genre   Genre @relation(fields: [genreId], references: [id])
+  genreId Int
 }

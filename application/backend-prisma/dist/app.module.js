@@ -15,12 +15,14 @@ const prisma_module_1 = require("./prisma/prisma.module");
 const task_module_1 = require("./task/task.module");
 const logging_service_1 = require("./logging/logging.service");
 const logging_module_1 = require("./logging/logging.module");
+const books_module_1 = require("./admin/books/books.module");
+const genres_module_1 = require("./admin/genres/genres.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [user_module_1.UserModule, prisma_module_1.PrismaModule, task_module_1.TaskModule, logging_module_1.LoggingModule],
+        imports: [user_module_1.UserModule, prisma_module_1.PrismaModule, task_module_1.TaskModule, logging_module_1.LoggingModule, books_module_1.BooksModule, genres_module_1.GenresModule],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService, logging_service_1.LoggingService],
     })
