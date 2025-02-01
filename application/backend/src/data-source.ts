@@ -13,12 +13,11 @@ export const AppDataSource = new DataSource({
     logging: true,
     logger: 'advanced-console',
     entities: [
-        join(__dirname, 'entities/**/*.ts'),
-        join(__dirname, 'entities/**/*.js'),
+        join(__dirname, 'entities/**/*.{ts,js}'),
 
     ], // Add your entities here
     migrations: [
-        join(__dirname, 'data/migrations/**/*.ts'),
+        join(__dirname, 'data/migrations/**/*.{ts,js}'),
     ],
     subscribers: [],
 });

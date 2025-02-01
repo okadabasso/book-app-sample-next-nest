@@ -30,9 +30,6 @@ export class AuthUser {
     @Column({ type: 'boolean', default: true })
     isActive: boolean;
 
-    @Column({ type: 'varchar', length: 255 })
-    role: string;
-
     @OneToMany(() => AuthUserRole, userRole => userRole.user)
     userRoles: AuthUserRole[];
 
