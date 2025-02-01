@@ -6,29 +6,36 @@ import { Genre } from '@/entities/Genre';
 import { Author } from '@/entities/Author';
 import { BookDto } from '../dto/BookDto';
 import { BookFindService } from './BookFindService';
+import { TransactionManagerProvider } from '@/shared/providers/transaction-manager.provider';
+import { Injectable } from '@nestjs/common';
 
+
+@Injectable()
 export class BookEditService {
-    private dataSource: DataSource;
-    private manager: EntityManager;
 
-    private bookRepository: Repository<Book>;
-    private bookGenreRepository: Repository<BookGenre>;
-    private bookAuthorRepository: Repository<BookAuthor>;
-    private genreRepository: Repository<Genre>;
-    private authorRepository: Repository<Author>;
-
-
-    constructor(dataSource: DataSource, manager?: EntityManager) {
-        this.dataSource = dataSource;
-        this.manager = manager || dataSource!.manager;
-
-        this.bookRepository = this.manager.getRepository(Book);
-        this.bookGenreRepository = this.manager.getRepository(BookGenre);
-        this.bookAuthorRepository = this.manager.getRepository(BookAuthor);
-        this.genreRepository = this.manager.getRepository(Genre);
-        this.authorRepository = this.manager.getRepository(Author);
+    constructor(
+        private readonly dataSource: DataSource,
+        private readonly transactionManagerProvider: TransactionManagerProvider,
+        private readonly bookFindService: BookFindService,
+    ) {}
+    private get manager(): EntityManager {
+        const manager = this.transactionManagerProvider.manager;
+        if (!manager) {
+            throw new Error('Transaction manager is not set');
+        }
+        return manager;
+    }
+    private getRepositories(){
+        return {
+            bookRepository: this.manager.getRepository(Book),
+            bookGenreRepository: this.manager.getRepository(BookGenre),
+            bookAuthorRepository: this.manager.getRepository(BookAuthor),
+            genreRepository: this.manager.getRepository(Genre),
+            authorRepository: this.manager.getRepository(Author),
+        };
     }
     async createBook(bookData: Partial<Book>): Promise<Book> {
+        console.log(this.manager.transaction);
         const book = await this.createBookEntry(bookData);
         await this.updateBookGenreEntries(book, bookData.bookGenres);
         return book;
@@ -38,13 +45,11 @@ export class BookEditService {
     async updateBook(id: number, updateData: Partial<Book>): Promise<Book> {
         const book = await this.updateBookEntry(id, updateData);
         await this.updateBookGenreEntries(book, updateData.bookGenres);
-
         return book;
     }
 
     async deleteBook(id: number): Promise<void> {
-        const bookFindService = new BookFindService(this.dataSource, this.manager);
-        const book = await bookFindService.findBookById(id);
+        const book = await this.bookFindService.findBookById(id);
 
         if (!book) {
             throw new Error('Book not found');
@@ -53,52 +58,55 @@ export class BookEditService {
         await this.manager.remove(book);
     }
     private  async createBookEntry(bookData: Partial<Book>): Promise<Book> {
-        const book = this.bookRepository.create(bookData);
+        const { bookRepository } = this.getRepositories();
+        const book = bookRepository.create(bookData);
         book.bookGenres = [];
         book.bookAuthors = [];
-        await this.bookRepository.save(book);
+        await bookRepository.save(book);
 
         return book;
     }
     private async updateBookEntry(id:number, updateData: Partial<Book>): Promise<Book> {
-        const bookFindService = new BookFindService(this.dataSource, this.manager);
-        const book = await bookFindService.findBookById(id);
+        const { bookRepository } = this.getRepositories();
+        const findService = new BookFindService(this.dataSource, this.transactionManagerProvider);
+        const book = await findService.findBookById(id);
 
         book.title = updateData.title;
         book.author = updateData.author;
         book.publishedYear = updateData.publishedYear;
         book.description = updateData.description;
 
-        await this.bookRepository.save(book);
+        await bookRepository.save(book);
 
         return book;
     }
     private async updateBookGenreEntries(book: Book, bookGenres: BookGenre[]): Promise<void> {
+        const { bookGenreRepository, genreRepository } = this.getRepositories();
         // 登録済みの bookGenre が bookGenres に含まれていない場合は削除
         // 登録済みの bookGenre が bookGenres に含まれている場合は更新
         // bookGenres に含まれているが登録済みでない場合は新規登録
         for (let i = 0; i < book.bookGenres.length; i++) {
             const originalBookGenre = book.bookGenres[i];
             if (bookGenres.findIndex((bookGenre) => bookGenre.genre.id === originalBookGenre.genre.id) === -1) {
-                await this.bookGenreRepository.remove(originalBookGenre);
+                await bookGenreRepository.remove(originalBookGenre);
                 continue;
             }
             // ここで originalBookGenreの id が0なら book が新規登録のはずなので、originalBookGenre を保存できない
             if(originalBookGenre.id !== 0){
-                this.bookGenreRepository.save(originalBookGenre);
+                bookGenreRepository.save(originalBookGenre);
             }
         }
         for (let i = 0; i < bookGenres.length; i++) {
             const bookGenre = bookGenres[i];
             if (bookGenre.genre.id === 0) {
-                this.genreRepository.create(bookGenre.genre);
-                await this.genreRepository.save(bookGenre.genre);
+                genreRepository.create(bookGenre.genre);
+                await genreRepository.save(bookGenre.genre);
 
             }
             if (book.bookGenres.length === 0 || book.bookGenres.findIndex((originalBookGenre) => originalBookGenre.genre.id === bookGenre.genre.id) === -1) {
                 bookGenre.book = book;
-                this.bookGenreRepository.create(bookGenre);
-                await this.bookGenreRepository.save(bookGenre);
+                bookGenreRepository.create(bookGenre);
+                await bookGenreRepository.save(bookGenre);
             }
         }
     }

@@ -1,4 +1,10 @@
+import { Author } from '@/entities/Author';
 import { Book } from '@/entities/Book';
+import { BookAuthor } from '@/entities/BookAuthor';
+import { BookGenre } from '@/entities/BookGenre';
+import { Genre } from '@/entities/Genre';
+import { TransactionManagerProvider } from '@/shared/providers/transaction-manager.provider';
+import { Injectable } from '@nestjs/common';
 import { DataSource, EntityManager, FindManyOptions, FindOptionsOrder, Repository } from 'typeorm';
 
 interface BookFindOption{
@@ -6,9 +12,9 @@ interface BookFindOption{
     offset?: number;
     order?: FindOptionsOrder<Book>;
 }
+
+@Injectable()
 export class BookFindService {
-    private manager: EntityManager;
-    private bookRepository: Repository<Book>;
     private readonly bookRelations = [
         'bookAuthors',
         'bookAuthors.author',
@@ -16,14 +22,26 @@ export class BookFindService {
         'bookGenres.genre',
     ];
 
-    constructor(dataSource: DataSource, manager?: EntityManager) {
-        this.manager = manager || dataSource!.manager;
+    constructor(
+        private readonly dataSource: DataSource,
+        private readonly transactionManagerProvider: TransactionManagerProvider,
+    ) {
 
-        this.bookRepository = this.manager.getRepository(Book);
+    }
+    private get manager(): EntityManager {
+        return this.transactionManagerProvider.manager || this.dataSource.manager;
     }
 
+    private getRepositories(){
+        return {
+            bookRepository: this.manager.getRepository(Book),
+            bookGenreRepository: this.manager.getRepository(BookGenre),
+        };
+    }
+    
     async findBookById(id: number): Promise<Book | null> {
-        const book = await this.bookRepository.findOne({
+        const { bookRepository } = this.getRepositories();
+        const book = await bookRepository.findOne({
             where: { id },
             relations: this.bookRelations,
         });
@@ -45,7 +63,8 @@ export class BookFindService {
             });
         }
     
-        const books = this.bookRepository.find(options);
+        const { bookRepository } = this.getRepositories();
+        const books = bookRepository.find(options);
         return books;
     }
 

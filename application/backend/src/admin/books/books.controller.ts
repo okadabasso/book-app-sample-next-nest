@@ -8,24 +8,27 @@ import { BookGenre } from '@/entities/BookGenre';
 import { BookEditService } from './services/BookEditService';
 import { BookFindService } from './services/BookFindService';
 import { InjectDataSource } from '@nestjs/typeorm';
+import { TransactionManagerProvider } from '@/shared/providers/transaction-manager.provider';
+
 @Controller('admin/books')
 export class BooksController {
     constructor(
         @InjectDataSource()
         private readonly dataSource: DataSource,
+        private readonly bookEditService: BookEditService,
+        private readonly bookFindService: BookFindService,
+        private readonly transactionManagerProvider: TransactionManagerProvider,
     ) { }
 
     @Get()
     async findAll(): Promise<BookDto[]> {
-        const findService = new BookFindService(this.dataSource);
-        const books = await findService.findAllBooks()
+        const books = await this.bookFindService.findAllBooks()
         const dto = this.toBookDtoArray(books);
         return dto;
     }
     @Get("find")
     async find(@Query('id') id: number): Promise<BookDto> {
-        const findService = new BookFindService(this.dataSource);
-        const book = await findService.findBookById(id);
+        const book = await this.bookFindService.findBookById(id);
         if (!book) {
             throw new NotFoundException(`Book with id ${id} not found`);
         }
@@ -34,26 +37,19 @@ export class BooksController {
     }
     @Post()
     async create(@Body() bookDto: Partial<BookDto>): Promise<Book> {
-        return this.dataSource.transaction(async (manager) => {
-            const service = new BookEditService(this.dataSource, manager);
-
-            const bookData = this.toBookEntity(bookDto);
-            const book = await service.createBook(bookData);
-            return book;
-    
-        });
+        const bookData = this.toBookEntity(bookDto);
+        const book = await this.bookEditService.createBook(bookData);
+        return book;
     }
 
     @Put(':id')
     async update(@Param('id') id: number, @Body() bookDto: Partial<BookDto>): Promise<Book> {
-        return this.dataSource.transaction(async (manager) => {
-            const service = new BookEditService(this.dataSource, manager);
-            const bookData = this.toBookEntity(bookDto);
-            const book = service.updateBook(id, bookData);
+        console.log("controller manager", this.transactionManagerProvider.manager);
+        const bookData = this.toBookEntity(bookDto);
+        const book = this.bookEditService.updateBook(id, bookData);
 
-            return book;
-        });
-
+        return book;
+ 
 
     }
 
