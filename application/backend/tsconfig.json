@@ -21,6 +21,8 @@
     "paths": {
       "@/*": ["src/*"]
     }
-  },
-  
+  }
+  ,
+  "include": ["src/**/*.ts", "tools/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }
