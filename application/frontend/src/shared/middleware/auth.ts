@@ -7,7 +7,7 @@ import { Middleware } from "./createMiddlewareChain";
  * @type {Object.<string, string[]>}
  */
 const routeRoleMap: { [key: string]: string[] } = {
-    "/admin": ["administrator"],
+    // "/admin": ["administrator"],
     "/editor": ["administrator", "editor"],
     "/user/profile": ["user", "administrator", "editor"],
     // 必要に応じてルートを追加
