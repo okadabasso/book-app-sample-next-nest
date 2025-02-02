@@ -83,31 +83,30 @@ export class BookEditService {
     private async updateBookGenreEntries(book: Book, bookGenres: BookGenre[]): Promise<void> {
         const { bookGenreRepository, genreRepository } = this.getRepositories();
         // 登録済みの bookGenre が bookGenres に含まれていない場合は削除
-        // 登録済みの bookGenre が bookGenres に含まれている場合は更新
+        // 登録済みの bookGenre が bookGenres に含まれている場合はなにもしない
         // bookGenres に含まれているが登録済みでない場合は新規登録
-        for (let i = 0; i < book.bookGenres.length; i++) {
-            const originalBookGenre = book.bookGenres[i];
-            if (bookGenres.findIndex((bookGenre) => bookGenre.genre.id === originalBookGenre.genre.id) === -1) {
-                await bookGenreRepository.remove(originalBookGenre);
-                continue;
-            }
-            // ここで originalBookGenreの id が0なら book が新規登録のはずなので、originalBookGenre を保存できない
-            if(originalBookGenre.id !== 0){
-                bookGenreRepository.save(originalBookGenre);
-            }
-        }
-        for (let i = 0; i < bookGenres.length; i++) {
-            const bookGenre = bookGenres[i];
-            if (bookGenre.genre.id === 0) {
-                genreRepository.create(bookGenre.genre);
-                await genreRepository.save(bookGenre.genre);
+        
+        await Promise.all(
+            bookGenres
+                .filter((bookGenre) => !book.bookGenres.some(original => bookGenre.genre.id === original.genre.id))
+                .map(async (bookGenre) => {
+                    genreRepository.create(bookGenre.genre);
+                    const newGenre = await genreRepository.save(bookGenre.genre);
+                    bookGenreRepository.create({ book, genre: newGenre });
 
-            }
-            if (book.bookGenres.length === 0 || book.bookGenres.findIndex((originalBookGenre) => originalBookGenre.genre.id === bookGenre.genre.id) === -1) {
-                bookGenre.book = book;
-                bookGenreRepository.create(bookGenre);
-                await bookGenreRepository.save(bookGenre);
-            }
-        }
+                    bookGenre.book = book;
+                    await bookGenreRepository.save(bookGenre);
+                    return newGenre;
+                })
+        );
+
+        await Promise.all(
+            book.bookGenres
+            .filter((original) => !bookGenres.some((bookGenre) => bookGenre.genre.id === original.genre.id))
+            .map(async (bookGenre) => {
+                await bookGenreRepository.remove(bookGenre);
+                return bookGenre;
+            })
+        );
     }
 }
