@@ -29,3 +29,4 @@ node_modules/
 
 logs/
 dist/
+application/backend-prisma/dist/
