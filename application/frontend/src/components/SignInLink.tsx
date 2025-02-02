@@ -29,7 +29,7 @@ export default function SignInLink() {
         <span >
             {session ? (
                 <div className="inline-block relative">
-                    <Menu >
+                    <Menu as="div" className="inline-block relative min-w-36">
                         <MenuButton ref={buttonRef} className=" inline-block  hover:underline">
                             <UserIcon className="inline h-4 w-4 mr-1" /> {user?.name}
                             <ChevronDownIcon className="inline ml-1 h-5 w-5 text-white"/></MenuButton>
