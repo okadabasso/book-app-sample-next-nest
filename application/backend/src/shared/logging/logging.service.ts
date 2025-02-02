@@ -9,7 +9,7 @@ export class LoggingService  implements LoggerService {
         const logger = winston.createLogger({
           format: winston.format.combine(
             winston.format.timestamp({
-              format: 'YYYY-MM-DD HH:mm:ss', // タイムスタンプのフォーマットを変える
+              format: 'YYYY-MM-DD HH:mm:ss.SSS', // タイムスタンプのフォーマットを変える
             }),
             winston.format.errors({ stack: true }), // エラー時はスタックトレースを出力する
             winston.format.printf(

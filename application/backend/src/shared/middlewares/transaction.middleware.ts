@@ -2,7 +2,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { DataSource } from 'typeorm';
 import { TransactionManagerProvider } from '@/shared/providers/transaction-manager.provider';
-import { LoggingService } from '@/shared/services/logging.service';
+import { LoggingService } from '@/shared/logging/logging.service';
 
 @Injectable()
 export class TransactionMiddleware implements NestMiddleware {

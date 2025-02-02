@@ -8,6 +8,7 @@ import { BookDto } from '../dto/BookDto';
 import { BookFindService } from './BookFindService';
 import { TransactionManagerProvider } from '@/shared/providers/transaction-manager.provider';
 import { Injectable } from '@nestjs/common';
+import { LoggingService } from '@/shared/logging/logging.service';
 
 
 @Injectable()
@@ -17,6 +18,7 @@ export class BookEditService {
         private readonly dataSource: DataSource,
         private readonly transactionManagerProvider: TransactionManagerProvider,
         private readonly bookFindService: BookFindService,
+        private readonly logger: LoggingService,
     ) {}
     private get manager(): EntityManager {
         const manager = this.transactionManagerProvider.manager;
@@ -35,7 +37,7 @@ export class BookEditService {
         };
     }
     async createBook(bookData: Partial<Book>): Promise<Book> {
-        console.log(this.manager.transaction);
+        this.logger.log('createBook');
         const book = await this.createBookEntry(bookData);
         await this.updateBookGenreEntries(book, bookData.bookGenres);
         return book;

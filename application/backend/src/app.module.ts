@@ -8,8 +8,8 @@ import { GenresModule } from './admin/genres/genres.module';
 import { AuthModule } from './auth/auth.module';
 import { TransactionManagerProvider } from '@/shared/providers/transaction-manager.provider';
 import { TransactionMiddleware } from '@/shared/middlewares/transaction.middleware';
-import { LoggingService } from './shared/services/logging.service';
 import { LoggingMiddleware } from './shared/middlewares/logging.middleware';
+import { LoggingModule } from './shared/logging/logging.module';
 
 @Module({
   imports: [
@@ -17,13 +17,13 @@ import { LoggingMiddleware } from './shared/middlewares/logging.middleware';
     BooksModule,
     GenresModule,
     AuthModule,
+    LoggingModule
   
   ],
   controllers: [AppController],
   providers: [
     AppService,
     TransactionManagerProvider,
-    LoggingService,
   ],
 
 })
