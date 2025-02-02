@@ -41,7 +41,6 @@ export class BooksController {
 
     @Put(':id')
     async update(@Param('id') id: string, @Body() bookDto: EditBookDto): Promise<Book> {
-        bookDto.genres.map(item => { item.id = item.isNew ? 0 : item.id })
         const bookId = parseInt(id);
         const result = await this.booksService.updateBook(bookId, bookDto);
         return result;
