@@ -7,7 +7,7 @@ import { plainToInstance } from "class-transformer";
 @Injectable()
 export class BooksService {
     constructor(private readonly prisma: PrismaService) { }
-    async getBooks() : Promise<Book[]> {
+    async getBooks(): Promise<Book[]> {
         const books = await this.prisma.book.findMany({
             include: { bookGenres: { include: { genre: true } } },
             orderBy: { id: 'asc' }
@@ -28,14 +28,25 @@ export class BooksService {
         });
     }
     async createBook(data: CreateBookDto) {
+        // 新規のジャンルを先に登録
+        const newGenres = await Promise.all(data.genres.map(async (genre) => {
+            if (genre.isNew) {
+                const newGenre = await this.prisma.genre.create({
+                    data: { name: genre.name }
+                });
+                return newGenre;
+            }
+            return genre;
+        }));
         return this.prisma.book.create({
             data: {
                 title: data.title,
-
+                author: data.author,
+                publishedYear: data.publishedYear,
+                description: data.description,
                 bookGenres: {
-                    create: data.genres.map(genre => ({
+                    create: newGenres.map(genre => ({
                         genreId: genre.id,
-                        bookId: 0
                     }))
                 }
             },
@@ -64,6 +75,9 @@ export class BooksService {
                 where: { id: id },
                 data: {
                     title: data.title,
+                    author: data.author,
+                    publishedYear: data.publishedYear,
+                    description: data.description,
                     bookGenres: {
                         deleteMany: {},
                         create: newGenres.map(genre => ({

@@ -58,3 +58,38 @@ model BookGenre {
   genre   Genre @relation(fields: [genreId], references: [id])
   genreId Int
 }
+
+model AuthUser {
+  userId               Int      @id @default(autoincrement())
+  userName             String   @db.VarChar(255)
+  passwordHash         String   @db.VarChar(255)
+  externalAuthProvider String?   @db.VarChar(255)
+  externalAuthId       String?   @db.VarChar(255)
+  email                String   @db.VarChar(255)
+  createdAt            DateTime? @db.Timestamptz(6) @default(now())
+  updatedAt            DateTime? @db.Timestamptz(6) @default(now())
+  isActive             Boolean  @default(true)
+
+  userRoles AuthUserRole[]
+}
+
+model AuthRole {
+  roleId    Int      @id @default(autoincrement())
+  roleName  String   @db.VarChar(255)
+  createdAt DateTime? @db.Timestamptz(6) @default(now())
+  updatedAt DateTime? @db.Timestamptz(6) @default(now())
+  isActive  Boolean  @default(true)
+
+  roleUsers AuthUserRole[]
+}
+
+model AuthUserRole {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  roleId    Int
+  createdAt DateTime? @db.Timestamptz(6) @default(now())
+  updatedAt DateTime? @db.Timestamptz(6) @default(now())
+  isActive  Boolean  @default(true)
+  user      AuthUser @relation(fields: [userId], references: [userId])
+  role      AuthRole @relation(fields: [roleId], references: [roleId])
+}

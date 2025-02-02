@@ -36,13 +36,24 @@ let BooksService = class BooksService {
         });
     }
     async createBook(data) {
+        const newGenres = await Promise.all(data.genres.map(async (genre) => {
+            if (genre.isNew) {
+                const newGenre = await this.prisma.genre.create({
+                    data: { name: genre.name }
+                });
+                return newGenre;
+            }
+            return genre;
+        }));
         return this.prisma.book.create({
             data: {
                 title: data.title,
+                author: data.author,
+                publishedYear: data.publishedYear,
+                description: data.description,
                 bookGenres: {
-                    create: data.genres.map(genre => ({
+                    create: newGenres.map(genre => ({
                         genreId: genre.id,
-                        bookId: 0
                     }))
                 }
             },
@@ -68,6 +79,9 @@ let BooksService = class BooksService {
                 where: { id: id },
                 data: {
                     title: data.title,
+                    author: data.author,
+                    publishedYear: data.publishedYear,
+                    description: data.description,
                     bookGenres: {
                         deleteMany: {},
                         create: newGenres.map(genre => ({
