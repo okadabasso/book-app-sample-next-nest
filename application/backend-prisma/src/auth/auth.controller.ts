@@ -3,10 +3,15 @@ import { SignInDto } from './dto/SignInDto';
 import { UserDto } from './dto/UserDto';
 import { PrismaService } from '@/prisma/prisma.service';
 import { compare } from 'bcryptjs';
+import { plainToInstance } from 'class-transformer';
+import { LoggingService } from '@/logging/logging.service';
 
 @Controller('auth')
 export class AuthController {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly logger: LoggingService
+    ) {}
 
     @Post("signin")
     async singIn(@Body() dto: Partial<SignInDto>): Promise<UserDto> {
@@ -14,22 +19,16 @@ export class AuthController {
         const user = await this.prisma.authUser.findFirst({
             where: { userName: dto.username },
             include: {
-                userRoles: {
-                    include: {
-                        role: true
-                    }
-                }
+                userRoles: { include: { role: true }}
             }
         });
  
-        
-        
         if (user && await compare(dto.password, user.passwordHash)) {
-            const userDto = new UserDto(user.userId, user.userName, user.email, user.userRoles.map(ur => ur.role.roleName));
-            console.log("found", userDto)
+            const userDto = plainToInstance(UserDto, user, { excludeExtraneousValues: true });
+            this.logger.log("found " + JSON.stringify(userDto));
             return userDto;
         }
-        console.log("not found", dto)
+        this.logger.log("not found" + JSON.stringify(dto));
         throw new HttpException("User not found", HttpStatus.UNAUTHORIZED);
     }
 
