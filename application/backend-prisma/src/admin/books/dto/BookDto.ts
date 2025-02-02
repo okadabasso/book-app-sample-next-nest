@@ -30,25 +30,13 @@ export class BookDto {
         this.genres = genres;
     }
 }
-export class CreateBookDto {
+export class EditBookDto {
     @Expose()
     title: string;
     @Expose()
     author: string;
     @Expose()
-    publishedYear: number;
-    @Expose()
-    description: string;
-    @Expose()
-    genres: GenreDto[];
-}
-export class UpdateBookDto {
-    @Expose()
-    title: string;
-    @Expose()
-    author: string;
-    @Expose()
-    publishedYear: number;
+    publishedYear: string;
     @Expose()
     description: string;
     @Expose()

@@ -1,7 +1,7 @@
 import { LoggingService } from '@/logging/logging.service';
 import { Body, Controller, Get, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
 import { BooksService } from './services/BookService';
-import { BookDto, CreateBookDto, UpdateBookDto } from './dto/BookDto';
+import { BookDto, EditBookDto } from './dto/BookDto';
 import { plainToInstance } from 'class-transformer';
 import { Book } from '@prisma/client';
 
@@ -33,14 +33,14 @@ export class BooksController {
 
     }
     @Post()
-    async create(@Body() bookDto: CreateBookDto): Promise<Book> {
+    async create(@Body() bookDto: EditBookDto): Promise<Book> {
 
         const result = await this.booksService.createBook(bookDto);
         return result;
     }
 
     @Put(':id')
-    async update(@Param('id') id: string, @Body() bookDto: UpdateBookDto): Promise<Book> {
+    async update(@Param('id') id: string, @Body() bookDto: EditBookDto): Promise<Book> {
         bookDto.genres.map(item => { item.id = item.isNew ? 0 : item.id })
         const bookId = parseInt(id);
         const result = await this.booksService.updateBook(bookId, bookDto);
