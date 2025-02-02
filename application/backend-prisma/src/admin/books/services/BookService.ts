@@ -15,7 +15,7 @@ export class BooksService {
         return books;
 
     }
-    async getBookById(id: number) {
+    async getBookById(id: number): Promise<Book> {
         return this.prisma.book.findUnique({
             where: { id: id },
             include: {
@@ -27,7 +27,7 @@ export class BooksService {
             }
         });
     }
-    async createBook(data: CreateBookDto) {
+    async createBook(data: CreateBookDto): Promise<Book> {
         // 新規のジャンルを先に登録
         const newGenres = await Promise.all(data.genres.map(async (genre) => {
             if (genre.isNew) {
@@ -70,17 +70,44 @@ export class BooksService {
                 });
             }));
 
+            // 現在のジャンルを取得
+            const currentBook = await prisma.book.findUnique({
+                where: { id },
+                include: {
+                    bookGenres: {
+                        include: {
+                            genre: true
+                        }
+                    }
+                }
+            });
+
+            if (!currentBook) {
+                throw new Error(`Book with id ${id} not found`);
+            }
+
+            const currentGenres = currentBook.bookGenres.map(bg => bg.genre);
+
+            // 削除するジャンル
+            const genresToDelete = currentGenres.filter(currentGenre => 
+                !newGenres.some(newGenre => newGenre.id === currentGenre.id)
+            );
+
+            // 追加するジャンル
+            const genresToAdd = newGenres.filter(newGenre => 
+                !currentGenres.some(currentGenre => currentGenre.id === newGenre.id)
+            );
+
             // 本のジャンルを更新
             const updatedBook = await prisma.book.update({
-                where: { id: id },
+                where: { id },
                 data: {
                     title: data.title,
-                    author: data.author,
-                    publishedYear: data.publishedYear,
-                    description: data.description,
                     bookGenres: {
-                        deleteMany: {},
-                        create: newGenres.map(genre => ({
+                        deleteMany: {
+                            genreId: { in: genresToDelete.map(genre => genre.id) }
+                        },
+                        create: genresToAdd.map(genre => ({
                             genreId: genre.id,
                         })),
                     }
