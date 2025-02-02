@@ -17,16 +17,14 @@ export class GenresController {
                     orderBy: { id: 'asc' },
             });
             
-            const dto = plainToInstance(GenreDto, genres);
-            return dto;
+            return genres ? plainToInstance(GenreDto, genres) : [];
         }
         const genres = await this.prisma.genre.findMany({
             where: { name: {contains:query, mode: 'insensitive'}},
             orderBy: { id: 'asc' },
         });
-        const dto = plainToInstance(GenreDto, genres);
 
-        return dto;
+        return genres ? plainToInstance(GenreDto, genres) : [];
     }
 
 }

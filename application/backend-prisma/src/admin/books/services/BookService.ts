@@ -2,6 +2,7 @@ import { PrismaService } from "@/prisma/prisma.service";
 import { Book, BookGenre, Genre, Prisma, PrismaClient } from "@prisma/client";
 import { BookDto, EditBookDto } from "../dto/BookDto";
 import { Injectable } from "@nestjs/common";
+import { LoggingService } from "@/logging/logging.service";
 
 interface BookEditData {
     title: string;
@@ -22,7 +23,10 @@ export class BooksService {
         }
     };
 
-    constructor(private readonly prisma: PrismaService) { }
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly logger: LoggingService
+    ) { }
     async getBooks(): Promise<Book[]> {
         const books = await this.prisma.book.findMany({
             include: { bookGenres: { include: { genre: true } } },
@@ -39,18 +43,19 @@ export class BooksService {
     }
     async createBook(data: EditBookDto): Promise<Book> {
         return this.prisma.$transaction(async (prisma: PrismaTransactionClient) => {
-            // 新規のジャンルを先に登録
-            const newGenres = await this.createNewGenres(prisma, data);
-            return this.prisma.book.create({
-                data: {
-                    ...this.extractBookFromDto(data),
-                    bookGenres: { 
-                        create: newGenres.map(genre => ({ genreId: genre.id, }))
-                    }
-                },
-                include: this.bookRelations
-            });
-        });
+          // 新規のジャンルを先に登録
+          const newGenres = await this.createNewGenres(prisma, data);
+          this.logger.log(`New genres: ${newGenres.map(genre => genre.name).join(", ")}`);
+          return prisma.book.create({
+              data: {
+                  ...this.extractBookFromDto(data),
+                  bookGenres: { 
+                      create: newGenres.map(genre => ({ genreId: genre.id }))
+                  }
+              },
+              include: this.bookRelations
+          });
+         });
     }
 
     async updateBook(id: number, data: EditBookDto): Promise<Book> {
@@ -99,14 +104,15 @@ export class BooksService {
     }
 
     private async createNewGenres(prisma: PrismaTransactionClient,  data: EditBookDto): Promise<Genre[]> {
-        return await Promise.all(data.genres.map(async (genre) => {
+        return Promise.all(data.genres.map(async (genre) => {
             if (genre.isNew) {
-                const newGenre = await prisma.genre.create({
+                return prisma.genre.create({
                     data: { name: genre.name }
                 });
-                return newGenre;
             }
-            return genre;
+            return prisma.genre.findUnique({
+                where: { id: genre.id }
+            });
         }));
     }
     
