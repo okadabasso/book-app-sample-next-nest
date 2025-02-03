@@ -11,10 +11,14 @@ import { TransactionMiddleware } from '@/shared/middlewares/transaction.middlewa
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from '@/shared/logging/logging.interceptor';
 import { LoggingModule } from '@/shared/logging/logging.module';
+import { GenresController } from './genres.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Book, Genre, BookGenre]), LoggingModule],
-  controllers: [BooksController],
+  controllers: [
+    BooksController,
+    GenresController
+  ],
   providers: [
     BookEditService,
     BookFindService,

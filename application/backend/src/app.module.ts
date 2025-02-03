@@ -2,21 +2,19 @@ import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppDataSource } from './data-source';
-import { BooksModule} from './admin/books/books.module';
-import { GenresModule } from './admin/genres/genres.module';
-import { AuthModule } from './auth/auth.module';
+import { AppDataSource } from '@/data-source';
+import { BooksModule} from '@/admin/books/books.module';
+import { AuthModule } from '@/auth/auth.module';
 import { TransactionManagerProvider } from '@/shared/providers/transaction-manager.provider';
 import { TransactionMiddleware } from '@/shared/middlewares/transaction.middleware';
-import { LoggingMiddleware } from './shared/middlewares/logging.middleware';
-import { LoggingModule } from './shared/logging/logging.module';
-import { ProfileModule } from './user/profile/profile.module';
+import { LoggingMiddleware } from '@/shared/middlewares/logging.middleware';
+import { LoggingModule } from '@/shared/logging/logging.module';
+import { ProfileModule } from '@/user/profile/profile.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(AppDataSource.options),
     BooksModule,
-    GenresModule,
     AuthModule,
     LoggingModule,
     ProfileModule
