@@ -32,7 +32,7 @@ const ProfilePage = () => {
     }
     , []);
     if (error) {
-        return <div>Error: {error}</div>
+        return <div>{error}</div>
     }
     if (!profile) {
         return <div>Loading...</div>

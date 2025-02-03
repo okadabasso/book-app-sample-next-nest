@@ -13,6 +13,5 @@ export async function GET(request: NextRequest) {
         '/profile?username=' + session.user.name,
 
     );
-    console.log("response",response);
     return response;
 }
