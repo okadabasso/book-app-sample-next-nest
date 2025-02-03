@@ -7,7 +7,7 @@ export default function Home() {
   const { data: session } = useSession();
   console.log("session", session);
   return (
-    <div className="">
+    <div className="pb-8">
       <h2 className="text-lg font-bold">Books Application Home</h2>
       <div className="mt-4">
         <h3>admin</h3>
@@ -27,7 +27,15 @@ export default function Home() {
           <li><TextLink href="/experimental/scrollable" className="" variant="primary">experimental/scrollable</TextLink></li>
 
         </ul>
+      </div>
+      <div className="mt-4">
+        <h3>auth</h3>
+        <ul>
+          <li><TextLink href="/auth/signin" className="" variant="primary">auth/signin</TextLink></li>
+          <li><TextLink href="/auth/signout" className="" variant="primary">auth/signout</TextLink></li>
+          <li><TextLink href="/auth/profile" className="" variant="primary">auth/profile</TextLink></li>
 
+        </ul>
       </div>
     </div>
   );

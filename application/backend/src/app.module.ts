@@ -10,6 +10,7 @@ import { TransactionManagerProvider } from '@/shared/providers/transaction-manag
 import { TransactionMiddleware } from '@/shared/middlewares/transaction.middleware';
 import { LoggingMiddleware } from './shared/middlewares/logging.middleware';
 import { LoggingModule } from './shared/logging/logging.module';
+import { ProfileModule } from './user/profile/profile.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { LoggingModule } from './shared/logging/logging.module';
     BooksModule,
     GenresModule,
     AuthModule,
-    LoggingModule
+    LoggingModule,
+    ProfileModule
   
   ],
   controllers: [AppController],

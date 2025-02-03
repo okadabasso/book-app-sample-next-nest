@@ -107,7 +107,6 @@ export const authOptions: AuthOptions = {
                 session.user.roles = [token.role as string];
             }
             else if(token.roles){
-                console.log('session role2', token.roles);
                 session.user.roles = token.roles as string[];
             }
             else{
