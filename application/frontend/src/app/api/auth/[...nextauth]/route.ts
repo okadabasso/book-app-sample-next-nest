@@ -69,6 +69,10 @@ export const authOptions: AuthOptions = {
             }
         })
     ],
+    session: {
+        maxAge: 0, // ブラウザが開かれているときだけ有効
+        // maxAge: 30 * 24 * 60 * 60, // 30 days
+    },
     pages: {
         signIn: '/auth/signin',
         //  signOut: '/auth/signout',
