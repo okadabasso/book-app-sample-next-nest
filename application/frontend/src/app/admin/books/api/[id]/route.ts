@@ -1,11 +1,14 @@
+import { NextRequest, NextResponse } from "next/server"
 import { apiClient } from "@/shared/apiClient"
 import { Book } from "@/types/Book"
-import { NextRequest, NextResponse } from "next/server"
+import logger from '@/shared/logger';
+import { log } from "console";
 
 export async function GET(
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> },
 ) {
+    logger.info('GET /admin/books/[id]');
     const { id } = await params;
     if (!id) {
         return NextResponse.json({ error: "Book ID is required" }, { status: 400 });

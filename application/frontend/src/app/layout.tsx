@@ -23,7 +23,7 @@ export default function RootLayout({
         <div className="min-h-screen">
           <NextAuthProvider>
             <Header />
-            <main className="container mx-auto px-4 pt-12">
+            <main className="container mx-auto px-4 pt-14">
               {children}
             </main>
             <Footer />
