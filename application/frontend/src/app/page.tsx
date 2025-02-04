@@ -7,7 +7,7 @@ export default function Home() {
   const { data: session } = useSession();
   console.log("session", session);
   return (
-    <div className="pb-8">
+    <div className="pb-4">
       <h2 className="text-lg font-bold">Books Application Home</h2>
       <div className="mt-4">
         <h3>admin</h3>

@@ -7,10 +7,10 @@ type ContentFooterProps = {
 };
 const ContentFooter = ({ children, className }: ContentFooterProps) => {
     return (
-        <div  className={ clsx('sticky bottom-0 relative mt-4', className) }>
+        <div  className={ clsx('sticky bottom-8 relative mt-4 bg-white', className) }>
             <div className='h-3 bg-gradient-to-b from-white/0 to-white/100  w-full'></div>
             <div className='h-3 bg-white'></div>
-            <div className=' flex gap-2 bg-white pb-12'>
+            <div className=' flex gap-2 bg-white pb-4'>
                 {children}
             </div>
         </div>

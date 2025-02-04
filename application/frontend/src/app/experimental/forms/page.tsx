@@ -32,7 +32,7 @@ const ExperimentalFormPage: React.FC = () => {
     };
 
     return (
-        <div className='mb-12'>
+        <div className='mb-4'>
             <h1>Experimental Form</h1>
             <form onSubmit={handleSubmit}>
                 <div className='space-y-4'>
