@@ -70,8 +70,9 @@ export const authOptions: AuthOptions = {
         })
     ],
     session: {
-        maxAge: 0, // ブラウザが開かれているときだけ有効
-        // maxAge: 30 * 24 * 60 * 60, // 30 days
+        strategy: 'jwt',
+        maxAge: 1 * 24 * 60 * 60 , // 1 day
+
     },
     pages: {
         signIn: '/auth/signin',
