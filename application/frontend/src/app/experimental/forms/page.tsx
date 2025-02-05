@@ -32,7 +32,7 @@ const ExperimentalFormPage: React.FC = () => {
     };
 
     return (
-        <div>
+        <div className='pb-4'>
             <h1>Experimental Form</h1>
             <form onSubmit={handleSubmit}>
                 <div className='space-y-4'>
@@ -124,7 +124,7 @@ const ExperimentalFormPage: React.FC = () => {
                     </div>
                     <div>
                         <h3>ボタン</h3>
-                        <div className='flex flex-row space-x-4'>
+                        <div className='flex flex-row flex-wrap gap-4'>
                             <Button variant='default'>default</Button>
                             <Button variant='primary'>primary</Button>
                             <Button variant='secondary'>secondary</Button>
