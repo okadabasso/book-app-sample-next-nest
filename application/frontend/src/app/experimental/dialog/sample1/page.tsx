@@ -26,7 +26,7 @@ const ExperimentalDialogPage: React.FC = () => {
 
 
     return (
-        <div className='overflow-hidden flex flex-col' style={{ height: 'calc(100vh - 5rem)' }}>
+        <div className='overflow-hidden flex flex-col' style={{ height: 'calc(100vh - 6.5rem)' }}>
             <div>content header</div>
             <div className='scrollable border border-gray-400'>
                 <div className="bg-gray-100" style={{ height: '800px' }}>

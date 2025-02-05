@@ -32,7 +32,7 @@ const ExperimentalFormPage: React.FC = () => {
     };
 
     return (
-        <div className='mb-4'>
+        <div>
             <h1>Experimental Form</h1>
             <form onSubmit={handleSubmit}>
                 <div className='space-y-4'>
@@ -100,7 +100,7 @@ const ExperimentalFormPage: React.FC = () => {
                     </div>
                     <div>
                         <h3>セレクト</h3>
-                        <div className='flex flex-row space-x-4'>
+                        <div className='flex flex-row flex-wrap gap-4'>
                             <Select variant='default' options={[{ value: '1', text: 'Option 1' }, { value: '2', text: 'Option 2' }]}></Select>
                             <Select variant='primary' options={[{ value: '1', text: 'Option 1' }, { value: '2', text: 'Option 2' }]}></Select>
                             <Select variant='secondary' options={[{ value: '1', text: 'Option 1' }, { value: '2', text: 'Option 2' }]}></Select>
@@ -112,14 +112,14 @@ const ExperimentalFormPage: React.FC = () => {
                     </div>
                     <div>
                         <h3>テキストエリア</h3>
-                        <div className='flex flex-row space-x-4'>
-                            <MultiLineText variant='default' value='複数行入力'></MultiLineText>
-                            <MultiLineText variant='primary'></MultiLineText>
-                            <MultiLineText variant='secondary'></MultiLineText>
-                            <MultiLineText variant='info'></MultiLineText>
-                            <MultiLineText variant='success'></MultiLineText>
-                            <MultiLineText variant='danger'></MultiLineText>
-                            <MultiLineText variant='disabled' disabled></MultiLineText>
+                        <div className='flex flex-row flex-wrap gap-4'>
+                            <MultiLineText variant='default' className='w-48' value='複数行入力'></MultiLineText>
+                            <MultiLineText variant='primary' className='w-48'></MultiLineText>
+                            <MultiLineText variant='secondary' className='w-48'></MultiLineText>
+                            <MultiLineText variant='info' className='w-48'></MultiLineText>
+                            <MultiLineText variant='success' className='w-48'></MultiLineText>
+                            <MultiLineText variant='danger' className='w-48'></MultiLineText>
+                            <MultiLineText variant='disabled' className='w-48' disabled></MultiLineText>
                         </div>
                     </div>
                     <div>

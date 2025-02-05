@@ -17,14 +17,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body
-        className={"overflow-y-scroll text-gray-800"}
-      >
-        <div className="min-h-screen">
+      <body className="text-gray-800 overflow-hidden" >
+        <div className="min-h-screen flex flex-col ">
           <NextAuthProvider>
             <Header />
-            <main className="container mx-auto px-4 pt-14 pb-8">
-              {children}
+            <main className="flex-1  w-full mx-auto overflow-y-scroll">
+              <div className="container mx-auto px-4"  style={{height: "calc(100vh - 5.5rem)"} }>
+                {children}
+              </div>
             </main>
             <Footer />
           </NextAuthProvider>

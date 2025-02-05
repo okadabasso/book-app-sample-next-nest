@@ -39,7 +39,7 @@ const ProfilePage = () => {
     }
 
     return (
-        <div className='pb-12'>
+        <div>
             <ContentHeader title='Profile' />
             <dl>
                 <dt className='font-bold'>Username</dt>
