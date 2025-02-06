@@ -41,13 +41,13 @@ const EditBookPage = () => {
         };
         loadBook();
 
-    }, []);
+    }, [id]);
 
     const handleSave = (book: Book) => {
         const saveBook = async (book: Book) => {
             try {
                 const response = await fetch(
-                    `/admin/books/api/${book.id}`,
+                    `/api/admin/books/${book.id}`,
                     { 
                         method: 'PUT', 
                         body: JSON.stringify(book),

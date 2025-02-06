@@ -15,7 +15,7 @@ const BooksPage = () => {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                const response = await fetch('/admin/books/api');
+                const response = await fetch('/api/admin/books');
                 if (!response.ok) {
                     throw new Error(`Error: ${response.statusText}`);
                 }

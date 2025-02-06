@@ -2,7 +2,7 @@ import { Book } from "@/types/Book";
 import { plainToInstance } from "class-transformer";
 
 const fetchBook = async (id: number): Promise<Book> => {
-    const response = await fetch(`/admin/books/api/${id}`);
+    const response = await fetch(`/api/admin/books/${id}`);
     if (!response.ok) {
         throw new Error('Network response was not ok');
     }

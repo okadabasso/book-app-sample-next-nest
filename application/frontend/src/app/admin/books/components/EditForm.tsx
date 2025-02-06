@@ -83,7 +83,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
     const multiSelectRef = useRef<any>(null); // MultiSelectCombobox の ref
     const fetchOptions = async (query: string): Promise<Option[]> => {
         const loadGenres = async (query: string) => {
-            const genres = await fetch(`/admin/api/genres?query=${query}`);
+            const genres = await fetch(`/api/admin/genres?query=${query}`);
             return genres.json();
         };
         return loadGenres(query);

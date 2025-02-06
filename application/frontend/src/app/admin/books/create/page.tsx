@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import EditForm from '@/app/admin/books/components/EditForm';
 import { Book } from '@/types/Book';
 import ContentHeader from '@/app/admin/books/components/ContentHeader';
-import { get } from 'http';
 import { getCsrfHeader, createCsrfToken } from '@/shared/csrfToken';
 
 const CreateBookPage = () => {
@@ -32,7 +31,7 @@ const CreateBookPage = () => {
         const saveBook = async (book: Book) => {
             try {
                 const response = await fetch(
-                    '/admin/books/api',
+                    '/api/admin/books',
                     { 
                         method: 'POST', 
                         body: JSON.stringify(book),

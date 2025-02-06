@@ -12,7 +12,7 @@ const ProfilePage = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await fetch('/auth/profile/api');
+                const response = await fetch('/api/auth/profile');
                 if (!response.ok) {
                     throw new Error(`Error: ${response.statusText}`);
                 }
