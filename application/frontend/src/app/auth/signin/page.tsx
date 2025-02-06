@@ -1,13 +1,12 @@
 'use client'
-import Image from 'next/image'
-import { ClientSafeProvider, getProviders, signIn, useSession } from "next-auth/react";
-import { useParams, useRouter, useSearchParams, redirect } from "next/navigation";
+import Image from 'next/image';
+import { ClientSafeProvider, getProviders, signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { ReactElement, useEffect, useState } from "react";
 import { LiteralUnion } from "react-hook-form";
 import { BuiltInProviderType } from "next-auth/providers/index";
 import CredentialSignIn from "@/components/CredentialSignIn";
 import SignInError from '@/components/SignInError';
-import { tree } from 'next/dist/build/templates/app-page';
 
 const authStyle: Record<string, { className: string; color: string, icon: ReactElement | null }> = {
     Google: {
@@ -22,7 +21,6 @@ export default function SignIn({ }) {
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get('callbackUrl') || '/';
     const [providers, setProviders] = useState<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null>(null);
-    const [message, setMessage] = useState("");
     
     const error = searchParams.get("error");
     useEffect(() => {
@@ -32,7 +30,7 @@ export default function SignIn({ }) {
         })();
     }, []);
     const handleSignIn = async (providerId: string) => {
-        const result = await signIn(providerId, {callbackUrl: callbackUrl, redirect: true});
+        await signIn(providerId, {callbackUrl: callbackUrl, redirect: true});
     };
     return (
         <div>
@@ -52,7 +50,7 @@ export default function SignIn({ }) {
                                     className={`my-3 block w-full rounded px-4 py-2 font-semibold flex items-center justify-center  ${String(
                                         item?.className
                                     )}`}
-                                    onClick={ (event)=>handleSignIn(provider.id) }
+                                    onClick={ () => handleSignIn(provider.id) }
                                 >
                                     {item.icon}
                                     <span className='ml-4'>{provider.name} でログイン</span>

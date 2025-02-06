@@ -1,5 +1,4 @@
-import React from 'react';
-import { checkboxVariants, inputVariants, radioVariants, selectVariants } from './variants';
+import { selectVariants } from './variants';
 import clsx from 'clsx';
 
 interface SelectProps {

@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import { inputVariants, radioVariants, textVariants } from './variants';
+import { radioVariants, textVariants } from './variants';
 import clsx from 'clsx';
 
 interface RadioProps {

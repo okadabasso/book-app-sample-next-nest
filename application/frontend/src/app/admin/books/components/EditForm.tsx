@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Book } from '@/types/Book';
 import MultiSelectCombobox from '@/components/MultiSelectCombobox ';
 import ContentFooter from '@/components/ContentFooter';
 import { useSubmitHandler } from '@/hooks/useSubmitHandler';
-import { CheckIcon, DocumentCheckIcon } from '@heroicons/react/16/solid';
+import { CheckIcon } from '@heroicons/react/16/solid';
 import TextBox from '@/components/forms/TextBox';
 import Button from '@/components/forms/Button';
 import MultiLineText from '@/components/forms/MultiLineText';

@@ -1,6 +1,4 @@
-import { signOut } from 'next-auth/react';
 import Link from 'next/link';
-import React from 'react';
 import SignInLink from './SignInLink';
 
 export default function Header() {

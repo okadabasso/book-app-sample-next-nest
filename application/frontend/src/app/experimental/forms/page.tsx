@@ -8,7 +8,7 @@ import RadioGroup from '@/components/forms/RadioGroup';
 import Select from '@/components/forms/Select';
 import TextBox from '@/components/forms/TextBox';
 import TextContent from '@/components/forms/TextContent';
-import { ArrowDownIcon, CalculatorIcon, CalendarIcon, MagnifyingGlassIcon } from '@heroicons/react/16/solid';
+import { ArrowDownIcon, CalendarIcon, MagnifyingGlassIcon } from '@heroicons/react/16/solid';
 import React, { useState } from 'react';
 
 const ExperimentalFormPage: React.FC = () => {
@@ -17,15 +17,6 @@ const ExperimentalFormPage: React.FC = () => {
         email: '',
         message: ''
     });
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-    };
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         console.log('Form data submitted:', formData);

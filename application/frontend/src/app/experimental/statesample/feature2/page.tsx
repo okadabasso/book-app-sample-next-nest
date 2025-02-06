@@ -7,7 +7,6 @@ import React, { useState } from "react";
 
 export default function FeaturePage2() {
 
-    const [inputValue, setInputValue] = useState('');
     const feature1 = useGlobalStore((state) => state.feature);
 
     return (

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { inputVariants, textVariants } from './variants';
+import { textVariants } from './variants';
 
 interface TextContentProps extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: keyof typeof textVariants;

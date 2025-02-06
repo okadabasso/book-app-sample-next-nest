@@ -3,9 +3,7 @@ import Button from '@/components/forms/Button';
 import React, { useState } from 'react';
 
 import CustomDialog from '@/components/CustomDialog';
-import ScrollView from '@/components/ScrollView';
 import ItemTable from './ItemTable';
-import TextLink from '@/components/forms/TextLink';
 const ExperimentalDialogPage: React.FC = () => {
     const [open, setOpen] = useState(false);
 

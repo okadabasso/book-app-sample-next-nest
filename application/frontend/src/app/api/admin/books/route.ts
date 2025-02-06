@@ -1,8 +1,7 @@
-import { apiClient } from "@/shared/apiClient"
-import { verifyCsrfToken } from "@/shared/csrfToken";
-import { Book } from "@/types/Book"
+import { apiClient } from "@/shared/apiClient";
+import { Book } from "@/types/Book";
 import { NextApiResponse } from "next";
-import { NextRequest, NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
     const response = await apiClient("/admin/books/")

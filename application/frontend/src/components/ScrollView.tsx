@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import React, { useRef, useEffect } from 'react';
 
 interface ScrollViewProps {

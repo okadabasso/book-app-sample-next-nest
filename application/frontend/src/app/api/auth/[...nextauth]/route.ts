@@ -1,10 +1,8 @@
-import NextAuth, { AuthOptions, DefaultUser, Session } from 'next-auth'
+import NextAuth, { AuthOptions, DefaultUser } from 'next-auth'
 import Google from 'next-auth/providers/google'
-import Github from 'next-auth/providers/github'
 import Credential from 'next-auth/providers/credentials'
 import { AdapterUser } from 'next-auth/adapters'
 import { apiClient } from '@/shared/apiClient'
-import { redirect } from 'next/dist/server/api-utils'
 
 type User = AdapterUser & {
     roles: string[]
@@ -42,7 +40,7 @@ export const authOptions: AuthOptions = {
                 username: { label: "Username", type: "text", placeholder: "username" },
                 password: { label: "Password", type: "password" }
             },
-            async authorize(credentials, req) {
+            async authorize(credentials) {
                 try {
                     console.log("credentials", credentials);
                     const response = await apiClient("/auth/signIn", {

@@ -1,8 +1,6 @@
 'use client';
-import ContentFooter from '@/components/ContentFooter';
 import Button from '@/components/forms/Button';
 import TextLink from '@/components/forms/TextLink';
-import React, { useState } from 'react';
 
 const ScrollablePage1 = () => {
 

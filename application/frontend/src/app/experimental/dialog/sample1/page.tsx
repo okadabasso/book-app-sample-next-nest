@@ -3,10 +3,7 @@ import Button from '@/components/forms/Button';
 import React, { useState } from 'react';
 
 import CustomDialog from '@/components/CustomDialog';
-import ScrollView from '@/components/ScrollView';
 import ItemTable from '@/app/experimental/dialog/ItemTable';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/16/solid';
-import clsx from 'clsx';
 import TextLink from '@/components/forms/TextLink';
 const ExperimentalDialogPage: React.FC = () => {
     const [open, setOpen] = useState(false);
@@ -19,11 +16,6 @@ const ExperimentalDialogPage: React.FC = () => {
         setOpen(false);
     };
     const [isExpanded, setIsExpanded] = useState(false);
-    const handleExtent = () => {
-        console.log('extent');
-        setIsExpanded(!isExpanded);
-    }
-
 
     return (
         <div className='overflow-hidden flex flex-col' style={{ height: 'calc(100vh - 6.5rem)' }}>

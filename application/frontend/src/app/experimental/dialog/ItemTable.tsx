@@ -9,9 +9,6 @@ interface Item {
 
 }
 
-interface ItemTableProps {
-}
-
 const items: Item[] = [
     { id: 1, name: 'Item 1', description: 'Description 1', date: '2022-01-01', category: 'Category 1' },
     { id: 2, name: 'Item 2', description: 'Description 2', date: '2022-01-02', category: 'Category 2' },

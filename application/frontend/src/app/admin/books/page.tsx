@@ -1,11 +1,11 @@
 "use client"
 import { Book } from '@/types/Book';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ContentHeader from '@/app/admin/books/components/ContentHeader';
 import { plainToInstance } from 'class-transformer';
 import ContentFooter from '@/components/ContentFooter';
-import { DocumentPlusIcon, PlusIcon } from '@heroicons/react/16/solid';
+import { PlusIcon } from '@heroicons/react/16/solid';
 import ButtonLink from '@/components/forms/ButtonLink';
 
 const BooksPage = () => {

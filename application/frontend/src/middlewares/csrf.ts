@@ -1,5 +1,5 @@
 import { verifyCsrfToken } from "@/shared/csrfToken";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { Middleware } from "./createMiddlewareChain";
 
 export const csrMiddleware: Middleware = async (request, _event, next) => {

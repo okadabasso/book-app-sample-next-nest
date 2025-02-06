@@ -1,8 +1,7 @@
 'use client'
-import { Button, Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
-import { useState } from 'react'
 interface CustomDialogProps {
     isOpen: boolean;
     modal?: boolean;

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { linkButtonVariants, linkVariants } from './variants';
+import { linkVariants } from './variants';
 import Link from 'next/link';
 
 interface CustomLinkProps {

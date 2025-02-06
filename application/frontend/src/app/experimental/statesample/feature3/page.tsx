@@ -1,11 +1,9 @@
 'use client';
 import ContentFooter from "@/components/ContentFooter";
 import ContentHeader from "@/components/ContentHeader";
-import { useGlobalStore } from "@/store/useStore";
 import Link from "next/link";
-import React, { useState } from "react";
-import InputComponent from './components/InputComponent';
 import DisplayComponent from './components/DisplayComponent';
+import InputComponent from './components/InputComponent';
 
 export default function FeaturePage3() {
     return (    

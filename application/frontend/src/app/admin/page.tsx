@@ -1,5 +1,4 @@
 import TextLink from '@/components/forms/TextLink';
-import Link from 'next/link';
 import React from 'react';
 
 const AdminPage = () => {

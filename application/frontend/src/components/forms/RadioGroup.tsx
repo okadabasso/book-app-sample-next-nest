@@ -1,5 +1,4 @@
-import clsx from "clsx";
-import { checkboxVariants, textVariants } from "./variants";
+import { checkboxVariants } from "./variants";
 import Radio from "./Radio";
 
 interface RadioGroupProps {

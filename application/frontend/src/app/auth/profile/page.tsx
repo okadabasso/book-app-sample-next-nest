@@ -1,9 +1,8 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ContentHeader from '@/app/admin/books/components/ContentHeader';
 import { plainToInstance } from "class-transformer";
 import { Profile } from '@/types/Profile';
-import ContentFooter from '@/components/ContentFooter';
 
 const ProfilePage = () => {
     const [profile, setProfile] = useState<Profile>();

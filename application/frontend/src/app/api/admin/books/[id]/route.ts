@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server"
 import { apiClient } from "@/shared/apiClient"
 import { Book } from "@/types/Book"
 import logger from '@/shared/logger';
-import { log } from "console";
 
 export async function GET(
     request: NextRequest,

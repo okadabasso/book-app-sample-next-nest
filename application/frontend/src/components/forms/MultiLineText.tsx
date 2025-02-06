@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import { inputVariants, textAreaVariants } from './variants';
-import { ReactNode } from 'react';
 
 interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   variant?: keyof typeof textAreaVariants;

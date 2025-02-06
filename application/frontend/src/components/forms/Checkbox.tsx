@@ -1,5 +1,5 @@
 import React from 'react';
-import { checkboxVariants, inputVariants, radioVariants, textVariants } from './variants';
+import { checkboxVariants, textVariants } from './variants';
 import clsx from 'clsx';
 
 interface CheckboxProps {

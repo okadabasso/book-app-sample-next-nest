@@ -1,7 +1,7 @@
 'use client'
 import clsx from 'clsx';
 import { inputVariants } from './variants';
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface TextBoxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: keyof typeof inputVariants;

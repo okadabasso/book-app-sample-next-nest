@@ -1,6 +1,5 @@
-import { apiClient } from "@/shared/apiClient"
-import { Book } from "@/types/Book"
-import { NextRequest, NextResponse } from "next/server"
+import { apiClient } from "@/shared/apiClient";
+import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
     const url = new URL(request.url);

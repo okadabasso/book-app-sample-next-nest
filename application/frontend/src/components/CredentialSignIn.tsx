@@ -1,5 +1,5 @@
 'use client'
-import { ClientSafeProvider, getCsrfToken, getProviders, signIn, useSession } from "next-auth/react";
+import { ClientSafeProvider, getCsrfToken, getProviders, signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";

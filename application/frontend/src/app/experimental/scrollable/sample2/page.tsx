@@ -1,10 +1,9 @@
 'use client';
-import ContentFooter from '@/components/ContentFooter';
 import Button from '@/components/forms/Button';
 import TextLink from '@/components/forms/TextLink';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const ScrpllableSample2Page = () => {
     const [isExpanded, setIsExpanded] = useState(false);
