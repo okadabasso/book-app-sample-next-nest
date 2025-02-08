@@ -29,8 +29,8 @@ const TextBox = ({
     }
   }, [iconLeft, iconRight]);
   return (
-    <div className='relative inline-block flex flex-row items-center'>
-      <span className='absolute left-1 text-gray-500'>{iconLeft}</span>
+    <div className='relative inline-block relative'>
+      {iconLeft && (<span className='absolute left-1 top-[7px] text-gray-500 '>{iconLeft}</span>) }
       <input
         className={clsx(
           'border rounded-sm px-1 py-0.5 focus:outline-none focus:ring-2',
@@ -41,7 +41,7 @@ const TextBox = ({
         )}
         {...props}
       />
-      <span className='absolute right-1 text-gray-500'>{iconRight}</span>
+      {iconRight && (<span className='absolute right-1 top-[7px] text-gray-500'>{iconRight}</span>) }
       </div>
   );
 };

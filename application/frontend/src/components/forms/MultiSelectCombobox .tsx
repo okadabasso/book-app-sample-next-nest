@@ -32,12 +32,12 @@ const MultiSelectCombobox = forwardRef<MultiSelectComboboxRef, MultiSelectCombob
       setSelectedItems((prev) => {
         // 重複チェック: id を基準に確認
         const exists = prev.some((selectedItem) => selectedItem.id === item.id);
-    
+
         // 重複していなければ追加
         if (!exists) {
           return [...prev, item];
         }
-    
+
         // 重複している場合はそのまま
         return prev;
       });
@@ -54,7 +54,7 @@ const MultiSelectCombobox = forwardRef<MultiSelectComboboxRef, MultiSelectCombob
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === 'Enter') {
         if (!options.some((option) => option.name.toLowerCase() === query.toLowerCase())) {
-          if(selectedItems.some((item) => item.name.toLowerCase() === query.toLowerCase())) {
+          if (selectedItems.some((item) => item.name.toLowerCase() === query.toLowerCase())) {
             return;
           }
           // オプションに一致するものがない場合、入力値を追加
@@ -117,7 +117,7 @@ const MultiSelectCombobox = forwardRef<MultiSelectComboboxRef, MultiSelectCombob
             <ComboboxOptions className="absolute z-10 bg-white border mt-1 max-h-60 w-full overflow-auto rounded shadow">
               {options.map((option) => (
                 <ComboboxOption key={option.id} value={option} as={React.Fragment}>
-                  {( {active} ) => (
+                  {({ active }) => (
                     <div
                       onClick={() => handleOptionClick(option)}
                       className={`cursor-pointer p-2 ${active ? 'bg-blue-500 text-white' : ''}`}

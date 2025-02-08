@@ -1,9 +1,13 @@
 import { apiClient } from "@/shared/apiClient";
+import logger from "@/shared/logger";
 import { Book } from "@/types/Book";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
-    const response = await apiClient("/admin/books/")
+export async function GET(request: NextRequest) {
+    const url = new URL(request.url);
+    const query = url.searchParams; // クエリパラメータ 'search' を取得
+    logger.info(`GET /admin/books/?${query}`);
+    const response = await apiClient(`/admin/books/?${query}`);
     return response;
 
 }

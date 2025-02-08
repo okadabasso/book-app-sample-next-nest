@@ -9,6 +9,7 @@ import { BookEditService } from './services/BookEditService';
 import { BookFindService } from './services/BookFindService';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { TransactionManagerProvider } from '@/shared/providers/transaction-manager.provider';
+import { BookFindDto } from './dto/BookFindDto';
 
 @Controller('admin/books')
 export class BooksController {
@@ -21,9 +22,13 @@ export class BooksController {
     ) { }
 
     @Get()
-    async findAll(): Promise<BookDto[]> {
-        const books = await this.bookFindService.findAllBooks()
-        const dto = this.toBookDtoArray(books);
+    async findAll(@Query('query') query: string, @Query('offset') offset: number): Promise<BookFindDto> {
+        const books = await this.bookFindService.findAllBooks({ 
+            query: query || '',
+            limit: 10, 
+            offset });
+        const count = await this.bookFindService.totalBooks(query);
+        const dto = new BookFindDto(this.toBookDtoArray(books), query, 10, offset, count);
         return dto;
     }
     @Get("find")

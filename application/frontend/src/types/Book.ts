@@ -3,6 +3,7 @@ import { Expose, Type } from "class-transformer";
 import { Author } from "./Author";
 import { Genre } from "./Genre";
 
+
 export class Book {
     @Expose()
     id: number;
@@ -33,5 +34,26 @@ export class Book {
         this.genre = genre;
         this.genres = genres;
         this.authors = authors;
+    }
+}
+
+export class BookFind{
+    @Expose()
+    books: Book[];
+    @Expose()
+    error: string;
+    @Expose()
+    limit: number;
+    @Expose()
+    offset: number;
+    @Expose()
+    total: number;
+
+    constructor(books: Book[], error: string, limit: number, offset: number, total: number){
+        this.books = books;
+        this.error = error;
+        this.limit = limit;
+        this.offset = offset;
+        this.total = total;
     }
 }

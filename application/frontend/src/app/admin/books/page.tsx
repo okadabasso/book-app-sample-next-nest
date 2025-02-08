@@ -1,44 +1,85 @@
 "use client"
-import { Book } from '@/types/Book';
+import { Book, BookFind } from '@/types/Book';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import ContentHeader from '@/app/admin/books/components/ContentHeader';
 import { plainToInstance } from 'class-transformer';
 import ContentFooter from '@/components/ContentFooter';
-import { PlusIcon } from '@heroicons/react/16/solid';
+import { ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon, PlusIcon } from '@heroicons/react/16/solid';
 import ButtonLink from '@/components/forms/ButtonLink';
+import { useSearchParams } from 'next/navigation';
+import TextBox from '@/components/forms/TextBox';
+import Button from '@/components/forms/Button';
+import { set } from 'react-hook-form';
 
 const BooksPage = () => {
+    const searchParams = useSearchParams();
+    
     const [data, setBooks] = useState<Book[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [query, setQuery] = useState<string>(searchParams.get('query') || '');
+    const [limit, setLimit] = useState<number>(searchParams.get('limit') ? Number(searchParams.get('limit')) : 10);
+    const [offset, setOffset] = useState<number>(searchParams.get('offset') ? Number(searchParams.get('offset')) : 0);
+    const [total, setTotal] = useState<number>(0);
+
+    const fetchBooks = async (query:string, limit:number, offset:number) => {
+        try {
+            const response = await fetch(`/api/admin/books?query=${query}&offset=${offset}&limit=${limit}`);
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+            const data: BookFind = await response.json();
+            const books =  plainToInstance(Book, data.books);
+            setBooks(books);
+            setTotal(data.total);
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                setError(e.message);
+            } else {
+                setError(String(e));
+            }
+        }
+    };
 
     useEffect(() => {
-        const fetchBooks = async () => {
-            try {
-                const response = await fetch('/api/admin/books');
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.statusText}`);
-                }
-                const data: Book[] = await response.json();
-                const books =  plainToInstance(Book, data);
-                setBooks(books);
-            } catch (e: unknown) {
-                if (e instanceof Error) {
-                    setError(e.message);
-                } else {
-                    setError(String(e));
-                }
-            }
-        };
-
-        fetchBooks();
+        fetchBooks(query, limit, offset);
     }
         , []);
 
+    const handleSearch = () => {
+        fetchBooks(query, limit, offset);
+    }
+    const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setQuery(event.target.value);
+        setOffset(0);
+        setLimit(10);
+    }
+    const handleNextPage = () => {
+        const next = offset + limit < total ? offset + limit : offset;
+        setOffset(next);
+        fetchBooks(query, limit, next);
+    }
+    const handlePreviousPage = () => {
+        const previous = offset - limit < 0 ? 0 : offset - limit;
+        setOffset(previous);
+        fetchBooks(query, limit, previous);
+    }
     return (
         <div>
             <ContentHeader title='Book List' />
             {error && <p className='text-red-500'>{error}</p>}
+            <div className='flex mb-4'>
+                <div>
+                    <label className='mr-2 inline' htmlFor="query">Title:</label>
+                    <TextBox  type='text' id="query" placeholder='Search Title' onChange={(event)=>handleQueryChange(event)} />  
+                </div>
+                <div>
+                    <Button onClick={()=>{handleSearch()}}>
+                        <MagnifyingGlassIcon className='h-4 w-4 inline-block relative -top-0.5' />
+                        Search
+                    </Button>
+                </div>
+            </div>
             <table className='table-auto w-full'>
                 <thead>
                     <tr>
@@ -68,6 +109,17 @@ const BooksPage = () => {
                     ))}
                 </tbody>
             </table>
+            <div className='flex gap-4 mt-4'>
+                <Button onClick={()=>{handlePreviousPage()}} className='w-24' variant='outline-primary' size='sm'>
+                    <ChevronLeftIcon className='w-4 h-4 mr-0.5 inline-block relative -top-[1px]'></ChevronLeftIcon>
+                    Previous
+                </Button>
+                <Button onClick={()=>{handleNextPage()}} className='w-24'  variant='outline-primary' size='sm'>
+                    Next
+                    <ChevronRightIcon className='w-4 h-4 ml-0.5 inline-block relative -top-[1px]'></ChevronRightIcon>
+                </Button>
+                <span className='text-sm'>{offset + 1} - {offset + limit > total ? total : offset + limit} </span>
+            </div>
             <ContentFooter>
                 <ButtonLink href='/admin/books/create' className='w-40' variant='outline-primary'>
                 <PlusIcon className='h-4 w-4 inline-block relative -top-0.5 mr-1' />

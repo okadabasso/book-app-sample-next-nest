@@ -3,13 +3,15 @@ import { Book } from '@/entities/Book';
 import { BookAuthor } from '@/entities/BookAuthor';
 import { BookGenre } from '@/entities/BookGenre';
 import { Genre } from '@/entities/Genre';
+import { LoggingService } from '@/shared/logging/logging.service';
 import { TransactionManagerProvider } from '@/shared/providers/transaction-manager.provider';
 import { Injectable } from '@nestjs/common';
-import { DataSource, EntityManager, FindManyOptions, FindOptionsOrder, Repository } from 'typeorm';
+import { DataSource, EntityManager, FindManyOptions, FindOptionsOrder, Like, Repository } from 'typeorm';
 
 interface BookFindOption{
     limit?: number;
     offset?: number;
+    query?: string;
     order?: FindOptionsOrder<Book>;
 }
 
@@ -25,6 +27,7 @@ export class BookFindService {
     constructor(
         private readonly dataSource: DataSource,
         private readonly transactionManagerProvider: TransactionManagerProvider,
+        private readonly logger: LoggingService
     ) {
 
     }
@@ -52,20 +55,32 @@ export class BookFindService {
     async findAllBooks(option?: BookFindOption): Promise<Book[]> {
         const options: FindManyOptions<Book> = {
             relations: this.bookRelations,
-            order: { id: 'ASC' },
         };
     
         if(option){
             Object.assign(options, {
-                take: option.limit || undefined,
-                skip: option.offset || undefined,
-                order: option.order || undefined,
+                take: option.limit || 10,
+                skip: option.offset || 0,
+                order: { id: 'ASC' },
             });
         }
-    
+        if(option?.query !== ''){
+            options.where = { title: Like(`%${option.query}%`) };
+        }
+
+        this.logger.log(`Finding books with options: ${JSON.stringify(options)}`);
         const { bookRepository } = this.getRepositories();
-        const books = bookRepository.find(options);
+        const books = bookRepository.find(
+            options);
         return books;
+    }
+    async totalBooks(query: string): Promise<number> {
+        const { bookRepository } = this.getRepositories();
+        if(query === ''){
+            return await bookRepository.count();
+        }
+        const total = await bookRepository.count( { where: { title: Like(`%${query}%`) }});
+        return total;
     }
 
 }

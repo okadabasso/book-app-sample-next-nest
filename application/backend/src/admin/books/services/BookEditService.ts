@@ -70,8 +70,7 @@ export class BookEditService {
     }
     private async updateBookEntry(id:number, updateData: Partial<Book>): Promise<Book> {
         const { bookRepository } = this.getRepositories();
-        const findService = new BookFindService(this.dataSource, this.transactionManagerProvider);
-        const book = await findService.findBookById(id);
+        const book = await this.bookFindService.findBookById(id);
 
         book.title = updateData.title;
         book.author = updateData.author;
