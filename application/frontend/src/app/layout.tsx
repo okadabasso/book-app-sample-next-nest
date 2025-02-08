@@ -23,7 +23,6 @@ export default function RootLayout({
             <Header />
             <main className="flex-1  w-full mx-auto overflow-y-scroll">
               <div className="container mx-auto px-4 py-4"  style={{height: "calc(100vh - 4.5rem)"} }>
-                
                 {children}
               </div>
             </main>
