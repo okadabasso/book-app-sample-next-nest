@@ -86,11 +86,11 @@ const MultiSelectCombobox = forwardRef<MultiSelectComboboxRef, MultiSelectCombob
     return (
       <div className="relative">
         <Combobox as="div" value={selectedItems} onChange={setSelectedItems} multiple>
-          <div className="flex flex-wrap items-center border border-gray-300 rounded-sm p-2 gap-2 : focus-within:ring-2 focus-within:ring-blue-500">
+          <div className="flex flex-wrap items-center border border-gray-400 rounded-sm px-2 py-1 gap-2 : focus-within:ring-2 focus-within:ring-blue-500">
             {selectedItems.map((item) => (
               <span
                 key={item.id}
-                className="bg-gray-100 text-gray-800 px-2 py-1 rounded-sm text-sm flex items-center"
+                className="bg-gray-100 text-gray-800 px-2 py-0.5 leading-4 rounded-sm flex items-center"
               >
                 {item.name}{' '}
                 <button
@@ -120,7 +120,7 @@ const MultiSelectCombobox = forwardRef<MultiSelectComboboxRef, MultiSelectCombob
                   {({ active }) => (
                     <div
                       onClick={() => handleOptionClick(option)}
-                      className={`cursor-pointer p-2 ${active ? 'bg-blue-500 text-white' : ''}`}
+                      className={`cursor-pointer px-2 py-0.5 ${active ? 'bg-blue-500 text-white' : ''}`}
                     >
                       {option.name}
                     </div>

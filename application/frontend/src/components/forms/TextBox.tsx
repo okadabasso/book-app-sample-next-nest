@@ -29,7 +29,7 @@ const TextBox = ({
     }
   }, [iconLeft, iconRight]);
   return (
-    <div className='relative inline-block relative'>
+    <div className={clsx('relative inline-block', className)}>
       {iconLeft && (<span className='absolute left-1 top-[7px] text-gray-500 '>{iconLeft}</span>) }
       <input
         className={clsx(

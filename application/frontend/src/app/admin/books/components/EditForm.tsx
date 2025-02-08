@@ -64,7 +64,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
             // 処理が遅延している場合の確認用 (30秒待ってから処理を開始する)
             // await new Promise((resolve) => setTimeout(resolve, 30000));
             const selectedItems = multiSelectRef.current?.getSelectedItems();
-            formData.genres = selectedItems?.map((item) => ({ id: item.id, name: item.name })) ?? [];
+            formData.genres = selectedItems?.map((item) => ({ id: item.id, name: item.name, isNew: item.isNew })) ?? [];
             onSave(formData);
     
             console.log("送信が成功しました");
@@ -100,7 +100,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
             )}
             <div className='mb-4'>
                 <div className='mb-1'><label htmlFor="title">Title<span className="relative -top-0.5  bg-red-600 text-white ml-2 -mt-6  p-0.5 text-xs">必須</span></label></div>
-                <div className='relative'>
+                <div className='w-full'>
                     <TextBox
                         type="text"
                         id="title"
@@ -130,7 +130,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         id="author"
                         value={formData.author}
                         maxLength={64}
-                        className='border border-gray-300 rounded-sm p-1 w-full'
+                        className='w-full'
                         {...register("author", {
                             required: "Author is required",
                             maxLength: { value: 64, message: "Author is too long" },
@@ -152,7 +152,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         id="publishedYear"
                         value={formData.publishedYear}
                         maxLength={4}
-                        className='border border-gray-300 rounded-sm p-1 w-full'
+                        className='w-full'
                         {...register("publishedYear", {
                             maxLength: { value: 4, message: "publishedYear is too long" },
                             pattern: { value: /^[0-9]*$/, message: "publishedYear is invalid" },

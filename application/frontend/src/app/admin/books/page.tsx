@@ -109,16 +109,18 @@ const BooksPage = () => {
                     ))}
                 </tbody>
             </table>
-            <div className='flex gap-4 mt-4'>
-                <Button onClick={()=>{handlePreviousPage()}} className='w-24' variant='outline-primary' size='sm'>
+            <div className='flex gap-4 mt-2'>
+                <Button onClick={()=>{handlePreviousPage()}} className='w-24' variant='outline-default' size='sm'>
                     <ChevronLeftIcon className='w-4 h-4 mr-0.5 inline-block relative -top-[1px]'></ChevronLeftIcon>
                     Previous
                 </Button>
-                <Button onClick={()=>{handleNextPage()}} className='w-24'  variant='outline-primary' size='sm'>
+                <Button onClick={()=>{handleNextPage()}} className='w-24'  variant='outline-default' size='sm'>
                     Next
                     <ChevronRightIcon className='w-4 h-4 ml-0.5 inline-block relative -top-[1px]'></ChevronRightIcon>
                 </Button>
-                <span className='text-sm'>{offset + 1} - {offset + limit > total ? total : offset + limit} </span>
+                <div className='align-middle'>
+                    <span className='text-sm'>{offset + 1} - {offset + limit > total ? total : offset + limit} </span>
+                </div>
             </div>
             <ContentFooter>
                 <ButtonLink href='/admin/books/create' className='w-40' variant='outline-primary'>
