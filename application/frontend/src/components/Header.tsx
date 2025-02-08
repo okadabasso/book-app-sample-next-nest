@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import SignInLink from './SignInLink';
 
+
 export default function Header() {
   return (
     <div className='top-0 w-full z-10 bg-white'>
@@ -16,7 +17,7 @@ export default function Header() {
       </header>
       {/* ヘッダーの下 1rem 分の隙間を入れる */}
       <div className='relative'>
-        <div className="absolute -bottom-4 h-4 bg-white" style={{width: "calc(100% - 16px)"}}></div>
+        <div className="absolute -bottom-4 h-4 bg-white" style={{ width: "calc(100% - 16px)" }}></div>
       </div>
     </div>
   );
