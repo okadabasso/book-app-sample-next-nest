@@ -15,7 +15,7 @@ declare module 'next-auth' {
     }
 }
 
-export const authOptions: AuthOptions = {
+const authOptions: AuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
     providers: [
         Google({
@@ -70,7 +70,7 @@ export const authOptions: AuthOptions = {
     session: {
         strategy: 'jwt',
         maxAge: 1 * 24 * 60 * 60 , // 1 day
-
+        updateAge: 24 * 60 * 60, // 24 hours
     },
     pages: {
         signIn: '/auth/signin',

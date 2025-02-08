@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { ClientSafeProvider, getProviders, signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, Suspense, useEffect, useState } from "react";
 import { LiteralUnion } from "react-hook-form";
 import { BuiltInProviderType } from "next-auth/providers/index";
 import CredentialSignIn from "@/components/CredentialSignIn";
@@ -17,7 +17,7 @@ const authStyle: Record<string, { className: string; color: string, icon: ReactE
 };
 
 
-export default function SignIn({ }) {
+const SignInForm = ({ }) => {
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get('callbackUrl') || '/';
     const [providers, setProviders] = useState<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null>(null);
@@ -68,3 +68,13 @@ export default function SignIn({ }) {
         </div>
     );
 }
+
+const SignIn = () => {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <SignInForm></SignInForm>
+        </Suspense>
+    );
+}
+
+export default SignIn;

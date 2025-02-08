@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { jwtVerify, SignJWT } from 'jose';
+import FormToken from '@/types/FormToken';
 
 const secret = process.env.CSRF_SECRET;
 const algorithm = 'HS256';

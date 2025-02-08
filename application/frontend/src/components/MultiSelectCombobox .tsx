@@ -12,8 +12,12 @@ interface MultiSelectComboboxProps<T> {
   fetchOptions: (q: string) => Promise<T[]>;
   initialSelectedItems?: T[];  // 初期選択項目
 }
+// MultiSelectComboboxRef 型の定義
+export interface MultiSelectComboboxRef {
+  getSelectedItems: () => Option[];
+}
 
-const MultiSelectCombobox = forwardRef<any, MultiSelectComboboxProps<Option>>(
+const MultiSelectCombobox = forwardRef<MultiSelectComboboxRef, MultiSelectComboboxProps<Option>>(
   ({ fetchOptions, initialSelectedItems = [] }, ref,) => {
     const [selectedItems, setSelectedItems] = useState<Option[]>(initialSelectedItems);
     const [query, setQuery] = useState('');
@@ -129,5 +133,6 @@ const MultiSelectCombobox = forwardRef<any, MultiSelectComboboxProps<Option>>(
     );
   }
 );
-
+// Error: Component definition is missing display name with react/display-name
+MultiSelectCombobox.displayName = 'MultiSelectCombobox';
 export default MultiSelectCombobox;

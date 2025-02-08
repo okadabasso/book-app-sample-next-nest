@@ -1,6 +1,5 @@
 import { apiClient } from "@/shared/apiClient";
 import { Book } from "@/types/Book";
-import { NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
@@ -8,7 +7,7 @@ export async function GET() {
     return response;
 
 }
-export async function POST(request: NextRequest, response: NextApiResponse) {
+export async function POST(request: NextRequest) {
     try {
         const book: Book = await request.json();
         if (!book) {
@@ -27,7 +26,7 @@ export async function POST(request: NextRequest, response: NextApiResponse) {
             }
         }
     } catch (error) {
-        response.status(401).json({ message: (error as Error).message });
+        return NextResponse.json({ message: (error as Error).message }, { status: 401 });
     }
     
 }

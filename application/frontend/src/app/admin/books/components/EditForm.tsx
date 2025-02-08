@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Book } from '@/types/Book';
-import MultiSelectCombobox from '@/components/MultiSelectCombobox ';
+import MultiSelectCombobox, { MultiSelectComboboxRef } from '@/components/MultiSelectCombobox ';
 import ContentFooter from '@/components/ContentFooter';
 import { useSubmitHandler } from '@/hooks/useSubmitHandler';
 import { CheckIcon } from '@heroicons/react/16/solid';
@@ -64,13 +64,13 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
             // 処理が遅延している場合の確認用 (30秒待ってから処理を開始する)
             // await new Promise((resolve) => setTimeout(resolve, 30000));
             const selectedItems = multiSelectRef.current?.getSelectedItems();
-            formData.genres = selectedItems;
+            formData.genres = selectedItems?.map((item) => ({ id: item.id, name: item.name })) ?? [];
             onSave(formData);
     
             console.log("送信が成功しました");
         } catch (error) {
             console.error("送信中にエラーが発生しました:", error);
-            setMessage(["送信中にエラーが発生しました: " + (error as any).message]);
+            setMessage(["送信中にエラーが発生しました: " + (error as Error).message]);
             return;
         }
     });
@@ -80,7 +80,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
         onCancel();
     }
     // multi select
-    const multiSelectRef = useRef<any>(null); // MultiSelectCombobox の ref
+    const multiSelectRef = useRef<MultiSelectComboboxRef>(null); // MultiSelectCombobox の ref
     const fetchOptions = async (query: string): Promise<Option[]> => {
         const loadGenres = async (query: string) => {
             const genres = await fetch(`/api/admin/genres?query=${query}`);

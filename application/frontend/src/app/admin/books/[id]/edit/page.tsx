@@ -6,6 +6,7 @@ import fetchBook from '@/app/admin/books/functions/fetchBook';
 import EditForm from '@/app/admin/books/components/EditForm';
 import ContentHeader from '@/app/admin/books/components/ContentHeader';
 import { getCsrfHeader as createCsrfHeader, createCsrfToken } from '@/shared/csrfToken';
+import FormToken from '@/types/FormToken';
 
 const EditBookPage = () => {
     const { id } = useParams();
