@@ -133,6 +133,6 @@ const MultiSelectCombobox = forwardRef<MultiSelectComboboxRef, MultiSelectCombob
     );
   }
 );
-// Error: Component definition is missing display name with react/display-name
+// エラー Component definition is missing display name を解消するために displayName を設定
 MultiSelectCombobox.displayName = 'MultiSelectCombobox';
 export default MultiSelectCombobox;
