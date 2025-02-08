@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Book } from '@/types/Book';
-import MultiSelectCombobox, { MultiSelectComboboxRef } from '@/components/MultiSelectCombobox ';
+import MultiSelectCombobox, { MultiSelectComboboxRef } from '@/components/forms/MultiSelectCombobox ';
 import ContentFooter from '@/components/ContentFooter';
 import { useSubmitHandler } from '@/hooks/useSubmitHandler';
 import { CheckIcon } from '@heroicons/react/16/solid';
