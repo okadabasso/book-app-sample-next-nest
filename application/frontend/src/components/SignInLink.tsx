@@ -36,10 +36,11 @@ export default function SignInLink() {
                         <MenuItems anchor="bottom" 
                             style={{ width: `${buttonWidth}px` }}  
                             modal={false}
-                            className="absolute right-0 px-2 py-1 origin-top-right bg-gray-900 text-white divide-y divide-gray-100 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-[100] cursor-pointer">
+                            className="absolute right-0 px-2 py-1 origin-top-right bg-gray-900 text-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-[100] cursor-pointer">
                             <MenuItem >
                                 <a role="button" className="inline-block w-full" href="/auth/profile">Profile</a>
                             </MenuItem>
+                            <div className="border-t border-gray-400 my-1"></div>
                             <MenuItem >
                                 <a role="button" onClick={() => handleSignOut()} className="inline-block w-full"><ArrowRightStartOnRectangleIcon className="inline h-5 w-5 text-white mr-1" />Sign Out</a>
                             </MenuItem>
