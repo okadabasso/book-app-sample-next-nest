@@ -9,23 +9,13 @@ import Select from '@/components/forms/Select';
 import TextBox from '@/components/forms/TextBox';
 import TextContent from '@/components/forms/TextContent';
 import { ArrowDownIcon, CalendarIcon, MagnifyingGlassIcon } from '@heroicons/react/16/solid';
-import React, { useState } from 'react';
+import React from 'react';
 
-const ExperimentalFormPage: React.FC = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        message: ''
-    });
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log('Form data submitted:', formData);
-    };
-
+const ExperimentalFormPage = () => {
     return (
         <div className='pb-4'>
             <h1>Experimental Form</h1>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <div className='space-y-4'>
                     <div>
                         <h3>テキスト</h3>

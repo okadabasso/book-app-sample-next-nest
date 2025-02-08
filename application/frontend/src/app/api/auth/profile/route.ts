@@ -1,8 +1,8 @@
 import { apiClient } from "@/shared/apiClient";
 import { getServerSession } from "next-auth";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     const session = await getServerSession();
 
     if (!session) {

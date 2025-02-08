@@ -5,7 +5,8 @@ import React, { useState } from 'react';
 import CustomDialog from '@/components/CustomDialog';
 import ItemTable from '@/app/experimental/dialog/ItemTable';
 import TextLink from '@/components/forms/TextLink';
-const ExperimentalDialogPage: React.FC = () => {
+
+const ExperimentalDialogPage = () => {
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -15,7 +16,6 @@ const ExperimentalDialogPage: React.FC = () => {
     const handleClose = () => {
         setOpen(false);
     };
-    const [isExpanded, setIsExpanded] = useState(false);
 
     return (
         <div className='overflow-hidden flex flex-col' style={{ height: 'calc(100vh - 6.5rem)' }}>

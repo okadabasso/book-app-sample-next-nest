@@ -1,12 +1,9 @@
 'use client';
 import Button from '@/components/forms/Button';
-import { useState } from 'react';
 import ItemTable from '../../dialog/ItemTable';
 import TextLink from '@/components/forms/TextLink';
 
 const ScrpllableSample2Page = () => {
-    const [isExpanded, setIsExpanded] = useState(false);
-
     return (
         <div className='overflow-hidden flex flex-col' style={{ height: 'calc(100vh - 6.5rem)' }}>
             <div>content header</div>

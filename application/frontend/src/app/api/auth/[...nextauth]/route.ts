@@ -80,6 +80,7 @@ export const authOptions: AuthOptions = {
         //  newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
     },
     callbacks: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         async signIn({ user, account, profile, email, credentials }) {
             return true
         },
@@ -90,6 +91,7 @@ export const authOptions: AuthOptions = {
             else if (new URL(url).origin === baseUrl) return url
             return baseUrl
         },
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         jwt({ token, account, user }) {
             if(user){
 

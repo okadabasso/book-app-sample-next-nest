@@ -4,11 +4,15 @@ import EditForm from '@/app/admin/books/components/EditForm';
 import { Book } from '@/types/Book';
 import ContentHeader from '@/app/admin/books/components/ContentHeader';
 import { getCsrfHeader, createCsrfToken } from '@/shared/csrfToken';
+import FormToken from '@/types/FormToken';
 
 const CreateBookPage = () => {
     const year = (new Date()).getFullYear();
     const [error, setError] = useState<string | null>(null);
-    const [book, setBook] = useState<Book>({
+    /**
+     * dummy book data
+     */
+    const book = {
         id: 0,
         title: '',
         author: '',
@@ -17,7 +21,7 @@ const CreateBookPage = () => {
         description: '',
         authors: [],
         genres: [],
-    });
+    };
     const [formToken, setFormToken] = useState<FormToken>({formId:'', token:''});
 
     useEffect(() => {

@@ -1,5 +1,6 @@
 import { checkboxVariants } from "./variants";
 import Radio from "./Radio";
+import clsx from "clsx";
 
 interface RadioGroupProps {
     name: string;
@@ -17,7 +18,12 @@ const RadioGroup = ({name, options, variant = 'default', className, onChange, ..
         <div className="flex flex-row space-x-2">
             {options.map((option) => ( 
                 <div key={option.value} className="flex items-center" >
-                    <Radio name={name} value={option.value} text={option.text} variant={variant} onChange={onChange} {...props}></Radio>
+                    <Radio 
+                        name={name} 
+                        value={option.value} 
+                        text={option.text}
+                        className={clsx(checkboxVariants[variant], className)} 
+                        onChange={onChange} {...props}></Radio>
                 </div>
             ))}
 

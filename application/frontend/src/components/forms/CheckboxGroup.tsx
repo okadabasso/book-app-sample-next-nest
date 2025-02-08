@@ -1,5 +1,6 @@
 import { checkboxVariants } from "./variants";
 import Checkbox from "./Checkbox";
+import clsx from "clsx";
 
 interface CheckboxProps {
     name: string;
@@ -17,7 +18,13 @@ const CheckboxGroup = ({name, options, variant = 'default', className, onChange,
         <div className="flex flex-row space-x-2">
             {options.map((option) => ( 
                 <div key={option.value} className="flex items-center" >
-                    <Checkbox name={name} value={option.value} text={option.text} variant={variant} onChange={onChange} {...props}></Checkbox>
+                    <Checkbox name={name} 
+                        value={option.value} 
+                        text={option.text} 
+                        variant={variant} 
+                        onChange={onChange} {...props}
+                        className={clsx(checkboxVariants[variant], className)}
+                    ></Checkbox>
                 </div>
             ))}
 

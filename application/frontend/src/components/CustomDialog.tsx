@@ -4,7 +4,6 @@ import { XMarkIcon } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
 interface CustomDialogProps {
     isOpen: boolean;
-    modal?: boolean;
     onClose: () => void;
     headerContent?: React.ReactNode;
     footerContent?: React.ReactNode;
@@ -17,7 +16,7 @@ const panelClasses = {
     closed: 'transform-[scale(95%)] opacity-0',
 }
 
-export default function CustomDialog({ headerContent, footerContent, children, isOpen, className, modal = false, onClose }: CustomDialogProps) {
+export default function CustomDialog({ headerContent, footerContent, children, isOpen, className, onClose }: CustomDialogProps) {
 
     return (
         <>

@@ -27,7 +27,7 @@ const TextBox = ({
     if(iconLeft) {
       setPaddingLeft('pl-6');
     }
-  });
+  }, [iconLeft, iconRight]);
   return (
     <div className='relative inline-block flex flex-row items-center'>
       <span className='absolute left-1 text-gray-500'>{iconLeft}</span>

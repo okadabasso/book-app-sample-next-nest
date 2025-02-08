@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { useRef, useEffect } from 'react';
 
 interface ScrollViewProps {
@@ -16,7 +17,7 @@ const ScrollView = ({ children, className }: ScrollViewProps) => {
 
     return (
         <>
-        <div className='scrollable-table-container' ref={scrollRef}>
+        <div className={ clsx('scrollable-table-container', className)}  ref={scrollRef}>
                     {children}1
         </div>
         </>

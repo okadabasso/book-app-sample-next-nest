@@ -1,5 +1,5 @@
 'use client'
-import { ClientSafeProvider, getCsrfToken, getProviders, signIn } from "next-auth/react";
+import { getCsrfToken, signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -16,24 +16,15 @@ export default function CredentialSignIn() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '';
 
-  const [provider, setProvider] = useState<ClientSafeProvider | null>(null);
   useEffect(() => {
     (async () => {
-
-      const providers = await getProviders();
-      if (providers == null) {
-        return;
-      }
-      const credentialProvider = providers['credentials']
-      setProvider(credentialProvider);
-
       const token = await getCsrfToken();
       setCsrfToken(token ?? '');
     })();
   }, []);
 
   const signInUser = async (data: IFormValues) => {
-    await signIn<any>("credentials", {
+    await signIn("credentials", {
       redirect: true,
       username: data.username,
       password: data.password,

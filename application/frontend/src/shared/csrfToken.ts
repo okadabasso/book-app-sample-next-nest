@@ -4,14 +4,6 @@ import { jwtVerify, SignJWT } from 'jose';
 const secret = process.env.CSRF_SECRET;
 const algorithm = 'HS256';
 
-function generateRandomString(length: number): string {
-    const array = new Uint8Array(length);
-    crypto.getRandomValues(array);
-  
-    // Base64-likeエンコード（URLセーフ）
-    return Array.from(array, byte => byte.toString(36)).join('').slice(0, length);
-  }
-
 export async function generateSignedCsrfToken(formId: string): Promise<FormToken> {
     const secretKey = new TextEncoder().encode(secret); // 秘密鍵をエンコード
 
@@ -38,7 +30,7 @@ export async function verifyCsrfToken(request: Request): Promise<boolean> {
         const result =  decoded.formId === formId;
 
         return result;
-    } catch (error) {
+    } catch {
         return false;
     }
 }

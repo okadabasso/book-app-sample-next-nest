@@ -3,7 +3,6 @@ import ContentFooter from "@/components/ContentFooter";
 import ContentHeader from "@/components/ContentHeader";
 import { useGlobalStore } from "@/store/useStore";
 import Link from "next/link";
-import React, { useState } from "react";
 
 export default function FeaturePage2() {
 

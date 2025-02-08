@@ -20,7 +20,7 @@ export default function SignInLink() {
         if (buttonRef.current) {
             setButtonWidth(buttonRef.current.offsetWidth); // ボタンの幅を取得して状態に設定
           }
-    }, [session, buttonRef.current]);
+    }, [session]);
 
     const handleSignOut = async () => {
         await signOut({ callbackUrl: '/' })

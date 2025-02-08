@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { buttonVariants, inputVariants } from './variants';
+import { buttonVariants } from './variants';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: keyof typeof buttonVariants;

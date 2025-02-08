@@ -1,5 +1,4 @@
 import { Expose } from "class-transformer";
-import exp from "constants";
 
 export class Genre {
     @Expose()

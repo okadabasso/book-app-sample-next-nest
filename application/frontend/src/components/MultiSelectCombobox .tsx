@@ -18,7 +18,6 @@ const MultiSelectCombobox = forwardRef<any, MultiSelectComboboxProps<Option>>(
     const [selectedItems, setSelectedItems] = useState<Option[]>(initialSelectedItems);
     const [query, setQuery] = useState('');
     const [options, setOptions] = useState<Option[]>([]);
-    const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [isOpen, setIsOpen] = useState(false);
     // 親に選択された項目を返す関数
     useImperativeHandle(ref, () => ({
@@ -112,12 +111,11 @@ const MultiSelectCombobox = forwardRef<any, MultiSelectComboboxProps<Option>>(
           </div>
           {isOpen && (
             <ComboboxOptions className="absolute z-10 bg-white border mt-1 max-h-60 w-full overflow-auto rounded shadow">
-              {options.map((option, index) => (
+              {options.map((option) => (
                 <ComboboxOption key={option.id} value={option} as={React.Fragment}>
                   {( {active} ) => (
                     <div
                       onClick={() => handleOptionClick(option)}
-                      onMouseEnter={() => setActiveIndex(index)}
                       className={`cursor-pointer p-2 ${active ? 'bg-blue-500 text-white' : ''}`}
                     >
                       {option.name}

@@ -18,7 +18,8 @@ const Checkbox = ({name, value, text, variant = 'default', className, disabled, 
 
             <input
                 type="checkbox"
-                name='name'
+                name={name}
+                value={value}
                 className={clsx("mr-1", checkboxVariants[variant], className)}
                 disabled={disabled}
                 onChange={onChange}
