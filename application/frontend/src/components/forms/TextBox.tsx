@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 interface TextBoxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: keyof typeof inputVariants;
   className?: string;
+  width?: string;
   iconLeft?: React.ReactNode;
   iconRight?: React.ReactNode;
 }
@@ -13,6 +14,7 @@ interface TextBoxProps extends React.InputHTMLAttributes<HTMLInputElement> {
 const TextBox = ({
   variant = 'default',
   className,
+  width,
   iconLeft,
   iconRight,
   ...props
@@ -29,7 +31,7 @@ const TextBox = ({
     }
   }, [iconLeft, iconRight]);
   return (
-    <div className={clsx('relative inline-block', className)}>
+    <div className={clsx('relative inline-block', width)}>
       {iconLeft && (<span className='absolute left-1 top-[7px] text-gray-500 '>{iconLeft}</span>) }
       <input
         className={clsx(
@@ -37,7 +39,8 @@ const TextBox = ({
           paddingRight,
           paddingLeft,
           inputVariants[variant],
-          className
+          className,
+          width
         )}
         {...props}
       />

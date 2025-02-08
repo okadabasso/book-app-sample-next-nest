@@ -106,7 +106,8 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         id="title"
                         value={formData.title}
                         maxLength={100}
-                        className={clsx('w-full', errors.title && inputVariants.danger)} 
+                        className={clsx(errors.title && inputVariants.danger)} 
+                        width='w-full'
                         title={errors.title?.message as string}
                         {...register("title", {
                             required: "Title is required",
@@ -130,7 +131,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         id="author"
                         value={formData.author}
                         maxLength={64}
-                        className='w-full'
+                        width='w-full'
                         {...register("author", {
                             required: "Author is required",
                             maxLength: { value: 64, message: "Author is too long" },
@@ -152,7 +153,8 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         id="publishedYear"
                         value={formData.publishedYear}
                         maxLength={4}
-                        className='w-full'
+                        className='text-right'
+                        width='w-16'
                         {...register("publishedYear", {
                             maxLength: { value: 4, message: "publishedYear is too long" },
                             pattern: { value: /^[0-9]*$/, message: "publishedYear is invalid" },

@@ -59,7 +59,7 @@ export class BookFindService {
     
         if(option){
             Object.assign(options, {
-                take: option.limit || 10,
+                take: option.limit || process.env.DEFAULT_PAGE_SIZE,
                 skip: option.offset || 0,
                 order: { id: 'ASC' },
             });

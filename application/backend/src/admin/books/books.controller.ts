@@ -25,7 +25,7 @@ export class BooksController {
     async findAll(@Query('query') query: string, @Query('offset') offset: number): Promise<BookFindDto> {
         const books = await this.bookFindService.findAllBooks({ 
             query: query || '',
-            limit: 10, 
+            limit: Number(process.env.DEFAULT_LIMIT) || 20, 
             offset });
         const count = await this.bookFindService.totalBooks(query);
         const dto = new BookFindDto(this.toBookDtoArray(books), query, 10, offset, count);

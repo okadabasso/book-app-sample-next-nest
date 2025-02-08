@@ -15,11 +15,15 @@ import { set } from 'react-hook-form';
 const BooksPage = () => {
     const searchParams = useSearchParams();
     
+    const queryParam = searchParams.get('query') || '';
+    const limitParam = searchParams.get('limit') || process.env.NEXT_PUBLIC_DEFAULT_LIMIT || '20';
+    const offsetParam = searchParams.get('offset') || '0';
+  
     const [data, setBooks] = useState<Book[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [query, setQuery] = useState<string>(searchParams.get('query') || '');
-    const [limit, setLimit] = useState<number>(searchParams.get('limit') ? Number(searchParams.get('limit')) : 10);
-    const [offset, setOffset] = useState<number>(searchParams.get('offset') ? Number(searchParams.get('offset')) : 0);
+    const [query, setQuery] = useState<string>(queryParam);
+    const [limit, setLimit] = useState<number>(Number(limitParam));
+    const [offset, setOffset] = useState<number>(Number(offsetParam));
     const [total, setTotal] = useState<number>(0);
 
     const fetchBooks = async (query:string, limit:number, offset:number) => {
@@ -120,6 +124,7 @@ const BooksPage = () => {
                 </Button>
                 <div className='align-middle'>
                     <span className='text-sm'>{offset + 1} - {offset + limit > total ? total : offset + limit} </span>
+                    <span className='text-sm'>of {total}</span>
                 </div>
             </div>
             <ContentFooter>
