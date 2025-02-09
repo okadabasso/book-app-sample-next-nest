@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { jwtVerify, SignJWT } from 'jose';
 import FormToken from '@/types/FormToken';
+import { api } from './apiClient';
 
 const secret = process.env.CSRF_SECRET;
 const algorithm = 'HS256';
@@ -38,9 +39,9 @@ export async function verifyCsrfToken(request: Request): Promise<boolean> {
 
 export async function createCsrfToken(): Promise<{ formId: string, token: string, }> {
     const formId = uuidv4();
-    const response = await fetch("/api/csrf", {
-        method: 'POST',
-        body: JSON.stringify({ formId }),
+    const response = await api.post("/api/csrf", {
+        body: { formId },
+        local: true,
     });
     const token = await response.json();
     return token;

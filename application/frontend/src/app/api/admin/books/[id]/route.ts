@@ -13,7 +13,7 @@ export async function GET(
         return NextResponse.json({ error: "Book ID is required" }, { status: 400 });
     }
 
-    const response = await api.get(`/admin/books/find`, { id });
+    const response = await api.get(`/admin/books/find`, { params: { id }, local:false });
     return response;
 }
 export async function POST(request: NextRequest) {
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Book data is required" }, { status: 400 });
     }
 
-    const response = await api.post('/admin/books/create', book);
+    const response = await api.post('/admin/books/create',{body: book});
     return response;
 }
 
@@ -33,7 +33,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
         return NextResponse.json({ error: "Book ID and data are required" }, { status: 400 });
     }
 
-    const response = await api.put(`/admin/books/${id}`,book);
+    const response = await api.put(`/admin/books/${id}`,{body: book});
     return response;
 }
 
@@ -43,6 +43,6 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
         return NextResponse.json({ error: "Book ID is required" }, { status: 400 });
     }
 
-    const response = await api.delete(`/admin/books/delete?id=${id}`);
+    const response = await api.delete(`/admin/books/delete}`, {params: { id }});
     return response;
 }

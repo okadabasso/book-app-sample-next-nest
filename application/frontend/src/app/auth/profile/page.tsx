@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import ContentHeader from '@/app/admin/books/components/ContentHeader';
 import { plainToInstance } from "class-transformer";
 import { Profile } from '@/types/Profile';
+import { api } from '@/shared/apiClient';
 
 const ProfilePage = () => {
     const [profile, setProfile] = useState<Profile>();
@@ -11,7 +12,7 @@ const ProfilePage = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await fetch('/api/auth/profile');
+                const response = await api.get('/api/auth/profile', { local: true });
                 if (!response.ok) {
                     throw new Error(`Error: ${response.statusText}`);
                 }

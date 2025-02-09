@@ -1,5 +1,12 @@
-const BASE_URL = process.env.BACKEND_URL;
+const BACKEND_URL = process.env.BACKEND_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
+interface RequestOptions {
+    params?: Record<string, string | number | boolean>;
+    body?: unknown;
+    headers?: Record<string, string>;
+    local?: boolean;
+}
 
 /**
  * 共通の API クライアントラッパー関数
@@ -8,16 +15,13 @@ const BASE_URL = process.env.BACKEND_URL;
  */
 async function apiRequest(
     endpoint: string,
-    options: {
-        method: 'GET' | 'POST' | 'PUT' | 'DELETE';
-        params?: Record<string, string>;
-        body?: unknown;
-        headers?: Record<string, string>;
-    }
+    options: RequestOptions  & { method: 'GET' | 'POST' | 'PUT' | 'DELETE' },
 ): Promise<Response> {
-    const url = new URL(`${BASE_URL}${endpoint}`);
+    const url = options.local ? new URL(endpoint, BASE_URL) : new URL(endpoint, BACKEND_URL);
+    console.log("url", url);
+    console.log("options", options);
     if (options.params) {
-        Object.entries(options.params).forEach(([key, value]) => url.searchParams.append(key, value));
+        Object.entries(options.params).forEach(([key, value]) => url.searchParams.append(key, value.toString()));
     }
 
     const response = await fetch(url.toString(), {
@@ -38,14 +42,14 @@ async function apiRequest(
 }
 
 export const api = {
-    get: (endpoint: string, params?: Record<string, string>, headers?: Record<string, string>) =>
-        apiRequest(endpoint, { method: 'GET', params, headers }),
-    post: (endpoint: string, body?: unknown, headers?: Record<string, string>) =>
-        apiRequest(endpoint, { method: 'POST', body, headers }),
-    put: (endpoint: string, body?: unknown, headers?: Record<string, string>) =>
-        apiRequest(endpoint, { method: 'PUT', body, headers }),
-    delete: (endpoint: string, body?: unknown, headers?: Record<string, string>) =>
-        apiRequest(endpoint, { method: 'DELETE', body, headers }),
+    get: (endpoint: string, options: RequestOptions) =>
+        apiRequest(endpoint, {method: 'GET', ...options}),
+    post: (endpoint: string, options: RequestOptions) =>
+        apiRequest(endpoint, {method: 'POST', ...options}),
+    put: (endpoint: string, options: RequestOptions) =>
+        apiRequest(endpoint, {method: 'PUT', ...options}),
+    delete: (endpoint: string, options: RequestOptions) =>
+        apiRequest(endpoint, {method: 'DELETE', ...options}),
 };
 
 export function  searchParamsToRecord(searchParams: URLSearchParams): Record<string, string> {

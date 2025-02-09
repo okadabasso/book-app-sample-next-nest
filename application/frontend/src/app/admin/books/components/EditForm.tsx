@@ -12,6 +12,7 @@ import Button from '@/components/forms/Button';
 import MultiLineText from '@/components/forms/MultiLineText';
 import clsx from 'clsx';
 import { inputVariants } from '@/components/forms/variants';
+import { api } from '@/shared/apiClient';
 
 interface EditFormProps {
     book?: Book | null;
@@ -83,7 +84,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
     const multiSelectRef = useRef<MultiSelectComboboxRef>(null); // MultiSelectCombobox の ref
     const fetchOptions = async (query: string): Promise<Option[]> => {
         const loadGenres = async (query: string) => {
-            const genres = await fetch(`/api/admin/genres?query=${query}`);
+            const genres = await api.get('/api/admin/genres', {params : {query: query}, local: true});
             return genres.json();
         };
         return loadGenres(query);

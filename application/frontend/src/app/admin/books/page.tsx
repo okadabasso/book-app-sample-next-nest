@@ -11,6 +11,7 @@ import { useSearchParams } from 'next/navigation';
 import TextBox from '@/components/forms/TextBox';
 import Button from '@/components/forms/Button';
 import { set } from 'react-hook-form';
+import { api } from '@/shared/apiClient';
 
 const BooksPage = () => {
     const searchParams = useSearchParams();
@@ -27,7 +28,8 @@ const BooksPage = () => {
     const [total, setTotal] = useState<number>(0);
     const fetchBooks = async (query: string, limit: number, offset: number) => {
         try {
-            const response = await fetch(`/api/admin/books?query=${query}&offset=${offset}&limit=${limit}`);
+            // const response = await fetch(`/api/admin/books?query=${query}&offset=${offset}&limit=${limit}`);
+            const response = await api.get('/api/admin/books', {params: { query:query, offset: offset, limit: limit}, local: true});    
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }

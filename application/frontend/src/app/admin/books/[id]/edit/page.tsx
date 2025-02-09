@@ -7,6 +7,7 @@ import EditForm from '@/app/admin/books/components/EditForm';
 import ContentHeader from '@/app/admin/books/components/ContentHeader';
 import { getCsrfHeader as createCsrfHeader, createCsrfToken } from '@/shared/csrfToken';
 import FormToken from '@/types/FormToken';
+import { api } from '@/shared/apiClient';
 
 const EditBookPage = () => {
     const { id } = useParams();
@@ -47,12 +48,12 @@ const EditBookPage = () => {
     const handleSave = (book: Book) => {
         const saveBook = async (book: Book) => {
             try {
-                const response = await fetch(
+                const response = await api.put(
                     `/api/admin/books/${book.id}`,
                     { 
-                        method: 'PUT', 
-                        body: JSON.stringify(book),
-                        headers: createCsrfHeader(formToken)  
+                        body: book,
+                        headers: createCsrfHeader(formToken),
+                        local: true
                     }
                 );
                 if (!response.ok) {

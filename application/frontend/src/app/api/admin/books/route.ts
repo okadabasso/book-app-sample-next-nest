@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     const params = searchParamsToRecord(url.searchParams);
     
     logger.info(`GET /admin/books`);
-    const response = await api.get(`/admin/books/`, params);
+    const response = await api.get(`/admin/books/`, { params });
     return response;
 
 }
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
         }
     
         try {
-            const response = await api.post('/admin/books', book);
+            const response = await api.post('/admin/books', { body: book});
             return response;
         }   
         catch (e: unknown) {

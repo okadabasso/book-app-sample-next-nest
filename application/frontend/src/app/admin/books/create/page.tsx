@@ -5,6 +5,7 @@ import { Book } from '@/types/Book';
 import ContentHeader from '@/app/admin/books/components/ContentHeader';
 import { getCsrfHeader, createCsrfToken } from '@/shared/csrfToken';
 import FormToken from '@/types/FormToken';
+import { api } from '@/shared/apiClient';
 
 const CreateBookPage = () => {
     const year = (new Date()).getFullYear();
@@ -34,12 +35,11 @@ const CreateBookPage = () => {
     const handleSave = (book: Book) => {
         const saveBook = async (book: Book) => {
             try {
-                const response = await fetch(
-                    '/api/admin/books',
-                    { 
-                        method: 'POST', 
-                        body: JSON.stringify(book),
-                        headers: getCsrfHeader(formToken)   ,
+                const response = await  api.post(
+                    '/api/admin/books',{
+                        body: book,
+                        headers: getCsrfHeader(formToken),
+                        local: true
                     }
                 );
                 if (!response.ok) {
