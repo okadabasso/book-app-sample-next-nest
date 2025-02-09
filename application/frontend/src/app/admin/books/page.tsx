@@ -80,7 +80,7 @@ const BooksPage = () => {
                     <TextBox type='text' id="query" placeholder='Search Title' onChange={(event) => handleQueryChange(event)} />
                 </div>
                 <div>
-                    <Button onClick={() => { handleSearch() }}>
+                    <Button onClick={() => { handleSearch() }} size='sm' className='w-24 h-7'>
                         <MagnifyingGlassIcon className='h-4 w-4 inline-block relative -top-0.5' />
                         Search
                     </Button>
@@ -119,7 +119,7 @@ const BooksPage = () => {
                             ))}
                         </tbody>
                     </table>
-                    <div className='flex gap-4 mt-2'>
+                    <div className='flex gap-2 mt-4'>
                         <Button onClick={() => { handlePreviousPage() }} className='w-24' variant='outline-default' size='sm'>
                             <ChevronLeftIcon className='w-4 h-4 mr-0.5 inline-block relative -top-[1px]'></ChevronLeftIcon>
                             Previous

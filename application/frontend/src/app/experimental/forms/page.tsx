@@ -122,6 +122,17 @@ const ExperimentalFormPage = () => {
                             <Button variant='disabled' disabled>disabled</Button>
 
                         </div>
+                        <div className='flex flex-row flex-wrap gap-4 mt-4'>
+                            <Button variant='default' size='sm'>default</Button>
+                            <Button variant='primary' size='sm'>primary</Button>
+                            <Button variant='secondary' size='sm'>secondary</Button>
+                            <Button variant='info' size='sm'>info</Button>
+                            <Button variant='success' size='sm'>success</Button>
+                            <Button variant='danger' size='sm'>danger</Button>
+                            <Button variant='warning' size='sm'>warning</Button>
+                            <Button variant='disabled' size='sm' disabled>disabled</Button>
+
+                        </div>
                     </div>
                     <div>
                         <h3>アウトラインボタン</h3>
@@ -134,6 +145,17 @@ const ExperimentalFormPage = () => {
                             <Button variant='outline-danger'>danger</Button>
                             <Button variant='outline-warning'>warning</Button>
                             <Button variant='outline-disabled' disabled>disabled</Button>
+
+                        </div>
+                        <div className='flex flex-row flex-wrap gap-4 mt-4'>
+                            <Button variant='outline-default' size='sm'>default</Button>
+                            <Button variant='outline-primary' size='sm'>primary</Button>
+                            <Button variant='outline-secondary' size='sm'>secondary</Button>
+                            <Button variant='outline-info' size='sm'>info</Button>
+                            <Button variant='outline-success' size='sm'>success</Button>
+                            <Button variant='outline-danger' size='sm'>danger</Button>
+                            <Button variant='outline-warning' size='sm'>warning</Button>
+                            <Button variant='outline-disabled' size='sm' disabled>disabled</Button>
 
                         </div>
                     </div>

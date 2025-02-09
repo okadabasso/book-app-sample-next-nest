@@ -14,8 +14,8 @@ const Button = ({
   ...props
 }: ButtonProps) => {
   const sizes = {
-    sm: 'text-sm px-1 py-[1px] leading-4 h-6',
-    md: 'text-base px-2 py-0.5 leading-6',
+    sm: 'text-sm px-1 py-0.5',
+    md: 'text-base px-2 py-1 leading-6',
     lg: 'text-lg px-4 py-1 leading-8',
   };
 
