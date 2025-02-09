@@ -1,6 +1,6 @@
 import { PrismaService } from "@/prisma/prisma.service";
-import { Book, BookGenre, Genre, Prisma, PrismaClient } from "@prisma/client";
-import { BookDto, EditBookDto } from "../dto/BookDto";
+import { Book, Genre, Prisma, PrismaClient } from "@prisma/client";
+import { EditBookDto } from "../dto/BookDto";
 import { Injectable } from "@nestjs/common";
 import { LoggingService } from "@/logging/logging.service";
 
@@ -10,6 +10,14 @@ interface BookEditData {
     publishedYear: number;
     description: string;
 };
+interface BookFindOption{
+    limit?: number;
+    offset?: number;
+    query?: string;
+    order?: string;
+}
+
+
 // トランザクション中の prisma クライアント
 type PrismaTransactionClient = Omit<PrismaClient<Prisma.PrismaClientOptions, never>, "$connect" | "$disconnect" | "$on" | "$transaction" | "$use" | "$extends">;
 
@@ -27,12 +35,32 @@ export class BooksService {
         private readonly prisma: PrismaService,
         private readonly logger: LoggingService
     ) { }
-    async getBooks(): Promise<Book[]> {
+    async getBooks({query, limit, offset}: BookFindOption): Promise<Book[]> {
+        const where: Prisma.BookWhereInput = {};
+        if (query) {
+            where.title = { contains: query };
+        }
+
         const books = await this.prisma.book.findMany({
-            include: { bookGenres: { include: { genre: true } } },
+            include: this.bookRelations,
+            where: where,
+            skip: offset,
+            take: limit,
             orderBy: { id: 'asc' }
         });
         return books;
+
+    }
+    async getBookCount({query, limit, offset}: BookFindOption): Promise<number> {
+        const where: Prisma.BookWhereInput = {};
+        if (query) {
+            where.title = { contains: query };
+        }
+
+        const total = await this.prisma.book.count({
+            where: where,
+        });
+        return total;
 
     }
     async getBookById(id: number): Promise<Book> {

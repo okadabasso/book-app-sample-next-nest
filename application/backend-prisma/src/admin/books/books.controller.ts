@@ -4,6 +4,7 @@ import { BooksService } from './services/BookService';
 import { BookDto, EditBookDto } from './dto/BookDto';
 import { plainToInstance } from 'class-transformer';
 import { Book } from '@prisma/client';
+import { BookFindDto } from './dto/BookFindDto';
 
 @Controller('admin/books')
 export class BooksController {
@@ -13,13 +14,20 @@ export class BooksController {
     ) {}
 
     @Get()
-    async getBooks(): Promise<BookDto[]> {
+    async getBooks(@Query('query') query: string, @Query('offset') offset: string, limit: string): Promise<BookFindDto> {
         this.logger.log('Getting all books');
-        const books = await this.booksService.getBooks();
+        const option = {
+            query:query,
+            limit: limit ?  Number(limit) : 20,
+            offset: offset ? Number(offset) : 0,
+        }
+        const books = await this.booksService.getBooks(option);
 
         // Prisma のデータを DTO に変換
-        const bookDtos = books.map(book => plainToInstance(BookDto, book, { excludeExtraneousValues: true }));
-        return bookDtos;
+        const bookDtos: BookDto[] = books.map(book => plainToInstance(BookDto, book, { excludeExtraneousValues: true }));
+        const count = await this.booksService.getBookCount(option);
+        const bookFindDto = new BookFindDto(bookDtos, '', Number(limit), Number(offset), count );
+        return bookFindDto;
         
     }
     @Get("find")
