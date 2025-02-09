@@ -24,7 +24,7 @@ export class BooksController {
         const books = await this.booksService.getBooks(option);
 
         // Prisma のデータを DTO に変換
-        const bookDtos: BookDto[] = books.map(book => plainToInstance(BookDto, book, { excludeExtraneousValues: true }));
+        const bookDtos: BookDto[] = plainToInstance(BookDto, books, { excludeExtraneousValues: true });
         const count = await this.booksService.getBookCount(option);
         const bookFindDto = new BookFindDto(bookDtos, '', Number(limit), Number(offset), count );
         return bookFindDto;
