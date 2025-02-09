@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { apiClient } from "@/shared/apiClient"
+import { api } from "@/shared/apiClient"
 import { Book } from "@/types/Book"
 import logger from '@/shared/logger';
 
@@ -13,7 +13,7 @@ export async function GET(
         return NextResponse.json({ error: "Book ID is required" }, { status: 400 });
     }
 
-    const response = await apiClient(`/admin/books/find?id=${id}`);
+    const response = await api.get(`/admin/books/find`, { id });
     return response;
 }
 export async function POST(request: NextRequest) {
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Book data is required" }, { status: 400 });
     }
 
-    const response = await apiClient('/admin/books/create',{ method: "POST" , body:book});
+    const response = await api.post('/admin/books/create', book);
     return response;
 }
 
@@ -33,7 +33,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
         return NextResponse.json({ error: "Book ID and data are required" }, { status: 400 });
     }
 
-    const response = await apiClient(`/admin/books/${id}`,{ method: "PUT" , body:book});
+    const response = await api.put(`/admin/books/${id}`,book);
     return response;
 }
 
@@ -43,6 +43,6 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
         return NextResponse.json({ error: "Book ID is required" }, { status: 400 });
     }
 
-    const response = await apiClient(`/admin/books/delete?id=${id}`, { method: "DELETE" });
+    const response = await api.delete(`/admin/books/delete?id=${id}`);
     return response;
 }

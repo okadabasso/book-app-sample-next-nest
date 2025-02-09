@@ -2,7 +2,7 @@ import NextAuth, { AuthOptions, DefaultUser } from 'next-auth'
 import Google from 'next-auth/providers/google'
 import Credential from 'next-auth/providers/credentials'
 import { AdapterUser } from 'next-auth/adapters'
-import { apiClient } from '@/shared/apiClient'
+import { api } from '@/shared/apiClient'
 
 type User = AdapterUser & {
     roles: string[]
@@ -43,14 +43,11 @@ const authOptions: AuthOptions = {
             async authorize(credentials) {
                 try {
                     console.log("credentials", credentials);
-                    const response = await apiClient("/auth/signIn", {
-                        method: 'POST',
-                        body: {
+                    const response = await api.post("/auth/signIn", {
                             username: credentials?.username,
                             password: credentials?.password,
-                        },
-                    })
-                    const user = await response.json()
+                    });
+                    const user = await response.json();
                     console.log(user);
                     // If no error and we have user data, return it
                     if (response.ok && user) {

@@ -1,13 +1,14 @@
-import { apiClient } from "@/shared/apiClient";
+import { api, searchParamsToRecord } from "@/shared/apiClient";
 import logger from "@/shared/logger";
 import { Book } from "@/types/Book";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
     const url = new URL(request.url);
-    const query = url.searchParams; // クエリパラメータ 'search' を取得
-    logger.info(`GET /admin/books/?${query}`);
-    const response = await apiClient(`/admin/books/?${query}`);
+    const params = searchParamsToRecord(url.searchParams);
+    
+    logger.info(`GET /admin/books`);
+    const response = await api.get(`/admin/books/`, params);
     return response;
 
 }
@@ -19,7 +20,7 @@ export async function POST(request: NextRequest) {
         }
     
         try {
-            const response = await apiClient('/admin/books',{ method: "POST" , body:book});
+            const response = await api.post('/admin/books', book);
             return response;
         }   
         catch (e: unknown) {
