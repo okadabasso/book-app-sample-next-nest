@@ -158,6 +158,12 @@ const ExperimentalFormPage = () => {
                             <Button variant='outline-disabled' size='sm' disabled>disabled</Button>
 
                         </div>
+                        <div className='flex flex-row flex-wrap gap-4 mt-4'>
+                            <Button variant='default' size='sm'>default</Button>
+                            <Button variant='outline-default' size='sm'>outline default</Button>
+
+                        </div>
+                        
                     </div>
                     <div>
                         <h3>アイコンつきテキストボックス</h3>
