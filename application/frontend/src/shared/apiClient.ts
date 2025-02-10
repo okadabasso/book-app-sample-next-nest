@@ -1,5 +1,5 @@
-const BACKEND_URL = process.env.BACKEND_URL;
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.BACKEND_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || process.env.BASE_URL; ;
 
 interface RequestOptions {
     params?: Record<string, string | number | boolean>;

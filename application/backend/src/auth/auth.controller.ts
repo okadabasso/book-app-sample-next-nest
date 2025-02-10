@@ -5,6 +5,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { AuthUser } from '@/entities/AuthUser';
 import { compare } from 'bcryptjs';
+import { LoggingService } from '@/shared/logging/logging.service';
 const users = [
     { id: "administrator@example.com", name: "administrator", email: "administrator@example.com", role: "administrator", password: "P@ssw0rd" },
     { id: "user001@example.com", name: "user001", email: "user001@example.com", role: "user", password: "password1" },
@@ -15,6 +16,7 @@ export class AuthController {
     constructor(
         @InjectDataSource()
         private readonly dataSource: DataSource,
+        private readonly logger: LoggingService,
     ) { }
 
 
@@ -28,8 +30,8 @@ export class AuthController {
             }, 
             relations: ["userRoles", "userRoles.role"]
         });
-        
-        
+        this.logger.debug("dto: " + JSON.stringify(dto));
+        this.logger.debug("user: " + JSON.stringify(user));
         if (user && await compare(dto.password, user.passwordHash)) {
             const userDto = UserDto.from(user);
             

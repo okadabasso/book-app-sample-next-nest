@@ -44,8 +44,10 @@ const authOptions: AuthOptions = {
                 try {
                     console.log("credentials", credentials);
                     const response = await api.post("/auth/signIn", {
+                        body: {
                             username: credentials?.username,
                             password: credentials?.password,
+                        }
                     });
                     const user = await response.json();
                     console.log(user);
