@@ -27,7 +27,10 @@ interface Option {
 interface FormData {
     title: string;
     author: string;
-    publishedYear: string;
+    publishedDate?: string;
+    isbn?: string;
+    publisher?: string;
+    thumbnail?: string;
     description: string;
     genres: Option[];
 }
@@ -132,6 +135,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         id="author"
                         value={formData.author}
                         maxLength={64}
+                        className={clsx(errors.author && inputVariants.danger)}
                         width='w-full'
                         {...register("author", {
                             required: "Author is required",
@@ -146,25 +150,25 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
             </div>
             <div className='mb-4'>
                 <div>
-                    <label htmlFor="publishedYear">Published Year</label>
+                    <label htmlFor="publishedDate">Published Date</label>
                 </div>
                 <div>
                     <TextBox
                         type="text"
-                        id="publishedYear"
-                        value={formData.publishedYear}
-                        maxLength={4}
-                        className='text-right'
-                        width='w-16'
-                        {...register("publishedYear", {
-                            maxLength: { value: 4, message: "publishedYear is too long" },
-                            pattern: { value: /^[0-9]*$/, message: "publishedYear is invalid" },
+                        id="publishedDate"
+                        value={formData.publishedDate}
+                        maxLength={10}
+                        className={clsx(errors.publishedDate && inputVariants.danger)}
+                        width='w-32'
+                        {...register("publishedDate", {
+                            maxLength: { value: 10, message: "publishedDate is too long" },
+                            pattern: { value: /^[0-9\-]*$/, message: "publishedDate is invalid" },
                             onChange: (e) => {
                                 handleChange(e);
                             }
                         })}
                     />
-                    {errors.publishedYear && <p className='text-red-600'>{errors.publishedYear.message}</p>}
+                    {errors.publishedDate && <p className='text-red-600'>{errors.publishedDate.message}</p>}
 
                 </div>
             </div>

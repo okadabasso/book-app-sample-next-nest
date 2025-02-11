@@ -13,14 +13,20 @@ export class Book {
     @Column({length: 64, nullable: false})
     author: string;
 
+    @Column({length: 13, nullable: true})
+    isbn?: string;
+
+    @Column({length: 255, nullable: true})
+    publisher?: string;
+
+    @Column({length: 1024, nullable: true})
+    thumbnail?: string;
+
     @Column('text')
     description: string;
 
-    @Column()
-    publishedYear?: number;
-
-    @Column()
-    genre: string;
+    @Column({length: 16, nullable: true})
+    publishedDate?: string;
 
     @OneToMany(() => BookAuthor, bookAuthor => bookAuthor.book)
     bookAuthors: BookAuthor[];
@@ -28,13 +34,12 @@ export class Book {
     @OneToMany(() => BookGenre     , bookGenre => bookGenre.book,  )
     bookGenres: BookGenre[];
 
-    constructor(id:number, title: string, author: string, description: string, publishedYear: number) {
+    constructor(id:number, title: string, author: string, description: string, publishedDate: string) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.description = description;
-        this.publishedYear = publishedYear;
-        this.genre = "";
+        this.publishedDate = publishedDate;
 
     }
 }

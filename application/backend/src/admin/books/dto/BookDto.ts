@@ -13,7 +13,17 @@ export class BookDto {
     @Expose()
     author: string;
     @Expose()
-    publishedYear: number;
+    publishedDate: string;
+
+    @Expose()
+    isbn: string;
+
+    @Expose()
+    publisher: string;
+
+    @Expose()
+    thumbnail: string;
+
     @Expose()
     description: string;
     @Expose()

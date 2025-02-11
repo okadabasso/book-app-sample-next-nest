@@ -85,13 +85,7 @@ export class BooksController {
             if(genreDto.isNew) {
                 genre.id = 0;
             }
-            const refBook = new Book(
-                book.id,
-                book.title,
-                book.author,
-                book.description,
-                book.publishedYear,
-            )
+            const refBook = book;
             const bookGenre = new BookGenre(0, refBook, genre);
             book.bookGenres.push(bookGenre); 
         }

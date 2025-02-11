@@ -54,8 +54,16 @@ const DetailPage = () => {
                         <div>{book.author}</div>
                     </div>
                     <div className='mb-4'>
-                        <div className='font-bold'>Published Year</div>
-                        <div>{book.publishedYear}</div>
+                        <div className='font-bold'>Publisher</div>
+                        <div>{book.publisher}</div>
+                    </div>
+                    <div className='mb-4'>
+                        <div className='font-bold'>Published Date</div>
+                        <div>{book.publishedDate}</div>
+                    </div>
+                    <div className='mb-4'>
+                        <div className='font-bold'>Thumbnail</div>
+                        <div>{book.thumbnail}</div>
                     </div>
                     <div className='mb-4'>
                         <div className='font-bold'>Description</div>

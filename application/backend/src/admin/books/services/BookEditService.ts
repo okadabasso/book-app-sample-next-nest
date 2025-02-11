@@ -74,7 +74,7 @@ export class BookEditService {
 
         book.title = updateData.title;
         book.author = updateData.author;
-        book.publishedYear = updateData.publishedYear;
+        book.publishedDate = updateData.publishedDate;
         book.description = updateData.description;
 
         await bookRepository.save(book);

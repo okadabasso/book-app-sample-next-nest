@@ -14,9 +14,16 @@ export class Book {
     @Expose()
     description: string;
     @Expose()
-    publishedYear: number;
+    publishedDate: string;
+
     @Expose()
-    genre: string;
+    publisher?: string;
+
+    @Expose()
+    isbn?: string;
+
+    @Expose()
+    thumbnail?: string;
 
     @Expose()
     @Type(() => Genre)
@@ -25,13 +32,15 @@ export class Book {
     @Type(() => Author)
     authors: Author[];
 
-    constructor(id: number, title: string, author: string, description: string, publishedYear: number, genre: string, genres: Genre[], authors: Author[]) {
+    constructor(id: number, title: string, author: string, description: string, publishedDate: string, publisher: string, isbn: string, thumbnail: string, genre: string, genres: Genre[], authors: Author[]) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.description = description;
-        this.publishedYear = publishedYear;
-        this.genre = genre;
+        this.publishedDate = publishedDate;
+        this.publisher = publisher;
+        this.isbn = isbn;
+        this.thumbnail = thumbnail;
         this.genres = genres;
         this.authors = authors;
     }

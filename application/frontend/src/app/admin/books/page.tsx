@@ -93,16 +93,18 @@ const BooksPage = () => {
                     <table className='table-auto w-full'>
                         <thead>
                             <tr>
-                                <th className='w-64 text-left border border-gray-300 px-1 py-0.5'>Title</th>
+                            <th className='w-16 text-center border border-gray-300 px-1 py-0.5'>#</th>
+                            <th className='w-64 text-left border border-gray-300 px-1 py-0.5'>Title</th>
                                 <th className='w-48 text-left border border-gray-300 px-1 py-0.5'>Author</th>
-                                <th className='text-left border border-gray-300 px-1 py-0.5'>Description</th>
-                                <th className='w-40 text-left border border-gray-300 px-1 py-0.5'>Published Year</th>
+                                <th className='text-left border border-gray-300 px-1 py-0.5'>Publisher</th>
+                                <th className='w-40 text-left border border-gray-300 px-1 py-0.5'>Published Date</th>
                                 <th className='w-64 text-left border border-gray-300 px-1 py-0.5'>Genre</th>
                             </tr>
                         </thead>
                         <tbody>
                             {data.map((book) => (
                                 <tr key={book.id}>
+                                    <td className=' text-right border border-gray-300 px-1 py-0.5'>{book.id}</td>
                                     <td className=' text-left border border-gray-300 px-1 py-0.5'>
                                         <Link href={`/admin/books/${book.id}`} className='underline text-blue-700 hover:text-blue-500'>{book.title}</Link>
 
@@ -110,8 +112,8 @@ const BooksPage = () => {
 
 
                                     <td className=' text-left border border-gray-300 px-1 py-0.5'>{book.author}</td>
-                                    <td className=' text-left border border-gray-300 px-1 py-0.5'>{book.description}</td>
-                                    <td className=' text-left border border-gray-300 px-1 py-0.5'>{book.publishedYear}</td>
+                                    <td className=' text-left border border-gray-300 px-1 py-0.5'>{book.publisher}</td>
+                                    <td className=' text-left border border-gray-300 px-1 py-0.5'>{book.publishedDate}</td>
                                     <td className=' text-left border border-gray-300 px-1 py-0.5'>
                                         {book.genres.map(genre => <span key={genre.id} className='inline-block mr-2'>{genre.name}</span>)}
                                     </td>
