@@ -1,13 +1,16 @@
 "use client"
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 interface ContentHeaderProps {
     title: string;
+    children?: ReactNode;
 }
-
-const ContentHeader = ({ title }: ContentHeaderProps) => {
+const ContentHeader = ({ title, children }: ContentHeaderProps) => {
     return (
-        <h2 className='text-lg font-bold mb-4'>{title}</h2>
+        <div className='flex gap-2  items-baseline'>
+            <h2 className='text-lg font-bold mb-4 flex-1'>{title}</h2>
+            {children}
+        </div>
     );
 };
 

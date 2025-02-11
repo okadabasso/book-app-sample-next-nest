@@ -280,11 +280,13 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                     </div>
             </div>
             <ContentFooter>
+                <div className='flex gap-2'>
                 <Button type="submit" className='w-32' variant='primary'>
                     <CheckIcon className='h-4 w-4 inline-block relative -top-0.5 mr-1' />
-                    {isSubmitting ? 'Saving...' : 'Save'}
-                </Button>
-                <Button type="button" className='w-32' onClick={handleCancel} variant='default'>Cancel</Button>
+                        {isSubmitting ? 'Saving...' : 'Save'}
+                    </Button>
+                    <Button type="button" className='w-32' onClick={handleCancel} variant='default'>Cancel</Button>
+                </div>
 
             </ContentFooter>
             {/* ポップオーバーの表示 */}

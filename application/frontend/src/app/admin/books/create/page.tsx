@@ -6,10 +6,14 @@ import ContentHeader from '@/components/ContentHeader';
 import { getCsrfHeader, createCsrfToken } from '@/shared/csrfToken';
 import FormToken from '@/types/FormToken';
 import { api } from '@/shared/apiClient';
+import Button from '@/components/forms/Button';
+import GoogleBooksSearch from '../components/GoogleBooksSearch';
 
 const CreateBookPage = () => {
     const year = (new Date()).getFullYear();
     const [error, setError] = useState<string | null>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
     /**
      * dummy book data
      */
@@ -69,10 +73,14 @@ const CreateBookPage = () => {
 
     return (
         <div>
-            <ContentHeader title='Create Book' />
+            <ContentHeader title='Create Book' >
+                <div className='justify-self-end'>
+                    <Button onClick={()=>{setIsDialogOpen(true)}} className='' variant='outline-default' size='sm'>Search Google Books</Button>
+                </div>
+            </ContentHeader>
             {error && <p className='text-red-500'>{error}</p>}
             <EditForm book={book} onSave={(book) => handleSave(book)} onCancel={() => handleCancel()} />
-
+            <GoogleBooksSearch isOpen={isDialogOpen} onClose={() => {setIsDialogOpen(false)}} onSelected={(book) => {} } />
         </div>
     );
 };

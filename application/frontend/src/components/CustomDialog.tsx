@@ -3,6 +3,7 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/re
 import { XMarkIcon } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
 interface CustomDialogProps {
+    id?: string;
     isOpen: boolean;
     onClose: () => void;
     headerContent?: React.ReactNode;
@@ -16,12 +17,12 @@ const panelClasses = {
     closed: 'transform-[scale(95%)] opacity-0',
 }
 
-export default function CustomDialog({ headerContent, footerContent, children, isOpen, className, onClose }: CustomDialogProps) {
+export default function CustomDialog({id, headerContent, footerContent, children, isOpen, className, onClose }: CustomDialogProps) {
 
     return (
         <>
 
-            <Dialog open={isOpen} as="div" className={clsx("relative w-screen h-screen top-0 left-0 p-0 z-20 focus:outline-none transition duration-200 ease-out data-[closed]:opacity-0")} transition onClose={onClose}>
+            <Dialog open={isOpen} id={id} as="div" className={clsx("relative w-screen h-screen top-0 left-0 p-0 z-20 focus:outline-none transition duration-200 ease-out data-[closed]:opacity-0")} transition onClose={onClose}>
                 <DialogBackdrop className="fixed inset-0 bg-black/30" />
                 <div className="fixed inset-0 z-10 w-screen overflow-y-hidden h-full"
                     >
