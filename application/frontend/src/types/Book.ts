@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { Expose, Type } from "class-transformer";
+import { Expose, Transform, Type } from "class-transformer";
 import { Author } from "./Author";
 import { Genre } from "./Genre";
 
@@ -14,15 +14,19 @@ export class Book {
     @Expose()
     description: string;
     @Expose()
+    @Transform(({ value }) => value ?? '')
     publishedDate: string;
 
     @Expose()
+    @Transform(({ value }) => value ?? '')
     publisher?: string;
 
     @Expose()
+    @Transform(({ value }) => value ?? '')
     isbn?: string;
 
     @Expose()
+    @Transform(({ value }) => value ?? '')
     thumbnail?: string;
 
     @Expose()

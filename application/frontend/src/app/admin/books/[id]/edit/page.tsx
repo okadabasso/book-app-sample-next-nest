@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import fetchBook from '@/app/admin/books/functions/fetchBook';
 import EditForm from '@/app/admin/books/components/EditForm';
-import ContentHeader from '@/app/admin/books/components/ContentHeader';
+import ContentHeader from '@/components/ContentHeader';
 import { getCsrfHeader as createCsrfHeader, createCsrfToken } from '@/shared/csrfToken';
 import FormToken from '@/types/FormToken';
 import { api } from '@/shared/apiClient';

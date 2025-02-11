@@ -2,7 +2,7 @@
 import { Book, BookFind } from '@/types/Book';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import ContentHeader from '@/app/admin/books/components/ContentHeader';
+import ContentHeader from '@/components/ContentHeader';
 import { plainToInstance } from 'class-transformer';
 import ContentFooter from '@/components/ContentFooter';
 import { ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon, PlusIcon } from '@heroicons/react/16/solid';
@@ -94,11 +94,11 @@ const BooksPage = () => {
                         <thead>
                             <tr>
                             <th className='w-16 text-center border border-gray-300 px-1 py-0.5'>#</th>
-                            <th className='w-64 text-left border border-gray-300 px-1 py-0.5'>Title</th>
-                                <th className='w-48 text-left border border-gray-300 px-1 py-0.5'>Author</th>
-                                <th className='text-left border border-gray-300 px-1 py-0.5'>Publisher</th>
+                            <th className='min-w-48 text-left border border-gray-300 px-1 py-0.5'>Title</th>
+                                <th className='w-40 text-left border border-gray-300 px-1 py-0.5'>Author</th>
+                                <th className='w-40 text-left border border-gray-300 px-1 py-0.5'>Publisher</th>
                                 <th className='w-40 text-left border border-gray-300 px-1 py-0.5'>Published Date</th>
-                                <th className='w-64 text-left border border-gray-300 px-1 py-0.5'>Genre</th>
+                                <th className='w-40 text-left border border-gray-300 px-1 py-0.5'>Genre</th>
                             </tr>
                         </thead>
                         <tbody>

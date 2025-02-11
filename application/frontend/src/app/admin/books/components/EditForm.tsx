@@ -13,6 +13,7 @@ import MultiLineText from '@/components/forms/MultiLineText';
 import clsx from 'clsx';
 import { inputVariants } from '@/components/forms/variants';
 import { api } from '@/shared/apiClient';
+import RequiredMark from '@/components/RequiredMark';
 
 interface EditFormProps {
     book?: Book | null;
@@ -93,6 +94,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
         return loadGenres(query);
 
     };
+    const labelWidth = "w-32";
     return (
         <form onSubmit={hookHandleSubmit(handleSubmit)}>
             {message.length > 0 && (
@@ -102,9 +104,9 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                     ))}
                 </div>
             )}
-            <div className='mb-4'>
-                <div className='mb-1'><label htmlFor="title">Title<span className="relative -top-0.5  bg-red-600 text-white ml-2 -mt-6  p-0.5 text-xs">必須</span></label></div>
-                <div className='w-full'>
+            <div className='mb-4 flex gap-2 items-baseline'>
+                <div className={clsx(labelWidth)}><label htmlFor="title">Title<RequiredMark /></label></div>
+                <div className='flex-1'>
                     <TextBox
                         type="text"
                         id="title"
@@ -125,11 +127,11 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                 </div>
 
             </div>
-            <div className='mb-4'>
-                <div>
-                    <label htmlFor="author">Author<span className="relative -top-0.5  bg-red-600 text-white ml-2 -mt-6  p-0.5 text-xs">必須</span></label>
+            <div className='mb-4 flex gap-2 items-baseline'>
+                <div className={clsx(labelWidth)}>
+                    <label htmlFor="author">Author<RequiredMark /></label>
                 </div>
-                <div>
+                <div className='flex-1'>
                     <TextBox
                         type="text"
                         id="author"
@@ -148,11 +150,34 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                     {errors.author && <p className='text-red-600'>{errors.author.message}</p>}
                 </div>
             </div>
-            <div className='mb-4'>
-                <div>
+            <div className='mb-4 flex gap-2 items-baseline'>
+                <div className={clsx(labelWidth)}>
+                    <label htmlFor="publisher">Publisher</label>
+                </div>
+                <div className='flex-1'>
+                    <TextBox
+                        type="text"
+                        id="publisher"
+                        value={formData.publisher}
+                        maxLength={255}
+                        className={clsx(errors.publisher && inputVariants.danger)}
+                        width='w-full'
+                        {...register("publisher", {
+                            maxLength: { value: 255, message: "publisher is too long" },
+                            onChange: (e) => {
+                                handleChange(e);
+                            }
+                        })}
+                    />
+                    {errors.publishedDate && <p className='text-red-600'>{errors.publishedDate.message}</p>}
+
+                </div>
+            </div>
+            <div className='mb-4 flex gap-2 items-baseline'>
+                <div className={clsx(labelWidth)}>
                     <label htmlFor="publishedDate">Published Date</label>
                 </div>
-                <div>
+                <div className='flex-1'>
                     <TextBox
                         type="text"
                         id="publishedDate"
@@ -172,11 +197,59 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
 
                 </div>
             </div>
-            <div className='mb-4'>
-                <div>
+            <div className='mb-4 flex gap-2 items-baseline'>
+                <div className={clsx(labelWidth)}>
+                    <label htmlFor="isbn">ISBN</label>
+                </div>
+                <div className='flex-1'>
+                    <TextBox
+                        type="text"
+                        id="isbn"
+                        value={formData.isbn}
+                        maxLength={17}
+                        className={clsx(errors.isbn && inputVariants.danger)}
+                        width='w-full'
+                        {...register("isbn", {
+                            maxLength: { value: 17, message: "isbn is too long" },
+                            pattern: { value: /^[0-9\-]*$/, message: "isbn is invalid" },
+                            onChange: (e) => {
+                                handleChange(e);
+                            }
+                        })}
+                    />
+                    {errors.publishedDate && <p className='text-red-600'>{errors.publishedDate.message}</p>}
+
+                </div>
+            </div>
+            <div className='mb-4 flex gap-2 items-baseline'>
+                <div className={clsx(labelWidth)}>
+                    <label htmlFor="thumbnail">Thumbnail</label>
+                </div>
+                <div className='flex-1'>
+                    <TextBox
+                        type="text"
+                        id="thumbnail"
+                        value={formData.thumbnail}
+                        maxLength={255}
+                        className={clsx(errors.thumbnail && inputVariants.danger)}
+                        width='w-full'
+                        {...register("thumbnail", {
+                            maxLength: { value: 255, message: "thumbnail is too long" },
+                            pattern: { value: /^[0-9\-]*$/, message: "thumbnail is invalid" },
+                            onChange: (e) => {
+                                handleChange(e);
+                            }
+                        })}
+                    />
+                    {errors.publishedDate && <p className='text-red-600'>{errors.publishedDate.message}</p>}
+
+                </div>
+            </div>
+            <div className='mb-4 flex gap-2 items-top'>
+                <div className={clsx(labelWidth)}>
                     <label htmlFor="description">Description</label>
                 </div>
-                <div>
+                <div className='flex-1'>
                     <MultiLineText
                         id="description"
                         value={formData.description}
@@ -193,12 +266,11 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                     {errors.description && <p className='text-red-600'>{errors.description.message}</p>}
                 </div>
             </div>
-            <div className='mb-4'>
-                <div >
-                    <div>
+            <div className='mb-4 flex gap-2 items-baseline'>
+                    <div className={clsx(labelWidth)}>
                         <label htmlFor='genre'>Genre</label>
                     </div>
-                    <div id="genre">
+                    <div id="genre"  className='flex-1'>
                         <MultiSelectCombobox
                             fetchOptions={fetchOptions}
                             initialSelectedItems={formData.genres}
@@ -206,7 +278,6 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         />
 
                     </div>
-                </div>
             </div>
             <ContentFooter>
                 <Button type="submit" className='w-32' variant='primary'>

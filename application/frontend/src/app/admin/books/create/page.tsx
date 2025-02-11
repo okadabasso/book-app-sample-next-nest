@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import EditForm from '@/app/admin/books/components/EditForm';
 import { Book } from '@/types/Book';
-import ContentHeader from '@/app/admin/books/components/ContentHeader';
+import ContentHeader from '@/components/ContentHeader';
 import { getCsrfHeader, createCsrfToken } from '@/shared/csrfToken';
 import FormToken from '@/types/FormToken';
 import { api } from '@/shared/apiClient';

@@ -3,7 +3,7 @@ import { Book } from '@/types/Book';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import fetchBook from '@/app/admin/books/functions/fetchBook';
-import ContentHeader from '@/app/admin/books/components/ContentHeader';
+import ContentHeader from '@/components/ContentHeader';
 import ContentFooter from '@/components/ContentFooter';
 import { PencilIcon } from '@heroicons/react/16/solid';
 import ButtonLink from '@/components/forms/ButtonLink';
@@ -44,33 +44,37 @@ const DetailPage = () => {
             <ContentHeader title='Book Detail' />
             {error && <p className='text-red-500'>{error}</p>}
             <form>
-                <div className='mt-4'>
-                    <div className='mb-4 flex gap-2'>
-                        <div>{book.id}: </div>
+                <div className='mt-4  clear-both'>
+                    <div className='mb-4 flex gap-2 text-lg font-bold' >
+                        <div>#{book.id}: </div>
                         <div>{book.title}</div>
                     </div>
-                    <div className='mb-4'>
-                        <div className='font-bold'>Author</div>
+                    <div className='mb-4 flex gap-2'>
+                        <div className='font-bold w-32'>Author</div>
                         <div>{book.author}</div>
                     </div>
-                    <div className='mb-4'>
-                        <div className='font-bold'>Publisher</div>
+                    <div className='mb-4 flex gap-2'>
+                        <div className='font-bold w-32'>Publisher</div>
                         <div>{book.publisher}</div>
                     </div>
-                    <div className='mb-4'>
-                        <div className='font-bold'>Published Date</div>
+                    <div className='mb-4 flex gap-2'>
+                        <div className='font-bold w-32'>Published Date</div>
                         <div>{book.publishedDate}</div>
                     </div>
-                    <div className='mb-4'>
-                        <div className='font-bold'>Thumbnail</div>
+                    <div className='mb-4 flex gap-2'>
+                        <div className='font-bold w-32'>ISBN</div>
+                        <div>{book.isbn}</div>
+                    </div>
+                    <div className='mb-4 flex gap-2'>
+                        <div className='font-bold w-32'>Thumbnail</div>
                         <div>{book.thumbnail}</div>
                     </div>
-                    <div className='mb-4'>
-                        <div className='font-bold'>Description</div>
+                    <div className='mb-4 flex gap-2'>
+                        <div className='font-bold w-32'>Description</div>
                         <div>{book.description}</div>
                     </div>
-                    <div className='mb-4'>
-                        <div className='font-bold'>Genres</div>
+                    <div className='mb-4 flex gap-2'>
+                        <div className='font-bold w-32'>Genres</div>
                         <ul className='flex flex-wrap gap-2'>
                             {book.genres.map((genre) => (
                                 <li key={genre.id} className=''>{genre.name}</li>
