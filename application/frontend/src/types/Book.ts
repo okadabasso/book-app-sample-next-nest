@@ -15,7 +15,7 @@ export class Book {
     description: string;
     @Expose()
     @Transform(({ value }) => value ?? '')
-    publishedDate: string;
+    publishedDate?: string;
 
     @Expose()
     @Transform(({ value }) => value ?? '')
@@ -34,7 +34,7 @@ export class Book {
     genres: Genre[];
     @Expose()
     @Type(() => Author)
-    authors: Author[];
+    authors?: Author[];
 
     constructor(id: number, title: string, author: string, description: string, publishedDate: string, publisher: string, isbn: string, thumbnail: string, genre: string, genres: Genre[], authors: Author[]) {
         this.id = id;

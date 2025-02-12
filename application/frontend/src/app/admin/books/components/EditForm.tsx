@@ -26,6 +26,7 @@ interface Option {
 }
 
 interface FormData {
+    id: number;
     title: string;
     author: string;
     publishedDate?: string;
@@ -41,17 +42,37 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
         register,
         handleSubmit: hookHandleSubmit,
         formState: { errors },
-    } = useForm<FormData>();
+        reset,
+    } = useForm<FormData>({
+        defaultValues: {
+            id: book?.id || 0,
+            title: book?.title || '',
+            author: book?.author || '',
+            publishedDate: book?.publishedDate || '',
+            isbn: book?.isbn || '',
+            publisher: book?.publisher || '',
+            thumbnail: book?.thumbnail || '',
+            description: book?.description || '',
+            genres: book?.genres || [],
+        }
+    });
     const [formData, setFormData] = useState<Book>({ ...book ?? {} as Book });
     const [message, setMessage] = useState<string[]>([]);
 
     useEffect(() => {
-        if (!book) {
-            return;
+        if (book) {
+            reset({
+                title: book.title || '',
+                author: book.author || '',
+                publishedDate: book.publishedDate || '',
+                isbn: book.isbn || '',
+                publisher: book.publisher || '',
+                thumbnail: book.thumbnail || '',
+                description: book.description || '',
+                genres: book.genres || [],
+            });
         }
-        setFormData({ ...book });
-
-    }, [book]);
+    }, [book, reset]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -66,12 +87,13 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
         console.log("送信データ:", data);
 
         try {
-            // 処理が遅延している場合の確認用 (30秒待ってから処理を開始する)
-            // await new Promise((resolve) => setTimeout(resolve, 30000));
             const selectedItems = multiSelectRef.current?.getSelectedItems();
-            formData.genres = selectedItems?.map((item) => ({ id: item.id, name: item.name, isNew: item.isNew })) ?? [];
-            onSave(formData);
-    
+            const updatedBook: Book = {
+                ...book,
+                ...data,
+                genres: selectedItems?.map((item) => ({ id: item.id, name: item.name, isNew: item.isNew })) ?? [],
+            };
+            onSave(updatedBook);
             console.log("送信が成功しました");
         } catch (error) {
             console.error("送信中にエラーが発生しました:", error);
@@ -79,7 +101,6 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
             return;
         }
     });
-
     const handleCancel = (e: React.FormEvent) => {
         e.preventDefault();
         onCancel();
@@ -235,13 +256,12 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                         width='w-full'
                         {...register("thumbnail", {
                             maxLength: { value: 255, message: "thumbnail is too long" },
-                            pattern: { value: /^[0-9\-]*$/, message: "thumbnail is invalid" },
                             onChange: (e) => {
                                 handleChange(e);
                             }
                         })}
                     />
-                    {errors.publishedDate && <p className='text-red-600'>{errors.publishedDate.message}</p>}
+                    {errors.thumbnail && <p className='text-red-600'>{errors.thumbnail.message}</p>}
 
                 </div>
             </div>

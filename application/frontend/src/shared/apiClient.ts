@@ -18,11 +18,11 @@ async function apiRequest(
     options: RequestOptions  & { method: 'GET' | 'POST' | 'PUT' | 'DELETE' },
 ): Promise<Response> {
     const url = options.local ? new URL(endpoint, BASE_URL) : new URL(endpoint, BACKEND_URL);
-    console.log("url", url);
     console.log("options", options);
     if (options.params) {
         Object.entries(options.params).forEach(([key, value]) => url.searchParams.append(key, value.toString()));
     }
+    console.log("url", url.toString());
 
     const response = await fetch(url.toString(), {
         method: options.method,

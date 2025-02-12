@@ -5,7 +5,7 @@ import { GoogleBooksApiResult } from "@/types/GoogleBooksApiResult";
 
 const googleBooksUrl = 'https://www.googleapis.com/books/v1/volumes';
 interface GoogleBooksQueryParams {
-    intitle?: string | null;
+    title?: string | null;
     inauthor?: string | null;
     isbn?: string | null;
     publisher?: string | null;
@@ -16,7 +16,7 @@ export async function GET(
     logger.info('GET /api/admin/books/google_books');
     const url = new URL(request.url);
     const queryParams: GoogleBooksQueryParams = {
-        intitle: url.searchParams.get('title') ?? "",
+        title: url.searchParams.get('title') ?? "",
         inauthor: url.searchParams.get('author') ?? "",
         isbn: url.searchParams.get('isbn') ?? "",
         publisher: url.searchParams.get('publisher') ?? "",
@@ -24,14 +24,19 @@ export async function GET(
     const limit = url.searchParams.get('limit') ? Number(url.searchParams.get('limit')) : 40;
     const offset = url.searchParams.get('offset') ? Number(url.searchParams.get('offset')) : 0;
 
-    if (!queryParams.intitle && !queryParams.isbn) {
+    if (!queryParams.title && !queryParams.isbn) {
         return NextResponse.json({ error: "Book title or ISBN is required" }, { status: 400 });
     }
 
-    const queryString = Object.entries(queryParams)
+    const queryOptions = Object.entries({
+        inauthor: queryParams.inauthor,
+        isbn: queryParams.isbn,
+        publisher: queryParams.publisher,
+    })
         .filter(([key, value]) => value !== "")
         .map(([key, value]) => `${key}:${value}`)
         .join('+');
+    const queryString = queryParams.title ?  `${queryParams.title} ${queryOptions}`  : queryOptions;
 
 
     const response = await api.get(googleBooksUrl, 

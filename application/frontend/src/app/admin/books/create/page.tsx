@@ -13,11 +13,7 @@ const CreateBookPage = () => {
     const year = (new Date()).getFullYear();
     const [error, setError] = useState<string | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-    /**
-     * dummy book data
-     */
-    const book = {
+    const [book, setBook] = useState<Book>({
         id: 0,
         title: '',
         author: '',
@@ -28,7 +24,7 @@ const CreateBookPage = () => {
         description: '',
         authors: [],
         genres: [],
-    };
+    });
     const [formToken, setFormToken] = useState<FormToken>({formId:'', token:''});
 
     useEffect(() => {
@@ -69,7 +65,24 @@ const CreateBookPage = () => {
     const handleCancel = () => {
         window.location.href = `/admin/books`;
     }
-
+    const selectBook = (book: Book) => {
+        console.log('selected book: ', book);
+        const updatedBook: Book = {
+            ...book,
+            author: book.authors ? book.authors.join(" ") : "",
+            title: book.title ?? '',
+            publishedDate: book.publishedDate ?? '',
+            isbn: book.isbn ?? '',
+            publisher: book.publisher ?? '',
+            thumbnail: book.thumbnail ?? '',
+            description: book.description ?? '',
+            authors: book.authors ?? [],
+            genres: book.genres ?? [],
+            id: 0,
+        };
+        setBook(updatedBook);
+        setIsDialogOpen(false);
+    }
 
     return (
         <div>
@@ -80,7 +93,7 @@ const CreateBookPage = () => {
             </ContentHeader>
             {error && <p className='text-red-500'>{error}</p>}
             <EditForm book={book} onSave={(book) => handleSave(book)} onCancel={() => handleCancel()} />
-            <GoogleBooksSearch isOpen={isDialogOpen} onClose={() => {setIsDialogOpen(false)}} onSelected={(book) => {} } />
+            <GoogleBooksSearch isOpen={isDialogOpen} onClose={() => {setIsDialogOpen(false)}} onSelected={(book) => { selectBook(book); } } />
         </div>
     );
 };

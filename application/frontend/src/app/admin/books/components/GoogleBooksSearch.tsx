@@ -4,6 +4,7 @@ import Button from "@/components/forms/Button";
 import TextBox from "@/components/forms/TextBox";
 import { api } from "@/shared/apiClient";
 import { Book } from "@/types/Book";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
 
 interface GoogleBooksSearchProps{
@@ -18,6 +19,9 @@ const GoogleBooksSearch = ({isOpen, onClose, onSelected}: GoogleBooksSearchProps
     const [title, setTitle] = useState('');
     const [isbn, setIsbn] = useState('');
     const [error, setError] = useState<string | null>(null);
+    const limit = 10;
+    const [offset, setOffset] = useState(0);
+    const [total, setTotal] = useState(0);
 
     const handleSelected = () => {
         onSelected({
@@ -34,36 +38,52 @@ const GoogleBooksSearch = ({isOpen, onClose, onSelected}: GoogleBooksSearchProps
         });
     }
 
-    const handleSearch = () => {
-        console.log('searching...');
-        const searchBooks = async () => {
-            try {
-                const response = await api.get('/api/admin/books/google_books', {
-                    params: {
-                        title: title,
-                        isbn: isbn
-                    },
-                    local: true
-                });
-                if (!response.ok) {
-                    const data = await response.json();
-                    throw new Error('Failed to search books [' + response.status + ':' + data.message + ']');
-                }
+    const searchBooks = async (limit: number, offset: number) => {
+        try {
+            const response = await api.get('/api/admin/books/google_books', {
+                params: {
+                    title: title,
+                    isbn: isbn,
+                    limit: limit,
+                    offset: offset
+                },
+                local: true
+            });
+            if (!response.ok) {
                 const data = await response.json();
-                setItems(data.items);
+                throw new Error('Failed to search books [' + response.status + ':' + data.message + ']');
             }
-            catch (e: unknown) {
-                if (e instanceof Error) {
-                    setError(e.message);
-                } else {
-                    setError(String(e));
-                }
+            const data = await response.json();
+            setItems(data.items);
+            setTotal(data.total);
+            setOffset(offset);
+            console.log('data: ', data);
+        }
+        catch (e: unknown) {
+            if (e instanceof Error) {
+                setError(e.message);
+            } else {
+                setError(String(e));
             }
-        };
-        searchBooks();
+        }
+    };
+    const handleSearch = async () => {
+        console.log('searching...');
+        await searchBooks(limit, 0);
 
     }
-
+    const handleNext = async () => {
+        if(offset + limit < total){
+            await searchBooks(limit, offset + limit);
+        }
+        console.log('next offset: ', offset);
+    }
+    const handlePrev = async () => {
+        if(offset - limit >= 0){
+            await searchBooks(limit, offset - limit);
+        }
+        console.log('prev offset: ', offset);
+    }
     return (
         <CustomDialog
             id="google-books-search"
@@ -86,7 +106,7 @@ const GoogleBooksSearch = ({isOpen, onClose, onSelected}: GoogleBooksSearchProps
                     </div>
                     <div>
                         <label className="mr-2">ISBN</label>
-                        <TextBox name="isbn" value={isbn}  onChange={(event)=>setTitle(event.target.value) }/>
+                        <TextBox name="isbn" value={isbn}  onChange={(event)=>setIsbn(event.target.value) }/>
                     </div>
                     <div>
                         <Button type="button" className="h-[30px]" size="sm" onClick={handleSearch}>Search</Button>
@@ -94,20 +114,40 @@ const GoogleBooksSearch = ({isOpen, onClose, onSelected}: GoogleBooksSearchProps
                 </div>
                 {error && <div className="text-red-600">{error}</div>}
                 <div className="scrollable border border-gray-400 mt-4">
-                    <ul className="p-2">
+                    <ul className="px-2">
                         {items.map((item, index) => (
-                            <li key={index} className="mb-2">{item.title}
+                            <li key={index} className="my-2 ">
+                                <a href="#" onClick={() => onSelected(item)} className="flex gap-2">
+                                    <img src={item.thumbnail} className="h-16" />
+                                    <div>
+                                    <div className="">{item.title}</div>
+                                    <div className="flex gap-x-4 flex-wrap text-sm">
+                                        <div>{item.authors?.join(', ')}</div>
+                                        <div>{item.publisher}</div>
+                                        <div>{item.publishedDate}</div>
+                                        <div>{item.isbn}</div>
+
+                                    </div>
+
+                                        
+                                    </div>
+                                </a>
                             </li>
                         ))}
                     </ul>
                 </div>
-                <div>
-                    <Button size="sm">
+                <div className="mt-2 flex gap-2">
+                    <Button size="sm" onClick={handlePrev} className="w-20">
+                        <ChevronLeftIcon className="h-4 w-4 inline-block" />
                         Prev
                     </Button>
-                    <Button size="sm">
+                    <Button size="sm" onClick={handleNext} className="w-20">
                         Next
+                        <ChevronRightIcon className="h-4 w-4 inline-block" />
                     </Button>
+                    <div>
+                        {offset + 1} - {offset + items.length} / {total}
+                    </div>
                 </div>
         </CustomDialog>
     );
