@@ -5,6 +5,7 @@ import { plainToInstance } from 'class-transformer';
 
 import { Genre } from '@/entities/Genre';
 import { GenreDto } from './dto/GenreDto';
+import { LoggingService } from '@/shared/logging/logging.service';
 
 
 @Controller('admin/genres')
@@ -12,10 +13,12 @@ export class GenresController {
     constructor(
         @InjectRepository(Genre)
         private readonly repos: Repository<Genre>,
+        private readonly logger: LoggingService
     ) { }
 
     @Get()
     async find(@Query("query") query:string): Promise<GenreDto[]> {
+        this.logger.log('find genres ' + query);
         if(!query){
             return plainToInstance(GenreDto, 
                 await this.repos.find({

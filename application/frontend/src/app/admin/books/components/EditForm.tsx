@@ -16,7 +16,7 @@ import { api } from '@/shared/apiClient';
 import RequiredMark from '@/components/RequiredMark';
 
 interface EditFormProps {
-    book?: Book | null;
+    book: Book;
     onSave: (book: Book) => void;
     onCancel: () => void;
 }
@@ -41,49 +41,26 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
     const {
         register,
         handleSubmit: hookHandleSubmit,
-        formState: { errors },
+        formState: { errors, isSubmitting },
         reset,
+        setValue,
     } = useForm<FormData>({
-        defaultValues: {
-            id: book?.id || 0,
-            title: book?.title || '',
-            author: book?.author || '',
-            publishedDate: book?.publishedDate || '',
-            isbn: book?.isbn || '',
-            publisher: book?.publisher || '',
-            thumbnail: book?.thumbnail || '',
-            description: book?.description || '',
-            genres: book?.genres || [],
-        }
+        defaultValues: book
     });
-    const [formData, setFormData] = useState<Book>({ ...book ?? {} as Book });
     const [message, setMessage] = useState<string[]>([]);
 
     useEffect(() => {
         if (book) {
-            reset({
-                title: book.title || '',
-                author: book.author || '',
-                publishedDate: book.publishedDate || '',
-                isbn: book.isbn || '',
-                publisher: book.publisher || '',
-                thumbnail: book.thumbnail || '',
-                description: book.description || '',
-                genres: book.genres || [],
-            });
+            reset(book);
         }
     }, [book, reset]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData((prevData: Book) => ({
-            ...prevData,
-            [name]: value,
-        }));
+        setValue(name as keyof FormData, value);
     };
 
-
-    const { handleSubmit, isSubmitting } = useSubmitHandler<FormData>(async (data) => {
+    const handleFormSubmit = async (data: FormData) => {
         console.log("送信データ:", data);
 
         try {
@@ -100,24 +77,23 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
             setMessage(["送信中にエラーが発生しました: " + (error as Error).message]);
             return;
         }
-    });
+    };
+
     const handleCancel = (e: React.FormEvent) => {
         e.preventDefault();
         onCancel();
-    }
-    // multi select
-    const multiSelectRef = useRef<MultiSelectComboboxRef>(null); // MultiSelectCombobox の ref
-    const fetchOptions = async (query: string): Promise<Option[]> => {
-        const loadGenres = async (query: string) => {
-            const genres = await api.get('/api/admin/genres', {params : {query: query}, local: true});
-            return genres.json();
-        };
-        return loadGenres(query);
-
     };
+
+    const multiSelectRef = useRef<MultiSelectComboboxRef>(null);
+
+    const fetchOptions = async (query: string): Promise<Option[]> => {
+        const genres = await api.get('/api/admin/genres', { params: { query: query }, local: true });
+        return genres.json();
+    };
+
     const labelWidth = "w-32";
     return (
-        <form onSubmit={hookHandleSubmit(handleSubmit)}>
+        <form onSubmit={hookHandleSubmit(handleFormSubmit)}>
             {message.length > 0 && (
                 <div className='text-red-700 py-2 mb-4'>
                     {message.map((message, index) => (
@@ -131,7 +107,6 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                     <TextBox
                         type="text"
                         id="title"
-                        value={formData.title}
                         maxLength={100}
                         className={clsx(errors.title && inputVariants.danger)} 
                         width='w-full'
@@ -156,7 +131,6 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                     <TextBox
                         type="text"
                         id="author"
-                        value={formData.author}
                         maxLength={64}
                         className={clsx(errors.author && inputVariants.danger)}
                         width='w-full'
@@ -179,7 +153,6 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                     <TextBox
                         type="text"
                         id="publisher"
-                        value={formData.publisher}
                         maxLength={255}
                         className={clsx(errors.publisher && inputVariants.danger)}
                         width='w-full'
@@ -202,7 +175,6 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                     <TextBox
                         type="text"
                         id="publishedDate"
-                        value={formData.publishedDate}
                         maxLength={10}
                         className={clsx(errors.publishedDate && inputVariants.danger)}
                         width='w-32'
@@ -226,7 +198,6 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                     <TextBox
                         type="text"
                         id="isbn"
-                        value={formData.isbn}
                         maxLength={17}
                         className={clsx(errors.isbn && inputVariants.danger)}
                         width='w-full'
@@ -250,7 +221,6 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                     <TextBox
                         type="text"
                         id="thumbnail"
-                        value={formData.thumbnail}
                         maxLength={255}
                         className={clsx(errors.thumbnail && inputVariants.danger)}
                         width='w-full'
@@ -272,7 +242,6 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                 <div className='flex-1'>
                     <MultiLineText
                         id="description"
-                        value={formData.description}
                         maxLength={1024}
                         className='border border-gray-300 rounded-sm p-1 w-full h-32'
                         {...register("description", {
@@ -293,7 +262,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
                     <div id="genre"  className='flex-1'>
                         <MultiSelectCombobox
                             fetchOptions={fetchOptions}
-                            initialSelectedItems={formData.genres}
+                            initialSelectedItems={book.genres.map((genre) => ({ id: genre.id, name: genre.name, isNew: false }))}
                             ref={multiSelectRef}
                         />
 

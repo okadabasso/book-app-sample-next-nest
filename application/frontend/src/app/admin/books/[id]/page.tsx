@@ -50,7 +50,7 @@ const DetailPage = () => {
                         <div>{book.title}</div>
                     </div>
                     <div className='mb-4 flex gap-2'>
-                        <div className='font-bold w-32'>Author</div>
+                        <div className='font-bold w-32 min-w-32'>Author</div>
                         <div>{book.author}</div>
                     </div>
                     <div className='mb-4 flex gap-2'>
@@ -58,23 +58,23 @@ const DetailPage = () => {
                         <div>{book.publisher}</div>
                     </div>
                     <div className='mb-4 flex gap-2'>
-                        <div className='font-bold w-32'>Published Date</div>
+                        <div className='font-bold w-32 min-w-32'>Published Date</div>
                         <div>{book.publishedDate}</div>
                     </div>
                     <div className='mb-4 flex gap-2'>
-                        <div className='font-bold w-32'>ISBN</div>
+                        <div className='font-bold w-32 min-w-32'>ISBN</div>
                         <div>{book.isbn}</div>
                     </div>
                     <div className='mb-4 flex gap-2'>
-                        <div className='font-bold w-32'>Thumbnail</div>
+                        <div className='font-bold w-32 min-w-32'>Thumbnail</div>
                         <div>{book.thumbnail}</div>
                     </div>
                     <div className='mb-4 flex gap-2'>
-                        <div className='font-bold w-32'>Description</div>
+                        <div className='font-bold w-32 min-w-32'>Description</div>
                         <div>{book.description}</div>
                     </div>
                     <div className='mb-4 flex gap-2'>
-                        <div className='font-bold w-32'>Genres</div>
+                        <div className='font-bold w-32 min-w-32'>Genres</div>
                         <ul className='flex flex-wrap gap-2'>
                             {book.genres.map((genre) => (
                                 <li key={genre.id} className=''>{genre.name}</li>

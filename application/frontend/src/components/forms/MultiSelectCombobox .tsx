@@ -31,6 +31,8 @@ const MultiSelectCombobox = forwardRef<MultiSelectComboboxRef, MultiSelectCombob
     const addItemToSelection = (item: Option) => {
       setSelectedItems((prev) => {
         // 重複チェック: id を基準に確認
+        console.log('prev:', prev);
+        console.log('item:', item);
         const exists = prev.some((selectedItem) => selectedItem.id === item.id);
 
         // 重複していなければ追加
@@ -47,6 +49,7 @@ const MultiSelectCombobox = forwardRef<MultiSelectComboboxRef, MultiSelectCombob
       const value = event.target.value;
       setQuery(value);
       const result = await fetchOptions(value);
+      console.log(result);
       setOptions(result);
       setIsOpen(true);
     };
