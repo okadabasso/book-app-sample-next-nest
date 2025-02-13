@@ -72,6 +72,9 @@ const CreateBookPage = () => {
         setBook(updatedBook);
         setIsDialogOpen(false);
     }
+    const handleBookChange = (updatedBook: Book) => {
+        setBook(updatedBook);
+    }
 
     return (
         <div>
@@ -81,8 +84,17 @@ const CreateBookPage = () => {
                 </div>
             </ContentHeader>
             {error && <p className='text-red-500'>{error}</p>}
-            <EditForm book={book} onSave={(book) => handleSave(book)} onCancel={() => handleCancel()} />
-            <GoogleBooksSearch isOpen={isDialogOpen} onClose={() => {setIsDialogOpen(false)}} onSelected={(book) => { selectBook(book); } } />
+            <EditForm book={book} 
+                onSave={(book) => handleSave(book)} 
+                onCancel={() => handleCancel()} 
+                onChange={handleBookChange}/>
+            <GoogleBooksSearch 
+                searchTitle={book.title}
+                searchAuthor={book.author}
+                searchIsbn={book.isbn}
+                isOpen={isDialogOpen} 
+                onClose={() => {setIsDialogOpen(false)}} 
+                onSelected={(book) => { selectBook(book); } } />
         </div>
     );
 };

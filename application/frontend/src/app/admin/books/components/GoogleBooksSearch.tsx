@@ -5,28 +5,42 @@ import TextBox from "@/components/forms/TextBox";
 import { api } from "@/shared/apiClient";
 import { Book } from "@/types/Book";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface GoogleBooksSearchProps{
+    searchTitle?: string;
+    searchAuthor?: string;
+    searchIsbn?: string;
     isOpen: boolean;
     onClose: () => void;
     onSelected: (book: Book) => void;
 }
 
-const GoogleBooksSearch = ({isOpen, onClose, onSelected}: GoogleBooksSearchProps) => {
+const GoogleBooksSearch = ({searchTitle, searchAuthor, searchIsbn,  isOpen, onClose, onSelected}: GoogleBooksSearchProps) => {
     const [items, setItems] = useState<Book[]>([]);
     const [title, setTitle] = useState('');
+    const [author, setAuthor] = useState('');
     const [isbn, setIsbn] = useState('');
     const [error, setError] = useState<string | null>(null);
     const limit = 10;
     const [offset, setOffset] = useState(0);
     const [total, setTotal] = useState(0);
 
-    const searchBooks = async (limit: number, offset: number) => {
+    useEffect(() => {
+        if(searchTitle || searchAuthor || searchIsbn){
+            searchBooks(searchTitle || '', searchAuthor || '', searchIsbn || '', limit, 0);
+        }
+        setTitle(searchTitle || '');
+        setAuthor(searchAuthor || '');
+        setIsbn(searchIsbn || '');
+
+    }, [searchTitle, searchAuthor, searchIsbn]);
+    const searchBooks = async (title: string, author: string, isbn: string, limit: number, offset: number) => {
         try {
             const response = await api.get('/api/admin/books/google_books', {
                 params: {
                     title: title,
+                    author: author,
                     isbn: isbn,
                     limit: limit,
                     offset: offset
@@ -53,18 +67,18 @@ const GoogleBooksSearch = ({isOpen, onClose, onSelected}: GoogleBooksSearchProps
     };
     const handleSearch = async () => {
         console.log('searching...');
-        await searchBooks(limit, 0);
+        await searchBooks(title, author, isbn, limit, 0);
 
     }
     const handleNext = async () => {
         if(offset + limit < total){
-            await searchBooks(limit, offset + limit);
+            await searchBooks(title, author, isbn, limit, offset + limit);
         }
         console.log('next offset: ', offset);
     }
     const handlePrev = async () => {
         if(offset - limit >= 0){
-            await searchBooks(limit, offset - limit);
+            await searchBooks(title, author, isbn, limit, offset - limit);
         }
         console.log('prev offset: ', offset);
     }
@@ -85,6 +99,11 @@ const GoogleBooksSearch = ({isOpen, onClose, onSelected}: GoogleBooksSearchProps
                     <div>
                         <label className="mr-2">Title</label>
                         <TextBox name="title" value={title} onChange={(event)=>setTitle(event.target.value) } />
+
+                    </div>
+                    <div>
+                        <label className="mr-2">Author</label>
+                        <TextBox name="author" value={author} onChange={(event)=>setAuthor(event.target.value) } />
 
                     </div>
                     <div>

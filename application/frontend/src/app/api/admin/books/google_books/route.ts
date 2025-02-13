@@ -46,10 +46,9 @@ export async function GET(
         throw new Error(`API Error: ${response.statusText} (${response.status})`);
     }
     const data = await response.json();
-    console.log('data: ', JSON.stringify(data.items[0].volumeInfo.authors));
-    // if(data.totalItems === 0) {
-    //     return NextResponse.json({total: 0, items: []});
-    // }
+    if(data.totalItems === 0) {
+        return NextResponse.json({total: 0, items: []});
+    }
     const result = responseToBookApiResult(data);
     return NextResponse.json(result);
 }

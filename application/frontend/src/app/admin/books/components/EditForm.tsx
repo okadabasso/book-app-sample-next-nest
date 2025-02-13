@@ -19,6 +19,7 @@ interface EditFormProps {
     book: Book;
     onSave: (book: Book) => void;
     onCancel: () => void;
+    onChange?: (book: Book) => void;
 }
 interface Option {
     id: number;
@@ -37,7 +38,7 @@ interface FormData {
     genres: Option[];
 }
 
-const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
+const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
     const {
         register,
         handleSubmit: hookHandleSubmit,
@@ -58,6 +59,7 @@ const EditForm = ({ book, onSave, onCancel }: EditFormProps) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setValue(name as keyof FormData, value);
+        onChange && onChange({ ...book, [name]: value });
     };
 
     const handleFormSubmit = async (data: FormData) => {
