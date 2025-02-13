@@ -34,10 +34,13 @@ export class Book {
     @OneToMany(() => BookGenre     , bookGenre => bookGenre.book,  )
     bookGenres: BookGenre[];
 
-    constructor(id:number, title: string, author: string, description: string, publishedDate: string) {
+    constructor(id:number, title: string, author: string, isbn: string, publisher: string, thubmnail: string, description: string, publishedDate: string) {
         this.id = id;
         this.title = title;
         this.author = author;
+        this.isbn = isbn;
+        this.publisher = publisher;
+        this.thumbnail = thubmnail;
         this.description = description;
         this.publishedDate = publishedDate;
 

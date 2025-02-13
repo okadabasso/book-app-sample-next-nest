@@ -14,7 +14,6 @@ interface GoogleBooksSearchProps{
 }
 
 const GoogleBooksSearch = ({isOpen, onClose, onSelected}: GoogleBooksSearchProps) => {
-    const [open, setOpen] = useState(false);
     const [items, setItems] = useState<Book[]>([]);
     const [title, setTitle] = useState('');
     const [isbn, setIsbn] = useState('');
@@ -22,21 +21,6 @@ const GoogleBooksSearch = ({isOpen, onClose, onSelected}: GoogleBooksSearchProps
     const limit = 10;
     const [offset, setOffset] = useState(0);
     const [total, setTotal] = useState(0);
-
-    const handleSelected = () => {
-        onSelected({
-            id: 0,
-            title: '',
-            author: '',
-            publishedDate: '',
-            isbn: '',
-            publisher: '',
-            thumbnail: '',
-            description: '',
-            authors: [],
-            genres: [],
-        });
-    }
 
     const searchBooks = async (limit: number, offset: number) => {
         try {
@@ -92,7 +76,6 @@ const GoogleBooksSearch = ({isOpen, onClose, onSelected}: GoogleBooksSearchProps
             headerContent="Google Books Search"
             footerContent={
                 <>
-                <Button onClick={handleSelected} className='w-48'>Select</Button>
                 <Button onClick={onClose} className='w-48'>Close</Button>
                 </>
             }
@@ -122,7 +105,7 @@ const GoogleBooksSearch = ({isOpen, onClose, onSelected}: GoogleBooksSearchProps
                                     <div>
                                     <div className="">{item.title}</div>
                                     <div className="flex gap-x-4 flex-wrap text-sm">
-                                        <div>{item.authors?.join(', ')}</div>
+                                        <div>{item.author}</div>
                                         <div>{item.publisher}</div>
                                         <div>{item.publishedDate}</div>
                                         <div>{item.isbn}</div>

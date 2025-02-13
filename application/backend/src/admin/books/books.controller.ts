@@ -89,6 +89,9 @@ export class BooksController {
                 book.id,
                 book.title,
                 book.author,
+                book.isbn,
+                book.publisher,
+                book.thumbnail,
                 book.description,
                 book.publishedDate,
             )

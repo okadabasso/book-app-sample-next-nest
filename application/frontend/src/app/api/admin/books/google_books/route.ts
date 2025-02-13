@@ -46,7 +46,7 @@ export async function GET(
         throw new Error(`API Error: ${response.statusText} (${response.status})`);
     }
     const data = await response.json();
-    logger.info(`data: ${JSON.stringify(data)}`);
+    console.log('data: ', JSON.stringify(data.items[0].volumeInfo.authors));
     // if(data.totalItems === 0) {
     //     return NextResponse.json({total: 0, items: []});
     // }
@@ -58,14 +58,15 @@ function responseToBookApiResult(data: any): GoogleBooksApiResult {
         total: data.totalItems,
         items: data.items ? data.items.map((item: any) => {
             return {
-                id: item.id,
                 title: item.volumeInfo.title,
-                authors: item.volumeInfo.authors,
+                author: item.volumeInfo.authors ? item.volumeInfo.authors.join(' ') : '',
                 publisher: item.volumeInfo.publisher,
                 publishedDate: item.volumeInfo.publishedDate,
                 description: item.volumeInfo.description,
                 isbn: item.volumeInfo.industryIdentifiers?.find((id: any) => id.type === 'ISBN_13')?.identifier,
                 thumbnail: item.volumeInfo.imageLinks?.thumbnail,
+                genres:[],
+                authors: []
             };
         })
         : []

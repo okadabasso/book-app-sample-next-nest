@@ -8,6 +8,7 @@ import FormToken from '@/types/FormToken';
 import { api } from '@/shared/apiClient';
 import Button from '@/components/forms/Button';
 import GoogleBooksSearch from '../components/GoogleBooksSearch';
+import { plainToInstance } from 'class-transformer';
 
 const CreateBookPage = () => {
     const year = (new Date()).getFullYear();
@@ -67,19 +68,7 @@ const CreateBookPage = () => {
     }
     const selectBook = (book: Book) => {
         console.log('selected book: ', book);
-        const updatedBook: Book = {
-            ...book,
-            author: book.authors ? book.authors.join(" ") : "",
-            title: book.title ?? '',
-            publishedDate: book.publishedDate ?? '',
-            isbn: book.isbn ?? '',
-            publisher: book.publisher ?? '',
-            thumbnail: book.thumbnail ?? '',
-            description: book.description ?? '',
-            authors: book.authors ?? [],
-            genres: book.genres ?? [],
-            id: 0,
-        };
+        const updatedBook: Book =  plainToInstance(Book, book);
         setBook(updatedBook);
         setIsDialogOpen(false);
     }

@@ -74,6 +74,9 @@ export class BookEditService {
 
         book.title = updateData.title;
         book.author = updateData.author;
+        book.isbn = updateData.isbn;
+        book.publisher = updateData.publisher;
+        book.thumbnail = updateData.thumbnail;
         book.publishedDate = updateData.publishedDate;
         book.description = updateData.description;
 
