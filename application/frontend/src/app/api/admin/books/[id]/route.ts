@@ -38,11 +38,12 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 }
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    logger.info('DELETE /admin/books/[id]');
     const { id } = await params;
     if (!id) {
         return NextResponse.json({ error: "Book ID is required" }, { status: 400 });
     }
 
-    const response = await api.delete(`/admin/books/delete}`, {params: { id }});
+    const response = await api.delete(`/admin/books/${id}`, {});
     return response;
 }

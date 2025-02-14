@@ -50,14 +50,15 @@ export class BookEditService {
         return book;
     }
 
-    async deleteBook(id: number): Promise<void> {
+    async deleteBook(id: number): Promise<Book> {
         const book = await this.bookFindService.findBookById(id);
 
         if (!book) {
             throw new Error('Book not found');
         }
-
-        await this.manager.remove(book);
+        const { bookRepository, bookGenreRepository } = this.getRepositories();
+        bookGenreRepository.remove(book.bookGenres);
+        return  await bookRepository.remove(book);
     }
     private  async createBookEntry(bookData: Partial<Book>): Promise<Book> {
         const { bookRepository } = this.getRepositories();

@@ -59,9 +59,10 @@ export class BooksController {
     }
 
     @Delete(':id')
-    async remove(@Param('id') id: number): Promise<void> {
-        const result = await this.dataSource.getRepository(Book).delete(id);
-        if (result.affected === 0) {
+    async delete(@Param('id') id: number): Promise<void> {
+        console.log("delete", id);
+        const result = await this.bookEditService.deleteBook(id);
+        if (!result) {
             throw new NotFoundException(`Book with id ${id} not found`);
         }
     }
