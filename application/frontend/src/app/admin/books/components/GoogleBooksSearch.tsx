@@ -5,7 +5,7 @@ import TextBox from "@/components/forms/TextBox";
 import { api } from "@/shared/apiClient";
 import { Book } from "@/types/Book";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface GoogleBooksSearchProps{
     searchTitle?: string;
@@ -25,6 +25,7 @@ const GoogleBooksSearch = ({searchTitle, searchAuthor, searchIsbn,  isOpen, onCl
     const limit = 10;
     const [offset, setOffset] = useState(0);
     const [total, setTotal] = useState(0);
+    const listRef = useRef<HTMLDivElement>(null); // リストの参照を作成
 
     useEffect(() => {
         if(searchTitle || searchAuthor || searchIsbn){
@@ -56,6 +57,9 @@ const GoogleBooksSearch = ({searchTitle, searchAuthor, searchIsbn,  isOpen, onCl
             setTotal(data.total);
             setOffset(offset);
             console.log('data: ', data);
+            if (listRef.current) {
+                listRef.current.scrollTop = 0; // スクロール位置をリセット
+            }
         }
         catch (e: unknown) {
             if (e instanceof Error) {
@@ -115,7 +119,7 @@ const GoogleBooksSearch = ({searchTitle, searchAuthor, searchIsbn,  isOpen, onCl
                     </div>
                 </div>
                 {error && <div className="text-red-600">{error}</div>}
-                <div className="scrollable border border-gray-400 mt-4">
+                <div ref={listRef}  className="scrollable border border-gray-400 mt-4">
                     <ul className="px-2">
                         {items.map((item, index) => (
                             <li key={index} className="my-2 ">

@@ -13,6 +13,7 @@ import Button from '@/components/forms/Button';
 import { set } from 'react-hook-form';
 import { api } from '@/shared/apiClient';
 import { createCsrfToken, getCsrfHeader } from '@/shared/csrfToken';
+import { resetScroll } from '@/shared/resetScroll';
 
 const BooksPage = () => {
     const searchParams = useSearchParams();
@@ -37,6 +38,7 @@ const BooksPage = () => {
             const books = plainToInstance(Book, data.books);
             setBooks(books);
             setTotal(data.total);
+            resetScroll();
         } catch (e: unknown) {
             if (e instanceof Error) {
                 setError(e.message);
