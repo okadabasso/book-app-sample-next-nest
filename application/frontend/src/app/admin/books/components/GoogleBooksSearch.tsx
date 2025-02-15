@@ -58,7 +58,7 @@ const GoogleBooksSearch = ({searchTitle, searchAuthor, searchIsbn,  isOpen, onCl
             setOffset(offset);
             console.log('data: ', data);
             if (listRef.current) {
-                listRef.current.scrollTop = 0; // スクロール位置をリセット
+                listRef.current.scrollTo({top: 0, behavior: 'smooth'}) // スクロール位置をリセット
             }
         }
         catch (e: unknown) {
