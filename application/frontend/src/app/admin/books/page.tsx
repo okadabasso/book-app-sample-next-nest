@@ -135,10 +135,10 @@ const BooksPage = () => {
                                         </td>
                                         <td className=' text-left border border-gray-300 px-1 py-0.5'>
                                             <div className='flex gap-1'>
-                                                <Button size="sm" onClick={() => { handleEditBook(book.id) }}>
+                                                <Button size="sm" onClick={() => { handleEditBook(book.id) }} title='Edit'>
                                                     <PencilIcon className='w-4 h-4'></PencilIcon>
                                                 </Button>
-                                                <Button size="sm" onClick={() => { handleDeleteBook(book.id) }}>
+                                                <Button size="sm" onClick={() => { handleDeleteBook(book.id) }} title='Delete'>
                                                     <TrashIcon className='w-4 h-4'></TrashIcon>
                                                 </Button>
                                             </div>
