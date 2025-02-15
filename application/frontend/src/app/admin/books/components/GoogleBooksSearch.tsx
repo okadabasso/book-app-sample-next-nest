@@ -126,7 +126,7 @@ const GoogleBooksSearch = ({searchTitle, searchAuthor, searchIsbn,  isOpen, onCl
                             <li key={index} className="my-2 ">
                                 <a href="#" onClick={() => onSelected(item)} className="flex gap-2">
                                     <Image 
-                                        src={item.thumbnail?.replace('http://','https://') || '/no-image.png'}
+                                        src={item.thumbnail || '/no-image.png'}
                                         width={40}
                                         height={51}
                                         alt={item.title}
