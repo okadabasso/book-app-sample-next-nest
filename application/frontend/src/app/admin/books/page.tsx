@@ -24,13 +24,13 @@ const BooksPage = () => {
 
     const [data, setBooks] = useState<Book[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [query, setQuery] = useState<string>(queryParam);
+    const [title, setTitle] = useState<string>(queryParam);
     const [limit, setLimit] = useState<number>(Number(limitParam));
     const [offset, setOffset] = useState<number>(Number(offsetParam));
     const [total, setTotal] = useState<number>(0);
-    const fetchBooks = async (query: string, limit: number, offset: number) => {
+    const fetchBooks = async (title: string, limit: number, offset: number) => {
         try {
-            const response = await api.get('/api/admin/books', { params: { query: query, offset: offset, limit: limit }, local: true });
+            const response = await api.get('/api/admin/books', { params: { query: title, offset: offset, limit: limit }, local: true });
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }
@@ -49,27 +49,27 @@ const BooksPage = () => {
     };
 
     useEffect(() => {
-        fetchBooks(query, limit, offset);
+        fetchBooks(title, limit, offset);
     }
         , []);
 
     const handleSearch = () => {
-        fetchBooks(query, limit, offset);
+        fetchBooks(title, limit, offset);
     }
     const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setQuery(event.target.value);
+        setTitle(event.target.value);
         setOffset(0);
         setLimit(20);
     }
     const handleNextPage = async () => {
         const next = offset + limit < total ? offset + limit : offset;
         setOffset(next);
-        await fetchBooks(query, limit, next);
+        await fetchBooks(title, limit, next);
     }
     const handlePreviousPage = async () => {
         const previous = offset - limit < 0 ? 0 : offset - limit;
         setOffset(previous);
-        await fetchBooks(query, limit, previous);
+        await fetchBooks(title, limit, previous);
     }
     const handleEditBook  = (id: number) =>{
         console.log('edit book');
@@ -84,7 +84,7 @@ const BooksPage = () => {
             headers: getCsrfHeader(csrfToken),
             local: true
         });
-        await fetchBooks(query, limit, offset);
+        await fetchBooks(title, limit, offset);
     }
 
     return (
