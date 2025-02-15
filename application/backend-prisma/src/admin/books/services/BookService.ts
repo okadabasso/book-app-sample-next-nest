@@ -7,13 +7,16 @@ import { LoggingService } from "@/logging/logging.service";
 interface BookEditData {
     title: string;
     author: string;
-    publishedYear: number;
+    publishedDate: string;
+    isbn?: string;
+    publisher?: string;
+    thumbnail?: string;
     description: string;
 };
 interface BookFindOption{
     limit?: number;
     offset?: number;
-    query?: string;
+    title?: string;
     order?: string;
 }
 
@@ -35,10 +38,10 @@ export class BooksService {
         private readonly prisma: PrismaService,
         private readonly logger: LoggingService
     ) { }
-    async getBooks({query, limit, offset}: BookFindOption): Promise<Book[]> {
+    async getBooks({title, limit, offset}: BookFindOption): Promise<Book[]> {
         const where: Prisma.BookWhereInput = {};
-        if (query) {
-            where.title = { contains: query };
+        if (title) {
+            where.title = { contains: title };
         }
 
         const books = await this.prisma.book.findMany({
@@ -51,10 +54,10 @@ export class BooksService {
         return books;
 
     }
-    async getBookCount({query, limit, offset}: BookFindOption): Promise<number> {
+    async getBookCount({title, limit, offset}: BookFindOption): Promise<number> {
         const where: Prisma.BookWhereInput = {};
-        if (query) {
-            where.title = { contains: query };
+        if (title) {
+            where.title = { contains: title };
         }
 
         const total = await this.prisma.book.count({
@@ -148,12 +151,32 @@ export class BooksService {
         return {
             title: data.title,
             author: data.author,
-            publishedYear:  parseInt(data.publishedYear),
+            publishedDate: data.publishedDate,
+            isbn: data.isbn,
+            publisher: data.publisher,
+            thumbnail: data.thumbnail,
+
             description: data.description
 
         }
     }
-    private getGenresToUpdate(currentBook: { bookGenres: ({ genre: { name: string; id: number; }; } & { id: number; bookId: number; genreId: number; })[]; } & { id: number; title: string; author: string | null; description: string | null; publishedYear: number | null; createdAt: Date; }, newGenres: { name: string; id: number; }[]) {
+    private getGenresToUpdate(currentBook: { 
+        bookGenres: ({ 
+            genre: { name: string; id: number; }; 
+        } 
+        & { id: number; bookId: number; genreId: number; })[]; 
+    } 
+    & { 
+        id: number; 
+        title: string; 
+        author: string | null;
+        isbn: string | null;
+        publisher: string | null;
+        thumbnail: string | null; 
+        description: string | null; 
+        publishedDate: string | null; 
+        createdAt: Date; 
+    }, newGenres: { name: string; id: number; }[]) {
         const currentGenres = currentBook.bookGenres.map(bg => bg.genre);
         // 削除するジャンル
         const genresToDelete = currentGenres.filter(currentGenre => 

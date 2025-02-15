@@ -10,7 +10,13 @@ export class BookDto {
     @Expose()
     author: string;
     @Expose()
-    publishedYear?: number;
+    publishedDate?: string;
+    @Expose()
+    isbn?: string;
+    @Expose()
+    publisher?: string;
+    @Expose()
+    thumbnail?: string;
     @Expose()
     description: string;
 
@@ -21,11 +27,11 @@ export class BookDto {
         : [], { toClassOnly: true })
     genres: GenreDto[];
 
-    constructor(id: number, title: string, author: string, publishedYear: number, description: string, genres: GenreDto[]) {
+    constructor(id: number, title: string, author: string, publishedDate: string, description: string, genres: GenreDto[]) {
         this.id = id;
         this.title = title;
         this.author = author;
-        this.publishedYear = publishedYear;
+        this.publishedDate = publishedDate;
         this.description = description;
         this.genres = genres;
     }
@@ -36,7 +42,13 @@ export class EditBookDto {
     @Expose()
     author: string;
     @Expose()
-    publishedYear: string;
+    publishedDate?: string;
+    @Expose()
+    isbn?: string;
+    @Expose()
+    publisher?: string;
+    @Expose()
+    thumbnail?: string;
     @Expose()
     description: string;
     @Expose()

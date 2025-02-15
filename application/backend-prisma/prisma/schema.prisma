@@ -36,8 +36,11 @@ model Book {
   id            Int     @id @default(autoincrement())
   title         String  @default("") @db.VarChar(255)
   author        String? @default("") @db.VarChar(255)
+  isbn          String? @default("") @db.VarChar(13)
+  publisher     String? @default("") @db.VarChar(255)
+  thumbnail     String? @default("") @db.VarChar(1024)
   description   String? @default("") @db.Text
-  publishedYear Int?
+  publishedDate String? @default("") @db.VarChar(10)
 
   createdAt DateTime @default(now())
 
@@ -60,36 +63,36 @@ model BookGenre {
 }
 
 model AuthUser {
-  userId               Int      @id @default(autoincrement())
-  userName             String   @db.VarChar(255)
-  passwordHash         String   @db.VarChar(255)
+  userId               Int       @id @default(autoincrement())
+  userName             String    @db.VarChar(255)
+  passwordHash         String    @db.VarChar(255)
   externalAuthProvider String?   @db.VarChar(255)
   externalAuthId       String?   @db.VarChar(255)
-  email                String   @db.VarChar(255)
-  createdAt            DateTime? @db.Timestamptz(6) @default(now())
-  updatedAt            DateTime? @db.Timestamptz(6) @default(now())
-  isActive             Boolean  @default(true)
+  email                String    @db.VarChar(255)
+  createdAt            DateTime? @default(now()) @db.Timestamptz(6)
+  updatedAt            DateTime? @default(now()) @db.Timestamptz(6)
+  isActive             Boolean   @default(true)
 
   userRoles AuthUserRole[]
 }
 
 model AuthRole {
-  roleId    Int      @id @default(autoincrement())
-  roleName  String   @db.VarChar(255)
-  createdAt DateTime? @db.Timestamptz(6) @default(now())
-  updatedAt DateTime? @db.Timestamptz(6) @default(now())
-  isActive  Boolean  @default(true)
+  roleId    Int       @id @default(autoincrement())
+  roleName  String    @db.VarChar(255)
+  createdAt DateTime? @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime? @default(now()) @db.Timestamptz(6)
+  isActive  Boolean   @default(true)
 
   roleUsers AuthUserRole[]
 }
 
 model AuthUserRole {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   userId    Int
   roleId    Int
-  createdAt DateTime? @db.Timestamptz(6) @default(now())
-  updatedAt DateTime? @db.Timestamptz(6) @default(now())
-  isActive  Boolean  @default(true)
-  user      AuthUser @relation(fields: [userId], references: [userId])
-  role      AuthRole @relation(fields: [roleId], references: [roleId])
+  createdAt DateTime? @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime? @default(now()) @db.Timestamptz(6)
+  isActive  Boolean   @default(true)
+  user      AuthUser  @relation(fields: [userId], references: [userId])
+  role      AuthRole  @relation(fields: [roleId], references: [roleId])
 }

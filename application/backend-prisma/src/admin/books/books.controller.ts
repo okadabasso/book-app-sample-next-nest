@@ -6,6 +6,7 @@ import { plainToInstance } from 'class-transformer';
 import { Book } from '@prisma/client';
 import { BookFindDto } from './dto/BookFindDto';
 
+const defaultLimit: number = Number(process.env.DEFAULT_LIMIT) || 20;
 @Controller('admin/books')
 export class BooksController {
     constructor(
@@ -14,11 +15,11 @@ export class BooksController {
     ) {}
 
     @Get()
-    async getBooks(@Query('query') query: string, @Query('offset') offset: string, limit: string): Promise<BookFindDto> {
+    async getBooks(@Query('title') title: string, @Query('offset') offset: string, limit: string): Promise<BookFindDto> {
         this.logger.log('Getting all books');
         const option = {
-            query:query,
-            limit: limit ?  Number(limit) : 20,
+            title: title,
+            limit: limit ?  Number(limit) : defaultLimit,
             offset: offset ? Number(offset) : 0,
         }
         const books = await this.booksService.getBooks(option);
