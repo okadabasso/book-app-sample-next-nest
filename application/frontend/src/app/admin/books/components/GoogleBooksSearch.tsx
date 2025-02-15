@@ -5,6 +5,7 @@ import TextBox from "@/components/forms/TextBox";
 import { api } from "@/shared/apiClient";
 import { Book } from "@/types/Book";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 interface GoogleBooksSearchProps{
@@ -124,7 +125,13 @@ const GoogleBooksSearch = ({searchTitle, searchAuthor, searchIsbn,  isOpen, onCl
                         {items.map((item, index) => (
                             <li key={index} className="my-2 ">
                                 <a href="#" onClick={() => onSelected(item)} className="flex gap-2">
-                                    <img src={item.thumbnail} className="h-16" />
+                                    <Image 
+                                        src={item.thumbnail?.replace('http://','https://') || '/no-image.png'}
+                                        width={40}
+                                        height={51}
+                                        alt={item.title}
+                                        className="rounded-sm"
+                                    />
                                     <div>
                                     <div className="">{item.title}</div>
                                     <div className="flex gap-x-4 flex-wrap text-sm">

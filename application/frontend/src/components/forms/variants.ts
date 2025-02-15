@@ -1,4 +1,3 @@
-import { warn } from "console";
 
 export const textVariants = {
   default: 'text-gray-700',

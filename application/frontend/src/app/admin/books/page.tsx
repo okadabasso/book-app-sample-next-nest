@@ -9,6 +9,7 @@ import { api } from '@/shared/apiClient';
 import { createCsrfToken, getCsrfHeader } from '@/shared/csrfToken';
 import { resetScroll } from '@/shared/resetScroll';
 import { Book, BookFind } from '@/types/Book';
+import { BookQuery } from '@/types/BookQuery';
 import { ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/16/solid';
 import { plainToInstance } from 'class-transformer';
 import Link from 'next/link';
@@ -46,7 +47,7 @@ const BooksPage = () => {
     useEffect(() => {
         fetchBooks(query);
         console.log('fetchBooks', query);
-    }, []);
+    }, [query]);
 
     const handleSearch = () => {
         fetchBooks(query);

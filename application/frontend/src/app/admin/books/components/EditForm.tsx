@@ -1,19 +1,18 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import { useForm } from 'react-hook-form';
-import { Book } from '@/types/Book';
-import MultiSelectCombobox, { MultiSelectComboboxRef } from '@/components/forms/MultiSelectCombobox ';
 import ContentFooter from '@/components/ContentFooter';
-import { useSubmitHandler } from '@/hooks/useSubmitHandler';
-import { CheckIcon } from '@heroicons/react/16/solid';
-import TextBox from '@/components/forms/TextBox';
 import Button from '@/components/forms/Button';
 import MultiLineText from '@/components/forms/MultiLineText';
-import clsx from 'clsx';
+import MultiSelectCombobox, { MultiSelectComboboxRef } from '@/components/forms/MultiSelectCombobox ';
+import TextBox from '@/components/forms/TextBox';
 import { inputVariants } from '@/components/forms/variants';
-import { api } from '@/shared/apiClient';
 import RequiredMark from '@/components/RequiredMark';
+import { api } from '@/shared/apiClient';
+import { Book } from '@/types/Book';
+import { CheckIcon } from '@heroicons/react/16/solid';
+import clsx from 'clsx';
+import React, { useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 interface EditFormProps {
     book: Book;
@@ -59,7 +58,7 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setValue(name as keyof FormData, value);
-        onChange && onChange({ ...book, [name]: value });
+        if(onChange) onChange({ ...book, [name]: value });
     };
 
     const handleFormSubmit = async (data: FormData) => {

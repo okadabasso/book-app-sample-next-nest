@@ -4,7 +4,7 @@ import { ArrowRightEndOnRectangleIcon, ArrowRightStartOnRectangleIcon, ChevronDo
 import { User } from "next-auth";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function SignInLink() {
     const { data: session } = useSession();

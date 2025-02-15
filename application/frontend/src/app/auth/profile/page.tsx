@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from 'react';
-import ContentHeader from '@/app/admin/books/components/ContentHeader';
+import ContentHeader from '@/components/ContentHeader';
 import { plainToInstance } from "class-transformer";
 import { Profile } from '@/types/Profile';
 import { api } from '@/shared/apiClient';

@@ -11,14 +11,14 @@ import GoogleBooksSearch from '../components/GoogleBooksSearch';
 import { plainToInstance } from 'class-transformer';
 
 const CreateBookPage = () => {
-    const year = (new Date()).getFullYear();
+    const year = (new Date()).getFullYear().toString();
     const [error, setError] = useState<string | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [book, setBook] = useState<Book>({
         id: 0,
         title: '',
         author: '',
-        publishedDate: '',
+        publishedDate: year,
         isbn: '',
         publisher: '',
         thumbnail: '',

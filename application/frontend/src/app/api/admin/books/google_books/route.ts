@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { api } from "@/shared/apiClient"
 import logger from '@/shared/logger';
-import { GoogleBooksApiResult } from "@/types/GoogleBooksApiResult";
+import { GoogleBooksApiResponse, GoogleBooksApiResult, GoogleBooksIndustryIdentifier, GoogleBookVolume } from "@/types/GoogleBooksApiResult";
 
 const googleBooksUrl = 'https://www.googleapis.com/books/v1/volumes';
 interface GoogleBooksQueryParams {
@@ -10,6 +10,7 @@ interface GoogleBooksQueryParams {
     isbn?: string | null;
     publisher?: string | null;
 }
+
 export async function GET(
     request: NextRequest
 ) {
@@ -33,7 +34,7 @@ export async function GET(
         isbn: queryParams.isbn,
         publisher: queryParams.publisher,
     })
-        .filter(([key, value]) => value !== "")
+        .filter(([, value]) => value !== "")
         .map(([key, value]) => `${key}:${value}`)
         .join('+');
     const queryString = queryParams.title ?  `${queryParams.title} ${queryOptions}`  : queryOptions;
@@ -52,17 +53,17 @@ export async function GET(
     const result = responseToBookApiResult(data);
     return NextResponse.json(result);
 }
-function responseToBookApiResult(data: any): GoogleBooksApiResult {
+function responseToBookApiResult(data: GoogleBooksApiResponse): GoogleBooksApiResult {
     return {
         total: data.totalItems,
-        items: data.items ? data.items.map((item: any) => {
+        items: data.items ? data.items.map((item: GoogleBookVolume) => {
             return {
                 title: item.volumeInfo.title,
                 author: item.volumeInfo.authors ? item.volumeInfo.authors.join(' ') : '',
                 publisher: item.volumeInfo.publisher,
                 publishedDate: item.volumeInfo.publishedDate,
                 description: item.volumeInfo.description,
-                isbn: item.volumeInfo.industryIdentifiers?.find((id: any) => id.type === 'ISBN_13')?.identifier,
+                isbn: item.volumeInfo.industryIdentifiers?.find((id: GoogleBooksIndustryIdentifier) => id.type === 'ISBN_13')?.identifier,
                 thumbnail: item.volumeInfo.imageLinks?.thumbnail,
                 genres:[],
                 authors: []

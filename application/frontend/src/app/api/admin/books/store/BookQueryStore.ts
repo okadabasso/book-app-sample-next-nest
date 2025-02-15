@@ -1,3 +1,4 @@
+import { BookQuery } from '@/types/BookQuery';
 import { createStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 const defaultLimit: number = Number(process.env.NEXT_PUBLIC_DEFAULT_LIMIT) || 20;
