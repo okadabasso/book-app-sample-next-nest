@@ -1,12 +1,7 @@
-import { create, createStore } from 'zustand';
+import { createStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 const defaultLimit: number = Number(process.env.NEXT_PUBLIC_DEFAULT_LIMIT) || 20;
 
-interface BookQuery{
-    title: string;
-    limit: number;
-    offset: number;
-}
 interface BookQueryState {
     query: BookQuery,
     setQuery: (query: Partial<BookQueryState["query"]>) => void;

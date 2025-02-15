@@ -1,5 +1,5 @@
 "use client"
-import { BookQueryStore } from '@/app/api/admin/books/store/BookStore';
+import { BookQueryStore } from '@/app/api/admin/books/store/BookQueryStore';
 import ContentFooter from '@/components/ContentFooter';
 import ContentHeader from '@/components/ContentHeader';
 import Button from '@/components/forms/Button';
@@ -14,12 +14,6 @@ import { plainToInstance } from 'class-transformer';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
-
-interface BookQuery {
-    title: string | null;
-    limit: number;
-    offset: number;
-}
 
 const BooksPage = () => {
     const [data, setBooks] = useState<Book[]>([]);
