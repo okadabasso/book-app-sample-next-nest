@@ -263,7 +263,7 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
                     <div id="genre"  className='flex-1'>
                         <MultiSelectCombobox
                             fetchOptions={fetchOptions}
-                            initialSelectedItems={book.genres.map((genre) => ({ id: genre.id, name: genre.name, isNew: false }))}
+                            initialSelectedItems={book.genres && book.genres.map((genre) => ({ id: genre.id, name: genre.name, isNew: false }))}
                             ref={multiSelectRef}
                         />
 

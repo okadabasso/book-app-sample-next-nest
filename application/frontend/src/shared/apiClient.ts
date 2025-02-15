@@ -33,11 +33,7 @@ async function apiRequest(
         body: options.body ? JSON.stringify(options.body) : undefined,
         cache: 'no-store',
     });
-
-    if (!response.ok) {
-        throw new Error(`API Error: ${response.statusText} (${response.status})`);
-    }
-
+    console.log("response", response);
     return response;
 }
 

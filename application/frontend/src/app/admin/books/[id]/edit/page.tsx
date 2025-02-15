@@ -11,6 +11,7 @@ import { api } from '@/shared/apiClient';
 import { plainToInstance } from 'class-transformer';
 import Button from '@/components/forms/Button';
 import GoogleBooksSearch from '../../components/GoogleBooksSearch';
+import ErrorContent from '../../components/Error';
 
 const EditBookPage = () => {
     const { id } = useParams();
@@ -31,8 +32,17 @@ const EditBookPage = () => {
         const loadBook = async () => {
             if (id) {
                 try {
-                    const book = await fetchBook(Number(id));
-                    setBook(book);
+                    const result = await fetchBook(Number(id));
+                    if (result.error) {
+                        console.warn(result);
+                        if (result.status === 404) {
+                            setError(result.error);
+                        } else {
+                            setError(result.error);
+                        }
+                    } else if (result.book) {
+                        setBook(result.book);
+                    }
                 }
                 catch (e: unknown) {
                     if (e instanceof Error) {
@@ -90,7 +100,9 @@ const EditBookPage = () => {
         setBook(updatedBook);
     }
 
-
+    if(error){
+        return  <ErrorContent title="Error" message={error}/>
+    }
     if (!book) {
         return <div>Loading...</div>;
     }

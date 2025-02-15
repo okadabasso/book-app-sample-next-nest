@@ -170,11 +170,11 @@ export class BooksService {
         id: number; 
         title: string; 
         author: string | null;
-        isbn: string | null;
-        publisher: string | null;
-        thumbnail: string | null; 
-        description: string | null; 
-        publishedDate: string | null; 
+        isbn?: string | null;
+        publisher?: string | null;
+        thumbnail?: string | null; 
+        description?: string | null; 
+        publishedDate?: string | null; 
         createdAt: Date; 
     }, newGenres: { name: string; id: number; }[]) {
         const currentGenres = currentBook.bookGenres.map(bg => bg.genre);

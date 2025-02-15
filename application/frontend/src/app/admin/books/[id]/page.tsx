@@ -7,6 +7,7 @@ import ContentHeader from '@/components/ContentHeader';
 import ContentFooter from '@/components/ContentFooter';
 import { PencilIcon } from '@heroicons/react/16/solid';
 import ButtonLink from '@/components/forms/ButtonLink';
+import ErrorContent from '../components/Error';
 
 const DetailPage = () => {
     const { id } = useParams();
@@ -17,11 +18,21 @@ const DetailPage = () => {
         const loadBook = async () => {
             if (id) {
                 try {
-                    const book = await fetchBook(Number(id));
-                    setBook(book);
+                    const result = await fetchBook(Number(id));
+                    if (result.error) {
+                        console.warn(result);
+                        if (result.status === 404) {
+                            setError(result.error);
+                        } else {
+                            setError(result.error);
+                        }
+                    } else if (result.book) {
+                        setBook(result.book);
+                    }
                 }
                 catch (e: unknown) {
                     if (e instanceof Error) {
+                        console.log(e.message);
                         setError(e.message);
                     } else {
                         setError(String(e));
@@ -34,6 +45,9 @@ const DetailPage = () => {
         loadBook();
 
     }, [id]);
+    if(error){
+        return  <ErrorContent title="Error" message={error}/>
+    }
 
     if (!book) {
         return <div>Loading...</div>;
