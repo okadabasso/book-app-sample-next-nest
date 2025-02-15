@@ -11,7 +11,7 @@ import { DataSource, EntityManager, FindManyOptions, FindOptionsOrder, Like, Rep
 interface BookFindOption{
     limit?: number;
     offset?: number;
-    query?: string;
+    title?: string;
     order?: FindOptionsOrder<Book>;
 }
 
@@ -64,8 +64,8 @@ export class BookFindService {
                 order: { id: 'ASC' },
             });
         }
-        if(option?.query !== ''){
-            options.where = { title: Like(`%${option.query}%`) };
+        if(option?.title !== ''){
+            options.where = { title: Like(`%${option.title}%`) };
         }
 
         this.logger.log(`Finding books with options: ${JSON.stringify(options)}`);

@@ -1,36 +1,42 @@
 "use client"
-import { Book, BookFind } from '@/types/Book';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import ContentHeader from '@/components/ContentHeader';
-import { plainToInstance } from 'class-transformer';
 import ContentFooter from '@/components/ContentFooter';
-import { ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/16/solid';
-import ButtonLink from '@/components/forms/ButtonLink';
-import { useSearchParams } from 'next/navigation';
-import TextBox from '@/components/forms/TextBox';
+import ContentHeader from '@/components/ContentHeader';
 import Button from '@/components/forms/Button';
-import { set } from 'react-hook-form';
+import ButtonLink from '@/components/forms/ButtonLink';
+import TextBox from '@/components/forms/TextBox';
 import { api } from '@/shared/apiClient';
 import { createCsrfToken, getCsrfHeader } from '@/shared/csrfToken';
 import { resetScroll } from '@/shared/resetScroll';
+import { Book, BookFind } from '@/types/Book';
+import { ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/16/solid';
+import { plainToInstance } from 'class-transformer';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { atom, useAtom } from 'jotai';
+
+const defaultLimit: number = Number(process.env.NEXT_PUBLIC_DEFAULT_LIMIT) || 20
+interface BookQuery {
+    title: string;
+    limit: number;
+    offset: number;
+}
+// 初期状態を持つ atom を作成
+const queryAtom = atom({
+  title: '',
+  limit: defaultLimit,
+  offset: 0,
+});
 
 const BooksPage = () => {
-    const searchParams = useSearchParams();
-
-    const queryParam = searchParams.get('query') || '';
-    const limitParam = searchParams.get('limit') || process.env.NEXT_PUBLIC_DEFAULT_LIMIT || '20';
-    const offsetParam = searchParams.get('offset') || '0';
-
     const [data, setBooks] = useState<Book[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [title, setTitle] = useState<string>(queryParam);
-    const [limit, setLimit] = useState<number>(Number(limitParam));
-    const [offset, setOffset] = useState<number>(Number(offsetParam));
     const [total, setTotal] = useState<number>(0);
-    const fetchBooks = async (title: string, limit: number, offset: number) => {
+    const [query, setQuery] = useAtom(queryAtom);
+
+    const fetchBooks = async (query: BookQuery) => {
         try {
-            const response = await api.get('/api/admin/books', { params: { query: title, offset: offset, limit: limit }, local: true });
+            const response = await api.get('/api/admin/books', { params: {...query}, local: true });
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }
@@ -49,27 +55,30 @@ const BooksPage = () => {
     };
 
     useEffect(() => {
-        fetchBooks(title, limit, offset);
-    }
-        , []);
+        fetchBooks(query);
+    }, []);
 
     const handleSearch = () => {
-        fetchBooks(title, limit, offset);
+        fetchBooks(query);
     }
-    const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setTitle(event.target.value);
-        setOffset(0);
-        setLimit(20);
+    const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setQuery((prev) => ({ 
+            title: event.target.value,
+            limit: defaultLimit,
+            offset: 0
+        }));
     }
     const handleNextPage = async () => {
-        const next = offset + limit < total ? offset + limit : offset;
-        setOffset(next);
-        await fetchBooks(title, limit, next);
+        const next = query.offset + query.limit < total ? query.offset + query.limit : query.offset;
+        const newQuery = { ...query, offset: next };
+        setQuery((prev) => (newQuery));
+        await fetchBooks(newQuery);
     }
     const handlePreviousPage = async () => {
-        const previous = offset - limit < 0 ? 0 : offset - limit;
-        setOffset(previous);
-        await fetchBooks(title, limit, previous);
+        const previous = query.offset - query.limit < 0 ? 0 : query.offset - query.limit;
+        const newQuery = { ...query, offset: previous };
+        setQuery((prev) => (newQuery));
+        await fetchBooks(newQuery);
     }
     const handleEditBook  = (id: number) =>{
         console.log('edit book');
@@ -84,7 +93,7 @@ const BooksPage = () => {
             headers: getCsrfHeader(csrfToken),
             local: true
         });
-        await fetchBooks(title, limit, offset);
+        await fetchBooks(query);
     }
 
     return (
@@ -94,7 +103,7 @@ const BooksPage = () => {
             <div className='flex mb-4'>
                 <div>
                     <label className='mr-2 inline' htmlFor="query">Title:</label>
-                    <TextBox type='text' id="query" placeholder='Search Title' onChange={(event) => handleQueryChange(event)} />
+                    <TextBox type='text' id="query" placeholder='Search Title' onChange={(event) => handleTitleChange(event)} />
                 </div>
                 <div>
                     <Button onClick={() => { handleSearch() }} size='sm' className='w-24 h-7'>
@@ -160,7 +169,7 @@ const BooksPage = () => {
                                 <ChevronRightIcon className='w-4 h-4 ml-0.5 inline-block relative -top-[1px]'></ChevronRightIcon>
                             </Button>
                             <div className='align-middle'>
-                                <span className='text-sm'>{offset + 1} - {offset + limit > total ? total : offset + limit} </span>
+                                <span className='text-sm'>{query.offset + 1} - {query.offset + query.limit > total ? total : query.offset + query.limit} </span>
                                 <span className='text-sm'>of {total}</span>
                             </div>
                         </div>

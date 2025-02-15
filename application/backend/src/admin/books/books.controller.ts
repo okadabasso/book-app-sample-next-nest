@@ -22,13 +22,14 @@ export class BooksController {
     ) { }
 
     @Get()
-    async findAll(@Query('query') query: string, @Query('offset') offset: number): Promise<BookFindDto> {
+    async findAll(@Query('title') title: string, @Query('offset') offset: number, @Query('limit') limit: number): Promise<BookFindDto> {
+        limit = limit ? Number(limit) : Number(process.env.DEFAULT_LIMIT) || 20;
         const books = await this.bookFindService.findAllBooks({ 
-            query: query || '',
-            limit: Number(process.env.DEFAULT_LIMIT) || 20, 
+            title: title || '',
+            limit: limit, 
             offset });
-        const count = await this.bookFindService.totalBooks(query);
-        const dto = new BookFindDto(this.toBookDtoArray(books), query, 10, offset, count);
+        const count = await this.bookFindService.totalBooks(title);
+        const dto = new BookFindDto(this.toBookDtoArray(books), title, limit, offset, count);
         return dto;
     }
     @Get("find")
