@@ -7,7 +7,7 @@ export default function Header() {
     <div className='top-0 w-full z-10 bg-white'>
       <header className="bg-gray-800 text-white shadow w-full pr-4 firefox:pr-0">
         <div className="container mx-auto py-2 px-4 flex justify-between items-center relative left-[1px]">
-          <h1 className="font-bold"><Link href="/">Books Application Sample</Link> </h1>
+          <h1 className="font-bold"><Link href="/">Books Manager App Sample</Link> </h1>
           <nav className="space-x-4">
             <Link href="/" className='hover:underline'>Home</Link>
             <Link href="/admin" className='hover:underline'>Admin</Link>
