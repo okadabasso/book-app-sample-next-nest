@@ -1,4 +1,5 @@
 "use client"
+import { BookQueryStore } from '@/app/api/admin/books/store/BookStore';
 import ContentFooter from '@/components/ContentFooter';
 import ContentHeader from '@/components/ContentHeader';
 import Button from '@/components/forms/Button';
@@ -11,32 +12,26 @@ import { Book, BookFind } from '@/types/Book';
 import { ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/16/solid';
 import { plainToInstance } from 'class-transformer';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { atom, useAtom } from 'jotai';
+import { useStore } from 'zustand';
 
-const defaultLimit: number = Number(process.env.NEXT_PUBLIC_DEFAULT_LIMIT) || 20
 interface BookQuery {
-    title: string;
+    title: string | null;
     limit: number;
     offset: number;
 }
-// 初期状態を持つ atom を作成
-const queryAtom = atom({
-  title: '',
-  limit: defaultLimit,
-  offset: 0,
-});
 
 const BooksPage = () => {
     const [data, setBooks] = useState<Book[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [total, setTotal] = useState<number>(0);
-    const [query, setQuery] = useAtom(queryAtom);
+
+    const query = useStore(BookQueryStore, state => state.query);
+    const setQuery = useStore(BookQueryStore, state => state.setQuery);
 
     const fetchBooks = async (query: BookQuery) => {
         try {
-            const response = await api.get('/api/admin/books', { params: {...query}, local: true });
+            const response = await api.get('/api/admin/books', { params: {...query, title: query.title || ''}, local: true });
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }
@@ -56,28 +51,28 @@ const BooksPage = () => {
 
     useEffect(() => {
         fetchBooks(query);
+        console.log('fetchBooks', query);
     }, []);
 
     const handleSearch = () => {
         fetchBooks(query);
     }
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setQuery((prev) => ({ 
-            title: event.target.value,
-            limit: defaultLimit,
-            offset: 0
-        }));
+        const newQuery = { ...query, title: event.target.value, offset: 0 };
+        setQuery(newQuery);
+        console.log('handleTitleChange', newQuery);
+        
     }
     const handleNextPage = async () => {
         const next = query.offset + query.limit < total ? query.offset + query.limit : query.offset;
         const newQuery = { ...query, offset: next };
-        setQuery((prev) => (newQuery));
+        setQuery(newQuery);
         await fetchBooks(newQuery);
     }
     const handlePreviousPage = async () => {
         const previous = query.offset - query.limit < 0 ? 0 : query.offset - query.limit;
         const newQuery = { ...query, offset: previous };
-        setQuery((prev) => (newQuery));
+        setQuery(newQuery);
         await fetchBooks(newQuery);
     }
     const handleEditBook  = (id: number) =>{
@@ -103,7 +98,7 @@ const BooksPage = () => {
             <div className='flex mb-4'>
                 <div>
                     <label className='mr-2 inline' htmlFor="query">Title:</label>
-                    <TextBox type='text' id="query" placeholder='Search Title' onChange={(event) => handleTitleChange(event)} />
+                    <TextBox type='text' id="query" value={query.title || ''} placeholder='Search Title' onChange={(event) => handleTitleChange(event)} />
                 </div>
                 <div>
                     <Button onClick={() => { handleSearch() }} size='sm' className='w-24 h-7'>
