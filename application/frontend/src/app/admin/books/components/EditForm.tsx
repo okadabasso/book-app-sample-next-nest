@@ -10,9 +10,11 @@ import RequiredMark from '@/components/RequiredMark';
 import { api } from '@/shared/apiClient';
 import { Book } from '@/types/Book';
 import { BookOpenIcon, CheckIcon, DocumentIcon } from '@heroicons/react/16/solid';
+import { plainToInstance } from 'class-transformer';
 import clsx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import GoogleBooksSearch from './GoogleBooksSearch';
 
 interface EditFormProps {
     book: Book;
@@ -41,7 +43,7 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
     const {
         register,
         handleSubmit: hookHandleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors, isSubmitting},
         reset,
         setValue,
     } = useForm<FormData>({
@@ -49,16 +51,16 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
     });
     const [message, setMessage] = useState<string[]>([]);
     const multiSelectRef = useRef<MultiSelectComboboxRef>(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     useEffect(() => {
         if (book) {
             reset(book);
         }
     }, [book, reset]);
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setValue(name as keyof FormData, value);
+        setValue(name as keyof FormData, value, { shouldValidate: true, shouldDirty: true });
         if(onChange) onChange({ ...book, [name]: value });
     };
 
@@ -91,6 +93,15 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
         const genres = await api.get('/api/admin/genres', { params: { query: query }, local: true });
         return genres.json();
     };
+    const selectBook = (book: Book) => {
+        console.log('selected book: ', book);
+        const updatedBook: Book =  plainToInstance(Book, book);
+        Object.entries(updatedBook).forEach(([key, value]) => {
+            setValue(key as keyof FormData, value);
+        })
+        setIsDialogOpen(false);
+    }
+
 
     const labelWidth = "w-32";
     return (
@@ -271,6 +282,13 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
             </div>
             <ContentFooter>
                 <div>
+                    <div className='mb-6'>
+                        <Button type="button" className='' size='sm' variant='outline-default'  onClick={()=>{setIsDialogOpen(true)}}>
+                            <BookOpenIcon className='w-4 h-4 inline-block align-text-bottom mr-1'></BookOpenIcon>
+                            Google Booksで検索
+                        </Button>
+
+                    </div>
                     <div className='flex gap-2'>
                         <Button type="submit" className='w-32' variant='primary'>
                             <CheckIcon className='h-4 w-4 inline-block relative -top-0.5 mr-1' />
@@ -290,6 +308,14 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
                     </div>
                 </div>
             )}
+            <GoogleBooksSearch 
+                searchTitle={book.title}
+                searchAuthor={book.author}
+                searchIsbn={book.isbn}
+                isOpen={isDialogOpen} 
+                onClose={() => {setIsDialogOpen(false)}} 
+                onSelected={(book) => { selectBook(book); } } />
+
         </form>
     );
 };

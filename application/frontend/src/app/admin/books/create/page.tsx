@@ -9,6 +9,7 @@ import { api } from '@/shared/apiClient';
 import Button from '@/components/forms/Button';
 import GoogleBooksSearch from '../components/GoogleBooksSearch';
 import { plainToInstance } from 'class-transformer';
+import TextLink from '@/components/forms/TextLink';
 
 const CreateBookPage = () => {
     const year = (new Date()).getFullYear().toString();
@@ -66,12 +67,6 @@ const CreateBookPage = () => {
     const handleCancel = () => {
         window.location.href = `/admin/books`;
     }
-    const selectBook = (book: Book) => {
-        console.log('selected book: ', book);
-        const updatedBook: Book =  plainToInstance(Book, book);
-        setBook(updatedBook);
-        setIsDialogOpen(false);
-    }
     const handleBookChange = (updatedBook: Book) => {
         setBook(updatedBook);
     }
@@ -80,7 +75,7 @@ const CreateBookPage = () => {
         <div>
             <ContentHeader title='Create Book' >
                 <div className='justify-self-end'>
-                    <Button onClick={()=>{setIsDialogOpen(true)}} className='' variant='outline-default' size='sm'>Search Google Books</Button>
+                    <TextLink href='/admin/books' className='' variant='default'>Return to list</TextLink>
                 </div>
             </ContentHeader>
             {error && <p className='text-red-500'>{error}</p>}
@@ -88,13 +83,6 @@ const CreateBookPage = () => {
                 onSave={(book) => handleSave(book)} 
                 onCancel={() => handleCancel()} 
                 onChange={handleBookChange}/>
-            <GoogleBooksSearch 
-                searchTitle={book.title}
-                searchAuthor={book.author}
-                searchIsbn={book.isbn}
-                isOpen={isDialogOpen} 
-                onClose={() => {setIsDialogOpen(false)}} 
-                onSelected={(book) => { selectBook(book); } } />
         </div>
     );
 };
