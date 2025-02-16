@@ -8,7 +8,7 @@ import TextBox from '@/components/forms/TextBox';
 import { api } from '@/shared/apiClient';
 import { createCsrfToken, getCsrfHeader } from '@/shared/csrfToken';
 import { resetScroll } from '@/shared/resetScroll';
-import { Book, BookFind } from '@/types/Book';
+import { BookData, BookFindResult } from '@/types/Book';
 import { BookQuery } from '@/types/BookQuery';
 import { ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/16/solid';
 import { plainToInstance } from 'class-transformer';
@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
 
 const BooksPage = () => {
-    const [data, setBooks] = useState<Book[]>([]);
+    const [data, setBooks] = useState<BookData[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [total, setTotal] = useState<number>(0);
 
@@ -30,9 +30,8 @@ const BooksPage = () => {
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }
-            const data: BookFind = await response.json();
-            const books = plainToInstance(Book, data.books);
-            setBooks(books);
+            const data: BookFindResult = await response.json();
+            setBooks(data.books);
             setTotal(data.total);
             resetScroll();
         } catch (e: unknown) {

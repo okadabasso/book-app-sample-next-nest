@@ -8,7 +8,7 @@ import TextBox from '@/components/forms/TextBox';
 import { inputVariants } from '@/components/forms/variants';
 import RequiredMark from '@/components/RequiredMark';
 import { api } from '@/shared/apiClient';
-import { Book } from '@/types/Book';
+import { BookData } from '@/types/Book';
 import { BookOpenIcon, CheckIcon, DocumentIcon } from '@heroicons/react/16/solid';
 import { plainToInstance } from 'class-transformer';
 import clsx from 'clsx';
@@ -17,59 +17,45 @@ import { useForm } from 'react-hook-form';
 import GoogleBooksSearch from './GoogleBooksSearch';
 
 interface EditFormProps {
-    book: Book;
-    onSave: (book: Book) => void;
+    book: BookData;
+    onSave: (book: BookData) => void;
     onCancel: () => void;
-    onChange?: (book: Book) => void;
+    onChange?: (book: BookData) => void;
 }
 interface Option {
     id: number;
     name: string;
 }
 
-interface FormData {
-    id: number;
-    title: string;
-    author: string;
-    publishedDate?: string;
-    isbn?: string;
-    publisher?: string;
-    thumbnail?: string;
-    description: string;
-    genres: Option[];
-}
 
 const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
+    const initialData: BookData = { ...book };
     const {
         register,
         handleSubmit: hookHandleSubmit,
-        formState: { errors, isSubmitting},
+        formState: { errors, isSubmitting, isDirty},
         reset,
         setValue,
-    } = useForm<FormData>({
-        defaultValues: book
+    } = useForm<BookData>({
+        defaultValues: initialData
     });
     const [message, setMessage] = useState<string[]>([]);
     const multiSelectRef = useRef<MultiSelectComboboxRef>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    useEffect(() => {
-        if (book) {
-            reset(book);
-        }
-    }, [book, reset]);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setValue(name as keyof FormData, value, { shouldValidate: true, shouldDirty: true });
+        setValue(name as keyof BookData, value, { shouldDirty: true });
+        console.log('name: ', name, 'value: ', value);
         if(onChange) onChange({ ...book, [name]: value });
     };
 
-    const handleFormSubmit = async (data: FormData) => {
+    const handleFormSubmit = async (data: BookData) => {
         console.log("送信データ:", data);
 
         try {
             const selectedItems = multiSelectRef.current?.getSelectedItems();
-            const updatedBook: Book = {
+            const updatedBook: BookData = {
                 ...book,
                 ...data,
                 genres: selectedItems?.map((item) => ({ id: item.id, name: item.name, isNew: item.isNew })) ?? [],
@@ -93,11 +79,11 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
         const genres = await api.get('/api/admin/genres', { params: { query: query }, local: true });
         return genres.json();
     };
-    const selectBook = (book: Book) => {
+    const selectBook = (book: BookData) => {
         console.log('selected book: ', book);
-        const updatedBook: Book =  plainToInstance(Book, book);
+        const updatedBook: BookData =  { ...book};
         Object.entries(updatedBook).forEach(([key, value]) => {
-            setValue(key as keyof FormData, value);
+            setValue(key as keyof BookData, value);
         })
         setIsDialogOpen(false);
     }
@@ -113,6 +99,7 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
                     ))}
                 </div>
             )}
+            {isDirty && <p>Form is dirty</p>}
             <div className='mb-4 flex gap-2 items-baseline'>
                 <div className={clsx(labelWidth)}><label htmlFor="title">Title<RequiredMark /></label></div>
                 <div className='flex-1'>
@@ -126,9 +113,7 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
                         {...register("title", {
                             required: "Title is required",
                             maxLength: { value: 100, message: "Title is too long" },
-                            onChange: (e) => {
-                                handleChange(e);
-                            }
+                            onChange: handleChange
                         })}
                     />
                     {errors.title && <p className='text-red-600'>{errors.title.message}</p>}

@@ -1,5 +1,5 @@
 'use client';
-import { Book } from '@/types/Book';
+import { BookData } from '@/types/Book';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import fetchBook from '@/app/admin/books/functions/fetchBook';
@@ -12,7 +12,7 @@ import TextLink from '@/components/forms/TextLink';
 
 const DetailPage = () => {
     const { id } = useParams();
-    const [book, setBook] = useState<Book>();
+    const [book, setBook] = useState<BookData>();
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {

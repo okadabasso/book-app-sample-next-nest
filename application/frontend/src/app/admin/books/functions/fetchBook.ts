@@ -1,9 +1,9 @@
 import { api } from "@/shared/apiClient";
-import { Book } from "@/types/Book";
+import { BookData } from "@/types/Book";
 import { plainToInstance } from "class-transformer";
 
 interface FetchBookResult {
-    book?: Book;
+    book?: BookData;
     error?: string;
     details?: {
         message: string;
@@ -21,9 +21,8 @@ const fetchBook = async (id: number): Promise<FetchBookResult> => {
             const errorDetails = await response.json(); // エラーメッセージの詳細を取得
             return { error: errorDetails.message, details: errorDetails , status: response.status };
         }
-        const data: Book = await response.json();
-        const book = plainToInstance(Book, data);
-        return  { book };
+        const data: BookData = await response.json();
+        return  { book: data };
     } catch (e: unknown) {
         if (e instanceof Error) {
             console.log(e.message);

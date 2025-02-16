@@ -1,5 +1,5 @@
 'use client';
-import { Book } from '@/types/Book';
+import { BookData } from '@/types/Book';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import fetchBook from '@/app/admin/books/functions/fetchBook';
@@ -14,7 +14,7 @@ import TextLink from '@/components/forms/TextLink';
 const EditBookPage = () => {
     const { id } = useParams();
 
-    const [book, setBook] = useState<Book>();
+    const [book, setBook] = useState<BookData>();
     const [error, setError] = useState<string | null>(null);
     const [formToken, setFormToken] = useState<FormToken>({formId:'', token:''});
     const router = useRouter();
@@ -33,11 +33,7 @@ const EditBookPage = () => {
                     const result = await fetchBook(Number(id));
                     if (result.error) {
                         console.warn(result);
-                        if (result.status === 404) {
-                            setError(result.error);
-                        } else {
-                            setError(result.error);
-                        }
+                        setError(result.error);
                     } else if (result.book) {
                         setBook(result.book);
                     }
@@ -57,8 +53,8 @@ const EditBookPage = () => {
 
     }, [id]);
 
-    const handleSave = (book: Book) => {
-        const saveBook = async (book: Book) => {
+    const handleSave = (book: BookData) => {
+        const saveBook = async (book: BookData) => {
             try {
                 const response = await api.put(
                     `/api/admin/books/${id}`,
@@ -87,9 +83,8 @@ const EditBookPage = () => {
     }
     const handleCancel = () => {
         router.push(`/admin/books/${id}`);
-        // window.location.href = `/admin/books/${id}`;
     }
-    const handleBookChange = (updatedBook: Book) => {
+    const handleBookChange = (updatedBook: BookData) => {
         // setBook(updatedBook);
         console.log('updatedBook: ', updatedBook);
     }
