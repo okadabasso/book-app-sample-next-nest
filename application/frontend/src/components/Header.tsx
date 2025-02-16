@@ -21,7 +21,7 @@ export default function Header() {
           </nav>
           </details>
 
-          <nav className="hidden sm:flex text-right gap-2 mt-2 shadow-md rounded-md content-end">
+          <nav className="hidden sm:flex text-right gap-2 shadow-md rounded-md content-end">
             <Link href="/" className='hover:underline'>Home</Link>
             <Link href="/admin" className='hover:underline'>Admin</Link>
             <SignInLink />

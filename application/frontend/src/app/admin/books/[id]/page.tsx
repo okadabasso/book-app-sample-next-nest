@@ -58,7 +58,7 @@ const DetailPage = () => {
             <ContentHeader title='Book Detail' />
             {error && <p className='text-red-500'>{error}</p>}
             <form>
-                <div className='mt-4  clear-both'>
+                <div>
                     <div className='mb-4 flex gap-2 text-lg font-bold' >
                         <div>#{book.id}: </div>
                         <div>{book.title}</div>

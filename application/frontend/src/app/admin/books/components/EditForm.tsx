@@ -9,7 +9,7 @@ import { inputVariants } from '@/components/forms/variants';
 import RequiredMark from '@/components/RequiredMark';
 import { api } from '@/shared/apiClient';
 import { Book } from '@/types/Book';
-import { CheckIcon } from '@heroicons/react/16/solid';
+import { BookOpenIcon, CheckIcon, DocumentIcon } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -48,6 +48,7 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
         defaultValues: book
     });
     const [message, setMessage] = useState<string[]>([]);
+    const multiSelectRef = useRef<MultiSelectComboboxRef>(null);
 
     useEffect(() => {
         if (book) {
@@ -85,7 +86,6 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
         onCancel();
     };
 
-    const multiSelectRef = useRef<MultiSelectComboboxRef>(null);
 
     const fetchOptions = async (query: string): Promise<Option[]> => {
         const genres = await api.get('/api/admin/genres', { params: { query: query }, local: true });
@@ -270,12 +270,14 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
                     </div>
             </div>
             <ContentFooter>
-                <div className='flex gap-2'>
-                <Button type="submit" className='w-32' variant='primary'>
-                    <CheckIcon className='h-4 w-4 inline-block relative -top-0.5 mr-1' />
-                        {isSubmitting ? 'Saving...' : 'Save'}
-                    </Button>
-                    <Button type="button" className='w-32' onClick={handleCancel} variant='default'>Cancel</Button>
+                <div>
+                    <div className='flex gap-2'>
+                        <Button type="submit" className='w-32' variant='primary'>
+                            <CheckIcon className='h-4 w-4 inline-block relative -top-0.5 mr-1' />
+                            {isSubmitting ? 'Saving...' : 'Save'}
+                        </Button>
+                        <Button type="button" className='w-32' onClick={handleCancel} variant='default'>Cancel</Button>
+                    </div>
                 </div>
 
             </ContentFooter>
