@@ -8,6 +8,7 @@ import ContentFooter from '@/components/ContentFooter';
 import { PencilIcon } from '@heroicons/react/16/solid';
 import ButtonLink from '@/components/forms/ButtonLink';
 import ErrorContent from '../components/Error';
+import TextLink from '@/components/forms/TextLink';
 
 const DetailPage = () => {
     const { id } = useParams();
@@ -55,7 +56,11 @@ const DetailPage = () => {
 
     return (
         <div>
-            <ContentHeader title='Book Detail' />
+            <ContentHeader title='Book Detail' >
+            <div className='justify-self-end'>
+                    <TextLink href='/admin/books' className='' variant='default'>Return to list</TextLink>
+                </div>
+            </ContentHeader>
             {error && <p className='text-red-500'>{error}</p>}
             <form>
                 <div>
