@@ -10,11 +10,11 @@ import RequiredMark from '@/components/RequiredMark';
 import { api } from '@/shared/apiClient';
 import { BookData } from '@/types/Book';
 import { BookOpenIcon, CheckIcon, DocumentIcon } from '@heroicons/react/16/solid';
-import { plainToInstance } from 'class-transformer';
 import clsx from 'clsx';
-import React, { useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useRef, useState } from 'react';
+import { set, useForm } from 'react-hook-form';
 import GoogleBooksSearch from './GoogleBooksSearch';
+import { useFormGuard } from '@/hooks/useFormGuard ';
 
 interface EditFormProps {
     book: BookData;
@@ -39,6 +39,7 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
     } = useForm<BookData>({
         defaultValues: initialData
     });
+    useFormGuard(isDirty);
     const [message, setMessage] = useState<string[]>([]);
     const multiSelectRef = useRef<MultiSelectComboboxRef>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -46,7 +47,6 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setValue(name as keyof BookData, value, { shouldDirty: true });
-        console.log('name: ', name, 'value: ', value);
         if(onChange) onChange({ ...book, [name]: value });
     };
 
@@ -60,6 +60,7 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
                 ...data,
                 genres: selectedItems?.map((item) => ({ id: item.id, name: item.name, isNew: item.isNew })) ?? [],
             };
+            reset(updatedBook);
             onSave(updatedBook);
             console.log("送信が成功しました");
         } catch (error) {
@@ -71,13 +72,25 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
 
     const handleCancel = (e: React.FormEvent) => {
         e.preventDefault();
-        onCancel();
+        if(isDirty){
+            if(window.confirm('変更が保存されていません。変更を破棄してもよろしいですか？')){
+                onCancel();
+            }
+        }
+        else{
+            onCancel();
+        }
     };
 
 
     const fetchOptions = async (query: string): Promise<Option[]> => {
         const genres = await api.get('/api/admin/genres', { params: { query: query }, local: true });
         return genres.json();
+    };
+    const onSelectedItemsChange = (selectedItems: Option[]) => {
+        console.log('selectedItems:', selectedItems);
+        
+        setValue('genres', selectedItems, { shouldDirty: true });
     };
     const selectBook = (book: BookData) => {
         console.log('selected book: ', book);
@@ -99,7 +112,6 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
                     ))}
                 </div>
             )}
-            {isDirty && <p>Form is dirty</p>}
             <div className='mb-4 flex gap-2 items-baseline'>
                 <div className={clsx(labelWidth)}><label htmlFor="title">Title<RequiredMark /></label></div>
                 <div className='flex-1'>
@@ -242,7 +254,7 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
                         maxLength={1024}
                         className='border border-gray-300 rounded-sm p-1 w-full h-32'
                         {...register("description", {
-                            maxLength: { value: 1024, message: "description is too long" },
+                            maxLength: { value: 16384, message: "description is too long" },
                             onChange: (e) => {
                                 handleChange(e);
                             }
@@ -260,6 +272,7 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
                         <MultiSelectCombobox
                             fetchOptions={fetchOptions}
                             initialSelectedItems={book.genres && book.genres.map((genre) => ({ id: genre.id, name: genre.name, isNew: false }))}
+                            onSelectedItemsChange={onSelectedItemsChange}
                             ref={multiSelectRef}
                         />
 

@@ -9,7 +9,7 @@ export const useFormGuard = (isDirty: boolean) => {
         event.target instanceof Element &&
         event.target.closest('a:not([target="_blank"]')
       ) {
-        if (!window.confirm('ページを離れても良いですか？')) {
+        if (!window.confirm('変更が保存されていません。移動してよろしいですか？')) {
           event.preventDefault();
           event.stopPropagation();
         }

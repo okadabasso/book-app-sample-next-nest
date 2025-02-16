@@ -69,7 +69,7 @@ const EditBookPage = () => {
                     throw new Error('Failed to save book [' + response.status + ':' + data.message + ']');
                 }
 
-                window.location.href = `/admin/books/${id}`;
+                router.push(`/admin/books/${id}`);
             } catch (e: unknown) {
                 if (e instanceof Error) {
                     setError(e.message);
@@ -89,9 +89,6 @@ const EditBookPage = () => {
         console.log('updatedBook: ', updatedBook);
     }
 
-    if(error){
-        return  <ErrorContent title="Error" message={error}/>
-    }
     if (!book) {
         return <div>Loading...</div>;
     }

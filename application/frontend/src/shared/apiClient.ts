@@ -1,3 +1,5 @@
+import logger from "./logger";
+
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.BACKEND_URL;
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || process.env.BASE_URL; ;
 
@@ -18,11 +20,9 @@ async function apiRequest(
     options: RequestOptions  & { method: 'GET' | 'POST' | 'PUT' | 'DELETE' },
 ): Promise<Response> {
     const url = options.local ? new URL(endpoint, BASE_URL) : new URL(endpoint, BACKEND_URL);
-    console.log("options", options);
     if (options.params) {
         Object.entries(options.params).forEach(([key, value]) => url.searchParams.append(key, value.toString()));
     }
-    console.log("url", url.toString());
 
     const response = await fetch(url.toString(), {
         method: options.method,
@@ -33,7 +33,6 @@ async function apiRequest(
         body: options.body ? JSON.stringify(options.body) : undefined,
         cache: 'no-store',
     });
-    console.log("response", response);
     return response;
 }
 

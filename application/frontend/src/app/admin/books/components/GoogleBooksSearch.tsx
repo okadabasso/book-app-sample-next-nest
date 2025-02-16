@@ -3,9 +3,10 @@ import CustomDialog from "@/components/CustomDialog";
 import Button from "@/components/forms/Button";
 import TextBox from "@/components/forms/TextBox";
 import { api } from "@/shared/apiClient";
-import { Book } from "@/types/Book";
+import { BookData } from "@/types/Book";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 interface GoogleBooksSearchProps{
@@ -14,11 +15,11 @@ interface GoogleBooksSearchProps{
     searchIsbn?: string;
     isOpen: boolean;
     onClose: () => void;
-    onSelected: (book: Book) => void;
+    onSelected: (book: BookData) => void;
 }
 
 const GoogleBooksSearch = ({searchTitle, searchAuthor, searchIsbn,  isOpen, onClose, onSelected}: GoogleBooksSearchProps) => {
-    const [items, setItems] = useState<Book[]>([]);
+    const [items, setItems] = useState<BookData[]>([]);
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
     const [isbn, setIsbn] = useState('');
@@ -124,7 +125,7 @@ const GoogleBooksSearch = ({searchTitle, searchAuthor, searchIsbn,  isOpen, onCl
                     <ul className="px-2">
                         {items.map((item, index) => (
                             <li key={index} className="my-2 ">
-                                <a href="#" onClick={() => onSelected(item)} className="flex gap-2">
+                                <Link href="#" onClick={() => onSelected(item)} className="flex gap-2">
                                     <Image 
                                         src={item.thumbnail || '/no-image.png'}
                                         width={40}
@@ -144,7 +145,7 @@ const GoogleBooksSearch = ({searchTitle, searchAuthor, searchIsbn,  isOpen, onCl
 
                                         
                                     </div>
-                                </a>
+                                </Link>
                             </li>
                         ))}
                     </ul>

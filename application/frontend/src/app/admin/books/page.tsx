@@ -20,11 +20,13 @@ const BooksPage = () => {
     const [data, setBooks] = useState<BookData[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [total, setTotal] = useState<number>(0);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const query = useStore(BookQueryStore, state => state.query);
     const setQuery = useStore(BookQueryStore, state => state.setQuery);
 
     const fetchBooks = async (query: BookQuery) => {
+        setIsLoading(true);
         try {
             const response = await api.get('/api/admin/books', { params: {...query, title: query.title || ''}, local: true });
             if (!response.ok) {
@@ -41,21 +43,20 @@ const BooksPage = () => {
                 setError(String(e));
             }
         }
+        finally {
+            setIsLoading(false);
+        }
     };
 
     useEffect(() => {
         fetchBooks(query);
-        console.log('fetchBooks', query);
-    }, [query]);
+    }, []);
 
     const handleSearch = () => {
         fetchBooks(query);
     }
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newQuery = { ...query, title: event.target.value, offset: 0 };
-        setQuery(newQuery);
-        console.log('handleTitleChange', newQuery);
-        
+        setQuery({ ...query, title: event.target.value, offset: 0 });
     }
     const handleNextPage = async () => {
         const next = query.offset + query.limit < total ? query.offset + query.limit : query.offset;
@@ -95,14 +96,14 @@ const BooksPage = () => {
                     <TextBox type='text' id="query" value={query.title || ''} placeholder='Search Title' onChange={(event) => handleTitleChange(event)} />
                 </div>
                 <div>
-                    <Button onClick={() => { handleSearch() }} size='sm' className='w-24 h-7'>
+                    <Button onClick={() => { handleSearch() }} size='sm' className='w-24'>
                         <MagnifyingGlassIcon className='h-4 w-4 inline-block relative -top-0.5' />
                         Search
                     </Button>
                 </div>
             </div>
             {total === 0
-                ? <div>Data not found</div>
+                ? isLoading ?  <div>Loading...</div> : <div>No books found</div>
                 : (
                     <div>
                         <table className='table-auto w-full'>

@@ -1,6 +1,7 @@
 import React, { useState, useImperativeHandle, forwardRef } from 'react';
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/16/solid';
+import { on } from 'events';
 
 interface Option {
   id: number;
@@ -10,6 +11,7 @@ interface Option {
 
 interface MultiSelectComboboxProps<T> {
   fetchOptions: (q: string) => Promise<T[]>;
+  onSelectedItemsChange?: (selectedItems: T[]) => void;  // 選択項目が変更されたときのコールバック
   initialSelectedItems?: T[];  // 初期選択項目
 }
 // MultiSelectComboboxRef 型の定義
@@ -18,7 +20,7 @@ export interface MultiSelectComboboxRef {
 }
 
 const MultiSelectCombobox = forwardRef<MultiSelectComboboxRef, MultiSelectComboboxProps<Option>>(
-  ({ fetchOptions, initialSelectedItems = [] }, ref,) => {
+  ({ fetchOptions, initialSelectedItems = [], onSelectedItemsChange }, ref,) => {
     const [selectedItems, setSelectedItems] = useState<Option[]>(initialSelectedItems);
     const [query, setQuery] = useState('');
     const [options, setOptions] = useState<Option[]>([]);
@@ -29,15 +31,16 @@ const MultiSelectCombobox = forwardRef<MultiSelectComboboxRef, MultiSelectCombob
     }));
 
     const addItemToSelection = (item: Option) => {
+      console.log("new item", item);
       setSelectedItems((prev) => {
+        console.log("prev", prev);
         // 重複チェック: id を基準に確認
-        console.log('prev:', prev);
-        console.log('item:', item);
         const exists = prev.some((selectedItem) => selectedItem.id === item.id);
 
         // 重複していなければ追加
         if (!exists) {
-          return [...prev, item];
+          const newCollection = [...prev, item];
+          return newCollection;
         }
 
         // 重複している場合はそのまま
@@ -49,11 +52,13 @@ const MultiSelectCombobox = forwardRef<MultiSelectComboboxRef, MultiSelectCombob
       const value = event.target.value;
       setQuery(value);
       const result = await fetchOptions(value);
-      console.log(result);
       setOptions(result);
       setIsOpen(true);
     };
-
+    const handleSelectedItemsChange = (items:Option[])=>{
+      onSelectedItemsChange && onSelectedItemsChange(items);
+      setSelectedItems(items);
+    };
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === 'Enter') {
         if (!options.some((option) => option.name.toLowerCase() === query.toLowerCase())) {
@@ -73,7 +78,9 @@ const MultiSelectCombobox = forwardRef<MultiSelectComboboxRef, MultiSelectCombob
       }
       else if (event.key == 'Backspace' && query === '') {
         // 最後の選択項目を削除
-        setSelectedItems((prev) => prev.slice(0, prev.length - 1));
+        const newCollection = selectedItems.slice(0, selectedItems.length - 1);
+        setSelectedItems(newCollection);
+        onSelectedItemsChange && onSelectedItemsChange(newCollection);
       }
     };
 
@@ -83,12 +90,14 @@ const MultiSelectCombobox = forwardRef<MultiSelectComboboxRef, MultiSelectCombob
     };
 
     const handleRemoveButtonClick = (item: Option) => {
-      setSelectedItems((prev) => prev.filter((selectedItem) => selectedItem.id !== item.id));
+      const newCollection = selectedItems.filter((selectedItem) => selectedItem.id !== item.id);
+      setSelectedItems(newCollection);
+      onSelectedItemsChange && onSelectedItemsChange(newCollection);
     }
 
     return (
       <div className="relative">
-        <Combobox as="div" value={selectedItems} onChange={setSelectedItems} multiple>
+        <Combobox as="div" value={selectedItems} onChange={handleSelectedItemsChange} multiple>
           <div className="flex flex-wrap items-center border border-gray-400 rounded-sm px-2 py-1 gap-2 : focus-within:ring-2 focus-within:ring-blue-500">
             {selectedItems.map((item) => (
               <span
