@@ -29,7 +29,7 @@ const GoogleBooksSearch = ({searchTitle, searchAuthor, searchIsbn,  isOpen, onCl
     const listRef = useRef<HTMLDivElement>(null); // リストの参照を作成
 
     useEffect(() => {
-        if(searchTitle || searchAuthor || searchIsbn){
+        if((searchTitle || searchAuthor || searchIsbn) && isOpen){
             searchBooks(searchTitle || '', searchAuthor || '', searchIsbn || '', limit, 0);
         }
         setTitle(searchTitle || '');
