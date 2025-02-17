@@ -85,7 +85,6 @@ const EditBookPage = () => {
         router.push(`/admin/books/${id}`);
     }
     const handleBookChange = (updatedBook: BookData) => {
-        // setBook(updatedBook);
         console.log('updatedBook: ', updatedBook);
     }
 

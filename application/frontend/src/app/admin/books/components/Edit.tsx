@@ -8,7 +8,7 @@ import TextBox from '@/components/forms/TextBox';
 import { inputVariants } from '@/components/forms/variants';
 import RequiredMark from '@/components/RequiredMark';
 import { api } from '@/shared/apiClient';
-import { Book } from '@/types/Book';
+import { BookData } from '@/types/Book';
 import { BookOpenIcon, CheckIcon, DocumentIcon } from '@heroicons/react/16/solid';
 import { plainToInstance } from 'class-transformer';
 import clsx from 'clsx';
@@ -18,9 +18,9 @@ import GoogleBooksSearch from './GoogleBooksSearch';
 
 interface EditFormProps {
     book: FormData;
-    onSave?: (book: Book) => void;
+    onSave?: (book: FormData) => void;
     onCancel?: () => void;
-    onChange?: (book: Book) => void;
+    onChange?: (book: FormData) => void;
 }
 
 interface FormData {
@@ -42,7 +42,7 @@ const Edit = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
         const { name, value } = e.target;
         setValue(name as keyof FormData, value, { shouldDirty: true });
         console.log('name: ', name, 'value: ', value);
-        // if(onChange) onChange({ ...book, [name]: value });
+        if(onChange) onChange({ ...book, [name]: value });
     };
 
 
