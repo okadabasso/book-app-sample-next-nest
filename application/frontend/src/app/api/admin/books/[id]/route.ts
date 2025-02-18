@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { api } from "@/shared/apiClient"
-import { Book } from "@/types/Book"
+import { BookData } from "@/types/Book"
 import logger from '@/shared/logger';
 
 export async function GET(
@@ -17,7 +17,7 @@ export async function GET(
     return response;
 }
 export async function POST(request: NextRequest) {
-    const book: Book = await request.json();
+    const book: BookData = await request.json();
     if (!book) {
         return NextResponse.json({ error: "Book data is required" }, { status: 400 });
     }
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const book: Book = await request.json();
+    const book: BookData = await request.json();
     if (!id || !book) {
         return NextResponse.json({ error: "Book ID and data are required" }, { status: 400 });
     }
