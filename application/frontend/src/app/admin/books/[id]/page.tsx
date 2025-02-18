@@ -64,9 +64,10 @@ const DetailPage = () => {
             {error && <p className='text-red-500'>{error}</p>}
             <form>
                 <div>
-                    <div className='mb-4 flex gap-2 text-lg font-bold' >
-                        <div>#{book.id}: </div>
-                        <div>{book.title}</div>
+                    <div className='mb-4 flex gap-2 text-lg font-bold align-top' >
+                        {book.thumbnail && <img src={book.thumbnail} alt={book.title} className='w-[40px] h-[51px]' />}
+                        <div className='-mt-1'>#{book.id}: </div>
+                        <div className='-mt-1'>{book.title}</div>
                     </div>
                     <div className='mb-4 flex gap-2'>
                         <div className='font-bold w-32 min-w-32'>Author</div>

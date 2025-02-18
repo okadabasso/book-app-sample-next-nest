@@ -19,8 +19,8 @@ const TextBox = ({
   iconRight,
   ...props
 }: TextBoxProps) => {
-  const [paddingLeft, setPaddingLeft] = useState('pl-1');
-  const [paddingRight, setPaddingRight] = useState('pr-1');
+  const [paddingLeft, setPaddingLeft] = useState('pl-2');
+  const [paddingRight, setPaddingRight] = useState('pr-2');
 
   useEffect(() => {
     if(iconRight) {
@@ -35,7 +35,7 @@ const TextBox = ({
       {iconLeft && (<span className='absolute left-1 top-[7px] text-gray-500 '>{iconLeft}</span>) }
       <input
         className={clsx(
-          'border rounded-sm px-1 py-0.5 focus:outline-none focus:ring-2',
+          'border rounded-sm px-2 py-0.5 focus:outline-none focus:ring-2',
           paddingRight,
           paddingLeft,
           inputVariants[variant],

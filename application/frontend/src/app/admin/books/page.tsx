@@ -13,6 +13,7 @@ import { BookQuery } from '@/types/BookQuery';
 import { ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/16/solid';
 import { plainToInstance } from 'class-transformer';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
 
@@ -24,6 +25,7 @@ const BooksPage = () => {
 
     const query = useStore(BookQueryStore, state => state.query);
     const setQuery = useStore(BookQueryStore, state => state.setQuery);
+    const router = useRouter();
 
     const fetchBooks = async (query: BookQuery) => {
         setIsLoading(true);
@@ -72,8 +74,7 @@ const BooksPage = () => {
     }
     const handleEditBook  = (id: number) =>{
         console.log('edit book');
-        
-        location.href = `/admin/books/${id}/edit`;
+        router.push(`/admin/books/${id}/edit`);
     }
     const handleDeleteBook  = async (id: number) =>{
         console.log('edit book');

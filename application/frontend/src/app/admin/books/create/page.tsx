@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
 import EditForm from '@/app/admin/books/components/EditForm';
-import { Book } from '@/types/Book';
+import { BookData } from '@/types/Book';
 import ContentHeader from '@/components/ContentHeader';
 import { getCsrfHeader, createCsrfToken } from '@/shared/csrfToken';
 import FormToken from '@/types/FormToken';
@@ -15,7 +15,7 @@ const CreateBookPage = () => {
     const year = (new Date()).getFullYear().toString();
     const [error, setError] = useState<string | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [book, setBook] = useState<Book>({
+    const [book, setBook] = useState<BookData>({
         id: 0,
         title: '',
         author: '',
@@ -36,8 +36,8 @@ const CreateBookPage = () => {
         }
         csrf();
     }, []);
-    const handleSave = (book: Book) => {
-        const saveBook = async (book: Book) => {
+    const handleSave = (book: BookData) => {
+        const saveBook = async (book: BookData) => {
             try {
                 const response = await  api.post(
                     '/api/admin/books',{
@@ -67,7 +67,7 @@ const CreateBookPage = () => {
     const handleCancel = () => {
         window.location.href = `/admin/books`;
     }
-    const handleBookChange = (updatedBook: Book) => {
+    const handleBookChange = (updatedBook: BookData) => {
         setBook(updatedBook);
     }
 
