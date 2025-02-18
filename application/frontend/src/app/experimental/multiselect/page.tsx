@@ -1,5 +1,6 @@
 'use client';
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react'
+import clsx from 'clsx';
 import { useState } from 'react'
 
 const people = [
@@ -33,7 +34,7 @@ export default function MultiSelectCombobox() {
             ))}
           </ul>
         )}
-        <ComboboxInput aria-label="Assignees" onChange={(event) => setQuery(event.target.value)} />
+        <ComboboxInput aria-label="Assignees" onChange={(event) => setQuery(event.target.value)} className={clsx("border border-gray-400 rounded-sm px-2 py-1")} />
         <ComboboxOptions anchor="bottom" className="border empty:invisible">
           {filteredPeople.map((person) => (
             <ComboboxOption key={person.id} value={person} className="data-[focus]:bg-blue-100">
