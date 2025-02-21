@@ -42,7 +42,6 @@ const authOptions: AuthOptions = {
             },
             async authorize(credentials) {
                 try {
-                    console.log("credentials", credentials);
                     const response = await api.post("/auth/signIn", {
                         body: {
                             username: credentials?.username,
@@ -50,16 +49,13 @@ const authOptions: AuthOptions = {
                         }
                     });
                     const user = await response.json();
-                    console.log(user);
                     // If no error and we have user data, return it
                     if (response.ok && user) {
                         return user
                     }
                     // Throw a 401 error if user data could not be retrieved
-                    console.log('user not found');
-                    return null;
+                    throw new Error('Unauthorized');
                 } catch (error) {
-                    console.log(error);
                     return null;
                 }
 
@@ -92,15 +88,17 @@ const authOptions: AuthOptions = {
         },
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         jwt({ token, account, user }) {
+            console.log('user', user);
+            console.log('account', account);
+            console.log('token', token);
+
             if(user){
 
                 const roles= (user as User).roles;
                 if(roles){
-                    console.log('roles ', roles);
                     token.roles = roles;    
                 }
                 else{
-                    console.log('roles user', roles);
                     token.roles = ['user'];
                 }
             }

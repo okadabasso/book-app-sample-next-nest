@@ -8,7 +8,10 @@ interface FormData {
     title: string;
 }
 
-
+/**
+ * form の変更状態を確認する
+ * @returns FormChangePage
+ */
 const FormChangePage = () => {
     
     const [book, setBook] = useState<FormData>({title: ''});

@@ -73,11 +73,9 @@ const BooksPage = () => {
         await fetchBooks(newQuery);
     }
     const handleEditBook  = (id: number) =>{
-        console.log('edit book');
         router.push(`/admin/books/${id}/edit`);
     }
     const handleDeleteBook  = async (id: number) =>{
-        console.log('edit book');
         const csrfToken = await createCsrfToken(); // CSRF トークンを取得する関数を実装してください
 
         await api.delete(`/api/admin/books/${id}`, {

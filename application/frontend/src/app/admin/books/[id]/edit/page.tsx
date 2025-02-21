@@ -85,7 +85,6 @@ const EditBookPage = () => {
         router.push(`/admin/books/${id}`);
     }
     const handleBookChange = (updatedBook: BookData) => {
-        console.log('updatedBook: ', updatedBook);
     }
 
     if (!book) {
@@ -103,7 +102,7 @@ const EditBookPage = () => {
             <EditForm book={book} 
                 onSave={(book) => handleSave(book)} 
                 onCancel={() => handleCancel()} 
-                onChange={handleBookChange}/>
+                onChange={(book) => handleBookChange(book)}/>
         </div>
     );
 };

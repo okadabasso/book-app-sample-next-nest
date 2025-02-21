@@ -31,9 +31,7 @@ const MultiSelectCombobox = forwardRef<MultiSelectComboboxRef, MultiSelectCombob
     }));
 
     const addItemToSelection = (item: Option) => {
-      console.log("new item", item);
       setSelectedItems((prev) => {
-        console.log("prev", prev);
         // 重複チェック: id を基準に確認
         const exists = prev.some((selectedItem) => selectedItem.id === item.id);
 

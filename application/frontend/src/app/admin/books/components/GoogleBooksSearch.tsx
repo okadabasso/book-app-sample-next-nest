@@ -58,7 +58,6 @@ const GoogleBooksSearch = ({searchTitle, searchAuthor, searchIsbn,  isOpen, onCl
             setItems(data.items);
             setTotal(data.total);
             setOffset(offset);
-            console.log('data: ', data);
             if (listRef.current) {
                 listRef.current.scrollTo({top: 0, behavior: 'smooth'}) // スクロール位置をリセット
             }
@@ -72,7 +71,6 @@ const GoogleBooksSearch = ({searchTitle, searchAuthor, searchIsbn,  isOpen, onCl
         }
     };
     const handleSearch = async () => {
-        console.log('searching...');
         await searchBooks(title, author, isbn, limit, 0);
 
     }
@@ -80,13 +78,11 @@ const GoogleBooksSearch = ({searchTitle, searchAuthor, searchIsbn,  isOpen, onCl
         if(offset + limit < total){
             await searchBooks(title, author, isbn, limit, offset + limit);
         }
-        console.log('next offset: ', offset);
     }
     const handlePrev = async () => {
         if(offset - limit >= 0){
             await searchBooks(title, author, isbn, limit, offset - limit);
         }
-        console.log('prev offset: ', offset);
     }
     return (
         <CustomDialog

@@ -25,7 +25,6 @@ const EditForm = ({book}: EditFormProps) => {
     });
 
     const handleSubmit = async (data: FormData) => {
-        console.log(data);
     };
     const handleChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;

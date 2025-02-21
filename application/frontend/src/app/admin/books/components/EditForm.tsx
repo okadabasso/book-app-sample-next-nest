@@ -51,8 +51,6 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
     };
 
     const handleFormSubmit = async (data: BookData) => {
-        console.log("送信データ:", data);
-
         try {
             const selectedItems = multiSelectRef.current?.getSelectedItems();
             const updatedBook: BookData = {
@@ -62,9 +60,7 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
             };
             reset(updatedBook);
             onSave(updatedBook);
-            console.log("送信が成功しました");
         } catch (error) {
-            console.error("送信中にエラーが発生しました:", error);
             setMessage(["送信中にエラーが発生しました: " + (error as Error).message]);
             return;
         }
@@ -88,12 +84,9 @@ const EditForm = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
         return genres.json();
     };
     const onSelectedItemsChange = (selectedItems: Option[]) => {
-        console.log('selectedItems:', selectedItems);
-        
         setValue('genres', selectedItems, { shouldDirty: true });
     };
     const selectBook = (book: BookData) => {
-        console.log('selected book: ', book);
         const updatedBook: BookData =  { ...book};
         Object.entries(updatedBook).forEach(([key, value]) => {
             setValue(key as keyof BookData, value);

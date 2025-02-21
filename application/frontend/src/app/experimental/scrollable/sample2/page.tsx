@@ -9,7 +9,6 @@ const ScrpllableSample2Page = () => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const handleExtent = () => {
-        console.log('extent');
         setIsExpanded(!isExpanded);
     }
 

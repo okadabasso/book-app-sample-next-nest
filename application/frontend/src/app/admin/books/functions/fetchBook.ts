@@ -25,7 +25,6 @@ const fetchBook = async (id: number): Promise<FetchBookResult> => {
         return  { book: data };
     } catch (e: unknown) {
         if (e instanceof Error) {
-            console.log(e.message);
             throw new Error(e.message);
         } else {
             throw new Error(String(e));

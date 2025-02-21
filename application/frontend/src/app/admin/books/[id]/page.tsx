@@ -33,7 +33,6 @@ const DetailPage = () => {
                 }
                 catch (e: unknown) {
                     if (e instanceof Error) {
-                        console.log(e.message);
                         setError(e.message);
                     } else {
                         setError(String(e));

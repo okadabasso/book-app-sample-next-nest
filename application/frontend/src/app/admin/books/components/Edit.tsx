@@ -41,7 +41,6 @@ const Edit = ({ book, onSave, onCancel, onChange }: EditFormProps) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setValue(name as keyof FormData, value, { shouldDirty: true });
-        console.log('name: ', name, 'value: ', value);
         if(onChange) onChange({ ...book, [name]: value });
     };
 
